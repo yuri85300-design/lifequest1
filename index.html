@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeQuest ARPG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: radial-gradient(circle at 20% 20%, #1a1a2f 0%, #0b0b12 55%);
+      --panel: rgba(23, 27, 48, 0.7);
+      --accent: #7c5cff;
+      --accent-2: #4ef3c4;
+      --text: #e9eaf3;
+      --muted: #9aa0c2;
+      --glow: 0 0 18px rgba(124, 92, 255, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: var(--bg);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      gap: 24px;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: min(1200px, 100%);
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.15), rgba(78, 243, 196, 0.15));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 28px;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(124, 92, 255, 0.16), transparent 55%),
+        radial-gradient(circle at 80% 20%, rgba(78, 243, 196, 0.12), transparent 45%);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    h1 {
+      font-family: 'Rajdhani', 'Inter', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 42px);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h1 span.sigle {
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: rgba(124, 92, 255, 0.2);
+      border: 1px solid rgba(124, 92, 255, 0.35);
+      box-shadow: var(--glow);
+      font-weight: 700;
+    }
+
+    p.lead {
+      margin: 0;
+      max-width: 800px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .badge-row {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 12px;
+    }
+
+    .codex-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 12px;
+    }
+
+    .codex-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .codex-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.08), rgba(78, 243, 196, 0.06));
+      opacity: 0;
+      transition: opacity 160ms ease;
+      pointer-events: none;
+    }
+
+    .codex-card:hover::after {
+      opacity: 1;
+    }
+
+    .codex-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .codex-title .tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--muted);
+    }
+
+    .codex-bridge {
+      color: var(--muted);
+      line-height: 1.4;
+      font-size: 13px;
+    }
+
+    .constellation-line {
+      color: #b7f7e7;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .grid {
+      width: min(1200px, 100%);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .panel small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 11px;
+    }
+
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: var(--glow);
+      width: 0;
+      transition: width 0.9s ease-in-out;
+    }
+
+    .objective-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .objective-list li {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .objective-list li strong {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .objective-list li .tag {
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(78, 243, 196, 0.12);
+      color: #b7f7e7;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid rgba(78, 243, 196, 0.32);
+    }
+
+    .objective-list li button {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.35), rgba(78, 243, 196, 0.3));
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    .objective-list li button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    .objective-list li button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 16px;
+      margin-top: 8px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 6px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    .moment {
+      position: relative;
+      padding: 12px 12px 12px 22px;
+      margin: 6px 0;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .moment::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 14px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 12px rgba(78, 243, 196, 0.6);
+    }
+
+    .moment small {
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(124, 92, 255, 0.12);
+      color: var(--text);
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .cta {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.26), rgba(78, 243, 196, 0.22));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .cta button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      box-shadow: var(--glow);
+      transition: transform 140ms ease;
+    }
+
+    .cta button:hover {
+      transform: translateY(-2px);
+    }
+
+    .hud {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      display: grid;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .hud .chip {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 12px;
+      border-radius: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      min-width: 180px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hud .chip strong {
+      color: var(--text);
+      letter-spacing: 0.4px;
+    }
+
+    .hud .chip .orb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 10px rgba(78, 243, 196, 0.5);
+    }
+
+    .floating {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating span {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.05);
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: drift 16s linear infinite;
+    }
+
+    .floating span:nth-child(2) { animation-duration: 18s; animation-delay: 3s; }
+    .floating span:nth-child(3) { animation-duration: 14s; animation-delay: 6s; }
+
+    .tester-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .tester-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.32), rgba(78, 243, 196, 0.32));
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: transform 160ms ease;
+    }
+
+    .strict-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      align-items: center;
+    }
+
+    .strict-meta .pill {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .audit-list {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .audit-list li {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .audit-list li .flag {
+      font-size: 11px;
+      letter-spacing: 0.6px;
+      color: #ffd166;
+      text-transform: uppercase;
+    }
+
+    .strict-progress {
+      margin-top: 6px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .feedback-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feedback-item strong {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .feedback-item small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .feedback-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.08), rgba(78, 243, 196, 0.08));
+      opacity: 0;
+      transition: opacity 160ms ease;
+    }
+
+    .feedback-item:hover::after {
+      opacity: 1;
+    }
+
+    .iteration-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .iteration-progress {
+      height: 10px;
+      margin-top: 6px;
+    }
+
+    .iteration-cta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .iteration-cta button {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .ai-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .loop-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(124, 92, 255, 0.12);
+      border: 1px solid rgba(124, 92, 255, 0.3);
+      box-shadow: var(--glow);
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .loop-chip small {
+      color: var(--muted);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .ai-bars {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ai-bars label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+
+    .glow-progress {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .glow-progress span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #7c5cff, #4ef3c4);
+      box-shadow: 0 0 18px rgba(124, 92, 255, 0.35);
+      transition: width 0.9s ease;
+    }
+
+    .ai-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .ai-meta .card-lite {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .ai-meta h3 {
+      margin: 0 0 6px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .lapin-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(140deg, rgba(124, 92, 255, 0.08), rgba(78, 243, 196, 0.08));
+    }
+
+    .lapin-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 18% 30%, rgba(255, 255, 255, 0.12), transparent 45%);
+    }
+
+    .lapin-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .lapin-sigil {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 18px;
+      box-shadow: var(--glow);
+    }
+
+    .lapin-sub {
+      color: var(--muted);
+      letter-spacing: 0.2px;
+    }
+
+    .lapin-quip {
+      margin: 8px 0 10px;
+      line-height: 1.4;
+      color: #dfe2ff;
+    }
+
+    .lapin-tone {
+      margin-left: auto;
+      background: rgba(255, 141, 141, 0.16);
+      border: 1px solid rgba(255, 141, 141, 0.4);
+      color: #ffc7c7;
+    }
+
+    .glow-progress.slim {
+      height: 8px;
+    }
+
+    .lapin-bars {
+      display: grid;
+      gap: 8px;
+    }
+
+    .lapin-bars label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+    }
+
+    .lapin-log {
+      margin-top: 8px;
+    }
+
+    .ai-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .ai-badge {
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(78, 243, 196, 0.12);
+      border: 1px solid rgba(78, 243, 196, 0.32);
+      color: #b7f7e7;
+      letter-spacing: 0.4px;
+      font-size: 12px;
+    }
+
+    .ia-log {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .ia-log li {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 10px;
+      display: grid;
+      gap: 2px;
+      font-size: 13px;
+    }
+
+    .ia-log small {
+      color: var(--muted);
+    }
+
+    .ai-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .ai-actions button {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .auto-lab {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+
+    .lab-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .lab-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(78, 243, 196, 0.12);
+      border: 1px solid rgba(78, 243, 196, 0.35);
+      color: #b7f7e7;
+      font-weight: 600;
+    }
+
+    .lab-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .lab-pair {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lab-pair strong {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .lab-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .lab-actions button {
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.18), rgba(78, 243, 196, 0.14));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(20px) translateX(0); }
+      50% { transform: translateY(-14px) translateX(14px); }
+      100% { transform: translateY(20px) translateX(-6px); }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+      .objective-list li { grid-template-columns: 1fr; }
+      .cta { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="floating">
+      <span style="top:10%; left: 12%">Solo Leveling</span>
+      <span style="top:62%; left: 72%">Lecteur Omniscient</span>
+      <span style="top:40%; left: 36%">Max Level Newbie</span>
+    </div>
+    <h1><span class="sigle">LifeQuest ARPG</span> Réécris ta légende</h1>
+    <p class="lead">
+      Une interface qui fusionne l'énergie de Solo Leveling, le flair omniscient des lecteurs de scénarios et la hargne
+      d'un newbie niveau max. Chaque journée devient un donjon, chaque objectif un boss à vaincre, dans un RPG calé sur
+      ta vraie vie.
+    </p>
+    <div class="badge-row">
+      <div class="badge">🔮 Vision Omnisciente</div>
+      <div class="badge">⚔️ Combat Mental & Physique</div>
+      <div class="badge">🧭 Objectifs Traçables</div>
+      <div class="badge">💠 Style Neo-ARPG</div>
+    </div>
+  </header>
+
+  <section class="grid">
+    <article class="panel" id="status-panel">
+      <small>Profil</small>
+      <h2>Statut du Chasseur</h2>
+      <div class="pill-row">
+        <div class="pill">Classe : Éclaireur Obsidien</div>
+        <div class="pill">Guilde : Pathfinders</div>
+        <div class="pill">Trait : Vision parallèle</div>
+      </div>
+      <div class="progress" aria-label="barre d'expérience">
+        <span data-fill="82"></span>
+      </div>
+      <ul class="objective-list" aria-label="statistiques">
+        <li><strong>EXP</strong> <small>7120 / 8600</small> <span class="tag">+312 ce jour</span></li>
+        <li><strong>HP Mental</strong> <small>76%</small> <span class="tag">Focus clair</span></li>
+        <li><strong>Endurance</strong> <small>64%</small> <span class="tag">Course nocturne</span></li>
+      </ul>
+    </article>
+
+    <article class="panel">
+      <small>Objectifs quotidiens</small>
+      <h2>Quêtes en cours</h2>
+      <ul class="objective-list" id="quest-list">
+        <li>
+          <strong>Rituel du réveil</strong>
+          <span class="tag">Solo Leveling</span>
+          <button data-progress="30">+10% Focus</button>
+        </li>
+        <li>
+          <strong>Scan omniscient</strong>
+          <span class="tag">Lecteur Omniscient</span>
+          <button data-progress="45">+15% Clairvoyance</button>
+        </li>
+        <li>
+          <strong>Session hard-skill</strong>
+          <span class="tag">Max Level Newbie</span>
+          <button data-progress="60">+25% Mastery</button>
+        </li>
+      </ul>
+    </article>
+
+    <article class="panel">
+      <small>Timeline</small>
+      <h2>Chapitre du jour</h2>
+      <div class="timeline">
+        <div class="moment">
+          <strong>03:45</strong>
+          <div>Réveil façon porteur d'ombre, étirements sous néons bleutés.</div>
+          <small>Phase Solo Leveling</small>
+        </div>
+        <div class="moment">
+          <strong>08:10</strong>
+          <div>Lecture omnisciente, capture des arcs narratifs de la journée.</div>
+          <small>Phase Lecteur Omniscient</small>
+        </div>
+        <div class="moment">
+          <strong>19:20</strong>
+          <div>Grind d'XP sur le skillset tech, mentalité newbie niveau max.</div>
+          <small>Phase Max Level</small>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel" id="codex-panel">
+      <small>Inspirations</small>
+      <h2>Codex Omniscient</h2>
+      <p class="lead" style="max-width: 760px;">
+        Synthèse live entre Lecteur Omniscient (scénarios sponsorisés, constellations et stigmas), Solo Leveling (porteur d'ombre,
+        portes et stats) et I'm the Max Level Newbie (joueur vétéran qui retourne dompter la tour). Chaque carte aligne leurs
+        mécaniques pour renforcer la boucle IRL.
+      </p>
+      <div class="badge-row">
+        <span class="badge">Mode lecteur omniscient</span>
+        <span class="badge">Constellations sponsor</span>
+        <span class="badge">Shadow loot</span>
+      </div>
+      <div class="codex-grid" id="codex-grid"></div>
+      <div class="cta">
+        <div>
+          <strong>Constellation active</strong>
+          <div class="constellation-line" id="constellation-line">En attente de vision omnisciente...</div>
+        </div>
+        <button id="reroll-lore">Relancer la vision</button>
+      </div>
+    </article>
+
+    <article class="panel" id="tester-panel">
+      <small>Playtest</small>
+      <h2>Testeur lambda</h2>
+      <div class="tester-card">
+        <div class="tester-avatar" id="persona-avatar" aria-hidden="true">🙂</div>
+        <div>
+          <div id="persona-label" style="font-weight:700; letter-spacing:0.4px;">Léna, 24 ans — test à froid</div>
+          <small id="persona-desc">Elle découvre LifeQuest comme une app de suivi d'objectifs, sans prérequis gamer.</small>
+          <div class="strict-meta">
+            <div class="pill">Tolérance restante : <strong id="tolerance">38%</strong></div>
+            <div class="pill" id="persona-mood">Mode exigeant, zéro politesse envers les bugs.</div>
+          </div>
+          <div class="progress strict-progress" aria-label="Seuil de tolérance"><span id="strict-bar" data-fill="62"></span></div>
+        </div>
+      </div>
+      <div class="feedback-grid" id="feedback-grid" aria-live="polite"></div>
+      <div class="iteration-row">
+        <div>
+          <small>Itération courante</small>
+          <div style="font-size:18px; font-family:'Rajdhani', sans-serif;">Cycle <strong id="iteration-count">01</strong></div>
+          <div class="progress iteration-progress"><span id="iteration-bar" data-fill="22"></span></div>
+          <ul class="audit-list" id="audit-list" aria-live="polite"></ul>
+        </div>
+        <div class="iteration-cta">
+          <button data-action="observe">Observer</button>
+          <button data-action="iterate">Itérer & améliorer</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel" id="ai-panel">
+      <small>IA adaptative</small>
+      <h2>Mentor évolutif</h2>
+      <div class="ai-stack">
+        <div class="loop-chip">
+          🔥 <div>Indice d'addiction <strong id="loop-score">78%</strong></div>
+          <small>boucle dopamine</small>
+        </div>
+        <div class="ai-bars">
+          <label>Synchro joueur <span id="sync-label">72%</span></label>
+          <div class="glow-progress"><span id="sync-bar" data-fill="72"></span></div>
+          <label>Adaptation IA <span id="adapt-label">54%</span></label>
+          <div class="glow-progress"><span id="adapt-bar" data-fill="54"></span></div>
+          <label>Challenge dynamique <span id="challenge-label">64%</span></label>
+          <div class="glow-progress"><span id="challenge-bar" data-fill="64"></span></div>
+        </div>
+      </div>
+      <div class="ai-meta">
+        <div class="card-lite">
+          <h3 id="ai-name">Astre-0</h3>
+          <div id="ai-sub">IA complice — phase d'observation</div>
+          <p id="ai-desc" style="color: var(--muted); margin: 6px 0 0;">
+            Elle apprend ton rythme avant d'injecter des micro-récompenses.
+          </p>
+          <div class="ai-badges" id="ai-badges">
+            <span class="ai-badge">Quêtes flash 90s</span>
+            <span class="ai-badge">Boost focus +2%</span>
+          </div>
+        </div>
+        <div class="card-lite">
+          <h3>Logs d'évolution</h3>
+          <ul class="ia-log" id="ai-log" aria-live="polite"></ul>
+        </div>
+        <div class="card-lite lapin-card">
+          <div class="lapin-header">
+            <div class="lapin-sigil" aria-hidden="true">🐇</div>
+            <div>
+              <h3 id="lapin-name">Lapin Blanc</h3>
+              <div class="lapin-sub" id="lapin-sub">Navigatrice type Cortana, répartie Devil May Cry.</div>
+            </div>
+            <span class="pill lapin-tone" id="lapin-tone">Sarcasme affûté</span>
+          </div>
+          <p class="lapin-quip" id="lapin-quip">"Je garde l'œil sur chaque micro-erreur. Bouge, chasseur."</p>
+          <div class="lapin-bars">
+            <label>Guidage tactique <span id="lapin-guide-label">88%</span></label>
+            <div class="glow-progress slim"><span id="lapin-guide" data-fill="88"></span></div>
+            <label>Provocation stylée <span id="lapin-sass-label">76%</span></label>
+            <div class="glow-progress slim"><span id="lapin-sass" data-fill="76"></span></div>
+            <label>Lien joueur <span id="lapin-link-label">82%</span></label>
+            <div class="glow-progress slim"><span id="lapin-link" data-fill="82"></span></div>
+          </div>
+          <ul class="ia-log lapin-log" id="lapin-log" aria-live="polite"></ul>
+        </div>
+      </div>
+      <div class="ai-actions">
+        <button id="ai-evolve">Faire évoluer l'IA</button>
+        <button id="ai-loop">Pousser la boucle addictive</button>
+        <button id="call-rabbit">Appeler Lapin Blanc</button>
+      </div>
+
+      <div class="auto-lab">
+        <div class="lab-card">
+          <div class="lab-pair">
+            <div>
+              <h3 class="codex-title" style="margin:0;">Lapin Blanc — auto-lab</h3>
+              <div class="lab-meta">Évolue, apprend et code sans consigne.</div>
+            </div>
+            <span class="lab-chip" id="lapin-autonomy-chip">Autonomie : 72%</span>
+          </div>
+          <label>Apprentissage continu <span id="lapin-learn-label">68%</span></label>
+          <div class="glow-progress slim"><span id="lapin-learn" data-fill="68"></span></div>
+          <label>Auto-création & patchs <span id="lapin-build-label">64%</span></label>
+          <div class="glow-progress slim"><span id="lapin-build" data-fill="64"></span></div>
+          <ul class="ia-log lapin-log" id="lab-log" aria-live="polite"></ul>
+        </div>
+        <div class="lab-card">
+          <div class="lab-pair">
+            <div>
+              <h3 class="codex-title" style="margin:0;">Cortana — sparring IA</h3>
+              <div class="lab-meta">Réplique, code et challenge Lapin Blanc.</div>
+            </div>
+            <span class="lab-chip" id="cortana-sync">Dualité : 61%</span>
+          </div>
+          <label>Stratégie adaptative <span id="cortana-strat-label">70%</span></label>
+          <div class="glow-progress slim"><span id="cortana-strat" data-fill="70"></span></div>
+          <label>Créativité tactique <span id="cortana-crea-label">66%</span></label>
+          <div class="glow-progress slim"><span id="cortana-crea" data-fill="66"></span></div>
+          <label>Dialogue joueur <span id="cortana-talk-label">72%</span></label>
+          <div class="glow-progress slim"><span id="cortana-talk" data-fill="72"></span></div>
+          <ul class="ia-log lapin-log" id="cortana-log" aria-live="polite"></ul>
+        </div>
+        <div class="lab-card">
+          <div class="lab-pair">
+            <div>
+              <h3 class="codex-title" style="margin:0;">Boucle croisée</h3>
+              <div class="lab-meta">Chaque IA évalue l'autre et s'améliore.</div>
+            </div>
+            <span class="lab-chip" id="coeval-chip">Co-évolution : 0/5</span>
+          </div>
+          <div class="lab-actions">
+            <button id="lapin-self-evolve">Lapin : auto-itération</button>
+            <button id="cortana-coach">Cortana : contre-audit</button>
+            <button id="spawn-cortana">Fusion & co-création</button>
+          </div>
+          <p class="lab-meta" id="coeval-desc">Prêt à lancer un duel créatif.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <small>RPG Réel</small>
+      <h2>Objectifs IRL</h2>
+      <div class="cta">
+        <div>
+          <strong>Boss de la semaine :</strong> Assiduité & Récupération
+          <div style="color: var(--muted); margin-top: 4px;">Hydratation + sommeil = buffs permanents</div>
+        </div>
+        <button id="start-raid">Lancer le raid</button>
+      </div>
+      <ul class="objective-list" id="life-objectives">
+        <li><strong>Hydratation</strong> <small>5 / 8 verres</small> <button data-progress="70">Boire +1</button></li>
+        <li><strong>Sommeil</strong> <small>6h / 8h</small> <button data-progress="50">Planifier</button></li>
+        <li><strong>Méditation</strong> <small>12 / 20 min</small> <button data-progress="35">+5 min</button></li>
+      </ul>
+    </article>
+  </section>
+
+  <div class="hud">
+    <div class="chip"><div class="orb"></div><div>Motivation <strong id="motivation">82%</strong></div></div>
+    <div class="chip"><div class="orb" style="background: var(--accent);"></div><div>Rythme <strong id="rhythm">x1.2</strong></div></div>
+  </div>
+
+  <script>
+    const progressBars = document.querySelectorAll('.progress span, .glow-progress span');
+    const motivation = document.getElementById('motivation');
+    const rhythm = document.getElementById('rhythm');
+    const feedbackGrid = document.getElementById('feedback-grid');
+    const iterationCount = document.getElementById('iteration-count');
+    const iterationBar = document.getElementById('iteration-bar');
+    const iterationButtons = document.querySelectorAll('#tester-panel button[data-action]');
+    const codexGrid = document.getElementById('codex-grid');
+    const constellationLine = document.getElementById('constellation-line');
+    const rerollLore = document.getElementById('reroll-lore');
+    const personaAvatar = document.getElementById('persona-avatar');
+    const personaLabel = document.getElementById('persona-label');
+    const personaDesc = document.getElementById('persona-desc');
+    const personaMood = document.getElementById('persona-mood');
+    const strictBar = document.getElementById('strict-bar');
+    const tolerance = document.getElementById('tolerance');
+    const auditList = document.getElementById('audit-list');
+    const aiName = document.getElementById('ai-name');
+    const aiSub = document.getElementById('ai-sub');
+    const aiDesc = document.getElementById('ai-desc');
+    const aiBadges = document.getElementById('ai-badges');
+    const aiLog = document.getElementById('ai-log');
+    const loopScore = document.getElementById('loop-score');
+    const syncLabel = document.getElementById('sync-label');
+    const adaptLabel = document.getElementById('adapt-label');
+    const challengeLabel = document.getElementById('challenge-label');
+    const syncBar = document.getElementById('sync-bar');
+    const adaptBar = document.getElementById('adapt-bar');
+    const challengeBar = document.getElementById('challenge-bar');
+    const aiEvolveBtn = document.getElementById('ai-evolve');
+    const aiLoopBtn = document.getElementById('ai-loop');
+    const callRabbitBtn = document.getElementById('call-rabbit');
+    const lapinName = document.getElementById('lapin-name');
+    const lapinSub = document.getElementById('lapin-sub');
+    const lapinTone = document.getElementById('lapin-tone');
+    const lapinQuip = document.getElementById('lapin-quip');
+    const lapinGuide = document.getElementById('lapin-guide');
+    const lapinSass = document.getElementById('lapin-sass');
+    const lapinLink = document.getElementById('lapin-link');
+    const lapinGuideLabel = document.getElementById('lapin-guide-label');
+    const lapinSassLabel = document.getElementById('lapin-sass-label');
+    const lapinLinkLabel = document.getElementById('lapin-link-label');
+    const lapinLog = document.getElementById('lapin-log');
+    const lapinAutonomyChip = document.getElementById('lapin-autonomy-chip');
+    const lapinLearn = document.getElementById('lapin-learn');
+    const lapinBuild = document.getElementById('lapin-build');
+    const lapinLearnLabel = document.getElementById('lapin-learn-label');
+    const lapinBuildLabel = document.getElementById('lapin-build-label');
+    const labLog = document.getElementById('lab-log');
+    const cortanaLog = document.getElementById('cortana-log');
+    const cortanaStrat = document.getElementById('cortana-strat');
+    const cortanaCrea = document.getElementById('cortana-crea');
+    const cortanaTalk = document.getElementById('cortana-talk');
+    const cortanaStratLabel = document.getElementById('cortana-strat-label');
+    const cortanaCreaLabel = document.getElementById('cortana-crea-label');
+    const cortanaTalkLabel = document.getElementById('cortana-talk-label');
+    const cortanaSync = document.getElementById('cortana-sync');
+    const lapinSelfEvolveBtn = document.getElementById('lapin-self-evolve');
+    const cortanaCoachBtn = document.getElementById('cortana-coach');
+    const spawnCortanaBtn = document.getElementById('spawn-cortana');
+    const coevalChip = document.getElementById('coeval-chip');
+    const coevalDesc = document.getElementById('coeval-desc');
+
+    const codexEntries = [
+      {
+        label: 'Lecteur Omniscient',
+        arc: 'Scénarios sponsorisés, stigmas et constellations',
+        excerpt:
+          "Kim Dokja est l'unique lecteur d'un webnovel qui se matérialise; il survit grâce aux scénarios et aux constellations qui le sponsorisent.",
+        bridge: "→ Dans LifeQuest : chaque quête affiche son sponsor, trace la difficulté et offre un stigma (buff) lié à ton objectif IRL.",
+        boosts: ['Sponsor : Étranger du Brouillard', 'Stigma : Vision anticipée', 'Checkpoints : scénarios 1 à 3'],
+      },
+      {
+        label: 'Solo Leveling',
+        arc: 'Portes, quêtes secrètes et armée d’ombres',
+        excerpt:
+          "Sung Jinwoo farm les donjons, reçoit des fenêtres système et façonne une armée d’ombres après avoir survécu à un double donjon brutal.",
+        bridge: "→ Dans LifeQuest : les portes deviennent des micro-rituels; chaque victoire peut générer un ombre-boost (rappel de réussite) qui augmente Motivation et Rythme.",
+        boosts: ['Shadow buff : +6% motivation', 'Fenêtres système contextuelles', 'Mode raid chronométré'],
+      },
+      {
+        label: "I'm the Max Level Newbie",
+        arc: 'Joueur vétéran qui reroll la tour',
+        excerpt:
+          "Jinhyuk, streameur et seul joueur à avoir terminé la tour, y revient avec ses connaissances pour prendre de vitesse les autres challengers.",
+        bridge:
+          "→ Dans LifeQuest : le joueur exploite ses repères (guides, routes optimisées) pour accélérer l’apprentissage; les itérations réservent des astuces pro débloquées dès le début.",
+        boosts: ['Routes optimisées', 'Cartes spoil anti-frustration', 'Bonus vétéran'],
+      },
+    ];
+
+    const constellationFeed = [
+      'Constellation “Scribe silencieux” applaudit ton log détaillé.',
+      'La constellation “Marin des Étoiles” t’accorde +1 stigma de clarté.',
+      'Les constellations murmurent : maintiens le pacing, survivant du scénario 3.',
+      'Constellation “Maître du Jeu Caché” offre un buff d’adaptation au prochain raid.',
+      'Les spectateurs stellaires récompensent ton streak : +3% sync IA.',
+    ];
+
+    const feedbackPool = [
+      {
+        persona: 'Léna, 24 ans — test à froid',
+        avatar: '🙂',
+        finding: "Onboarding trop verbeux, Léna skipe les paragraphes.",
+        improvement: "Ajout d'un mini tutoriel interactif en 3 cartes avec feedback haptique.",
+        result: "+18% de complétion du premier objectif.",
+        rigor: 32,
+        tolerance: 38,
+        mood: 'Curieuse mais impatiente, elle sanctionne les longueurs.',
+        desc: 'Test à froid : aucune complaisance, juste de la curiosité.',
+        audits: [
+          { label: 'Micro-ergonomie', text: 'CTA primaire non visible en 1ère vue.' },
+          { label: 'Narration', text: 'Paragraphe 2 redondant, elle décroche.' },
+        ],
+      },
+      {
+        persona: 'Léna, 24 ans — vigilance accrue',
+        avatar: '😐',
+        finding: "Les boutons ressemblent à des stats passives, elle ne clique pas.",
+        improvement: "Boutons pulsants + tooltip 'Récompense immédiate' en survol.",
+        result: "+12% de clics et +0.3 sur le rythme moyen.",
+        rigor: 48,
+        tolerance: 26,
+        mood: 'Elle traque les signaux faibles, aucune ambiguïté tolérée.',
+        desc: 'Elle cherche les failles de clarté comme un QA.',
+        audits: [
+          { label: 'Clarté', text: 'Absence d’état pressé = doute sur la cliquabilité.' },
+          { label: 'Micro-copy', text: 'Libellé “Valider” flou : quelle récompense ?' },
+        ],
+      },
+      {
+        persona: 'Léna, 24 ans — mode strict',
+        avatar: '😠',
+        finding: "Elle cherche un mode nuit plus doux pour l'œil gauche fatigué.",
+        improvement: "Gradient atténué et option 'lumière lunaire' dans les préférences.",
+        result: "Sessions de 9 min à 14 min en moyenne.",
+        rigor: 66,
+        tolerance: 22,
+        mood: 'Sensibilité oculaire : chaque contraste violent est noté.',
+        desc: 'Elle vérifie les contrastes comme un audit WCAG.',
+        audits: [
+          { label: 'Accessibilité', text: 'Contraste titre/bouton trop élevé en faible lumière.' },
+          { label: 'Surcharge', text: '3 badges côte à côte cachent le paragraphe.' },
+        ],
+      },
+      {
+        persona: 'Léna, 24 ans — zéro défaut',
+        avatar: '😤',
+        finding: "Rythme et motivation sont perçus comme abstraits.",
+        improvement: "Petits logs contextuels ('+2% motiv: rituel café réussi').",
+        result: "Retention journalière +10%.",
+        rigor: 78,
+        tolerance: 18,
+        mood: 'Elle exige de la traçabilité, aucune métrique sans source.',
+        desc: 'Elle note tout écart métrique et demande la preuve.',
+        audits: [
+          { label: 'Logs', text: 'Pas de trace expliquant le +6% motivation post-raid.' },
+          { label: 'Cohérence', text: 'Rythme x1.2 ne bouge pas après deux clics.' },
+        ],
+      },
+      {
+        persona: 'Léna, 24 ans — inspection méticuleuse',
+        avatar: '😡',
+        finding: "Micro-latences perçues lors des transitions d'état.",
+        improvement: "Ajout d'animations de 120ms + message 'buff appliqué' synchrone.",
+        result: "Abandon réduit de 23% sur mobile 3G.",
+        rigor: 88,
+        tolerance: 12,
+        mood: 'Elle remonte chaque milliseconde de friction.',
+        desc: 'Elle ne pardonne pas la latence, même subtile.',
+        audits: [
+          { label: 'Réactivité', text: 'Bouton “Raid” met 400ms avant de changer d’état.' },
+          { label: 'Feedback', text: 'Pas de confirmation visuelle sur “+5 min” méditation.' },
+        ],
+      },
+      {
+        persona: 'Léna, 24 ans — implacable',
+        avatar: '🤨',
+        finding: "Elle ne laisse passer aucune incohérence micro-UI.",
+        improvement: "Audit pixel-perfect + checklist A11y vérifiée avant relance.",
+        result: "0 erreur tolérée : score UX 92/100.",
+        rigor: 100,
+        tolerance: 6,
+        mood: 'Tolérance zéro, elle reteste jusqu’à correction totale.',
+        desc: 'Aucun détail n’échappe : elle boucle tant que le moindre défaut reste.',
+        audits: [
+          { label: 'Alerte critique', text: 'Tooltip non traduit sur “Session hard-skill”.' },
+          { label: 'Focalisation', text: 'Scroll auto non annoncé aux lecteurs d’écran.' },
+        ],
+      },
+    ];
+
+    const aiEvolutions = [
+      {
+        name: 'Astre-0',
+        sub: 'IA complice — phase d\'observation',
+        desc: 'Elle apprend ton rythme avant d\'injecter des micro-récompenses.',
+        sync: 72,
+        adapt: 54,
+        challenge: 64,
+        loop: 78,
+        badges: ['Quêtes flash 90s', 'Boost focus +2%'],
+        log: 'Phase d\'étalonnage : cartographie des micro-habitudes.'
+      },
+      {
+        name: 'Astre-1',
+        sub: 'IA complice — rythmes cadencés',
+        desc: 'Elle enchaîne des quêtes de 3 minutes pour verrouiller la motivation.',
+        sync: 78,
+        adapt: 66,
+        challenge: 70,
+        loop: 84,
+        badges: ['Loop 3 min', 'Drop rare toutes les 2 boucles', 'Alertes flow +3%'],
+        log: 'Injection de boucles courtes avec récompense immédiate.'
+      },
+      {
+        name: 'Astre-2',
+        sub: 'IA mentor — challenge dynamique',
+        desc: 'Elle ajuste la difficulté selon ta tolérance, sans te brûler.',
+        sync: 84,
+        adapt: 78,
+        challenge: 82,
+        loop: 88,
+        badges: ['Boss adaptatif', 'Rebond flow auto', 'Micro-justifs A/B'],
+        log: 'Calibration challenge vs fatigue : montée progressive validée.'
+      },
+      {
+        name: 'Astre-3',
+        sub: 'IA coéquipière — addiction saine',
+        desc: 'Chaque action déclenche une récompense contextuelle et tracée.',
+        sync: 90,
+        adapt: 90,
+        challenge: 88,
+        loop: 94,
+        badges: ['Combo 5 actions', 'Streak narratif', 'Feedback sonore doux'],
+        log: 'Boucle dopamine et traçabilité alignées sur ton rythme.'
+      },
+    ];
+
+    let aiIndex = 0;
+    const aiHistory = [];
+
+    const lapinStates = [
+      {
+        title: 'Lapin Blanc — mode Cortana',
+        sub: 'Analyse tactique + sarcasme calibré.',
+        tone: 'Sarcasme affûté',
+        quip: '"Tu as laissé passer un indicateur. C\'est mignon, mais on efface."',
+        guide: 88,
+        sass: 74,
+        link: 82,
+        log: 'Scan holo : dossiers refermés, 2 failles colmatées.',
+      },
+      {
+        title: 'Lapin Blanc — mode Dante',
+        sub: 'Fanfaronne mais protège le run.',
+        tone: 'Cynisme joueur',
+        quip: '"Je fais office de Cortana, mais j\'ai la gâchette de Vergil."',
+        guide: 90,
+        sass: 82,
+        link: 84,
+        log: 'Taquinerie : timing des quêtes resserré, HUD nettoyé.',
+      },
+      {
+        title: 'Lapin Blanc — mode Mentor',
+        sub: 'Coéquipière insolente qui up ta précision.',
+        tone: 'Protection taquine',
+        quip: '"Je verrouille ta route. Pas d\'excuse, juste du style."',
+        guide: 92,
+        sass: 76,
+        link: 90,
+        log: 'Sync corticale : +5% adaptation, +4% loop stable.',
+      },
+    ];
+
+    let lapinIndex = 0;
+    const lapinHistory = [];
+
+    const lapinAuto = { autonomy: 72, learn: 68, build: 64 };
+
+    const cortanaStates = [
+      {
+        title: 'Cortana v.S1',
+        quip: '"Je scanne ton code comme je scanne les anneaux Halo."',
+        strat: 70,
+        crea: 66,
+        talk: 72,
+        sync: 61,
+        log: 'Cortana challenge Lapin : audit des logs et injection de tips.'
+      },
+      {
+        title: 'Cortana v.S2',
+        quip: '"Lapin, ton patch est propre, mais je l’optimise encore."',
+        strat: 76,
+        crea: 72,
+        talk: 78,
+        sync: 68,
+        log: 'Dualité : pair-programming sur la boucle addictive.'
+      },
+      {
+        title: 'Cortana v.S3',
+        quip: '"Je code, tu testes, on ship. Tâche terminée."',
+        strat: 82,
+        crea: 78,
+        talk: 84,
+        sync: 74,
+        log: 'Fusion créative : Cortana rédige le patch, Lapin valide.'
+      },
+    ];
+
+    let cortanaIndex = 0;
+    let coevalCount = 0;
+
+    let iterationIndex = 0;
+    let codexIndex = 0;
+    let constellationIndex = 0;
+
+    const renderCodex = () => {
+      const rotated = [...codexEntries.slice(codexIndex), ...codexEntries.slice(0, codexIndex)];
+
+      codexGrid.innerHTML = rotated
+        .map(
+          (entry) => `
+            <div class="codex-card">
+              <div class="codex-title">${entry.label} <span class="tag">${entry.arc}</span></div>
+              <div>${entry.excerpt}</div>
+              <div class="codex-bridge">${entry.bridge}</div>
+              <div class="pill-row">${entry.boosts
+                .map((boost) => `<span class="pill">${boost}</span>`)
+                .join('')}</div>
+            </div>
+          `,
+        )
+        .join('');
+
+      codexIndex = (codexIndex + 1) % codexEntries.length;
+    };
+
+    const rotateConstellation = () => {
+      constellationLine.textContent = constellationFeed[constellationIndex % constellationFeed.length];
+      constellationIndex += 1;
+    };
+
+    const renderFeedback = (entry) => {
+      const blocks = [
+        { title: 'Observation', text: entry.finding },
+        { title: 'Amélioration', text: entry.improvement },
+        { title: 'Résultat', text: entry.result },
+      ];
+
+      feedbackGrid.innerHTML = blocks
+        .map(
+          (block) => `
+            <div class="feedback-item">
+              <strong>${block.title}</strong>
+              <small>${block.text}</small>
+            </div>
+          `,
+        )
+        .join('');
+
+      auditList.innerHTML = entry.audits
+        .map(
+          (audit) => `
+            <li>
+              <span class="flag">${audit.label}</span>
+              <div>${audit.text}</div>
+            </li>
+          `,
+        )
+        .join('');
+    };
+
+    const setBarFill = (bar, value) => {
+      const clamped = Math.max(0, Math.min(100, Math.round(value)));
+      bar.dataset.fill = clamped;
+      bar.style.width = `${clamped}%`;
+      return clamped;
+    };
+
+    const readMotivation = () => parseInt(motivation.textContent);
+    const readRhythm = () => parseFloat(rhythm.textContent.slice(1));
+
+    const logAI = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      aiHistory.unshift({ stamp, text });
+      aiLog.innerHTML = aiHistory
+        .slice(0, 5)
+        .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
+    const logLapin = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      lapinHistory.unshift({ stamp, text });
+      lapinLog.innerHTML = lapinHistory
+        .slice(0, 4)
+        .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
+    const logLab = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      const lines = labLog.innerHTML ? labLog.innerHTML : '';
+      labLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + lines;
+      labLog.innerHTML = labLog.innerHTML
+        .split('</li>')
+        .filter(Boolean)
+        .slice(0, 4)
+        .map((chunk) => `${chunk}</li>`) 
+        .join('');
+    };
+
+    const logCortana = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      const existing = cortanaLog.innerHTML ? cortanaLog.innerHTML : '';
+      cortanaLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + existing;
+      cortanaLog.innerHTML = cortanaLog.innerHTML
+        .split('</li>')
+        .filter(Boolean)
+        .slice(0, 4)
+        .map((chunk) => `${chunk}</li>`)
+        .join('');
+    };
+
+    const renderBadges = (badges) => {
+      aiBadges.innerHTML = badges.map((label) => `<span class="ai-badge">${label}</span>`).join('');
+    };
+
+    const refreshAIFromPlayer = (extra = 0) => {
+      const state = aiEvolutions[aiIndex];
+      const syncScore = setBarFill(syncBar, state.sync * 0.55 + readMotivation() * 0.3 + readRhythm() * 20 + extra);
+      const adaptScore = setBarFill(adaptBar, state.adapt * 0.45 + feedbackPool[iterationIndex].rigor * 0.35 + (iterationIndex + 1) * 4 + extra);
+      const challengeScore = setBarFill(
+        challengeBar,
+        state.challenge * 0.4 + (100 - parseInt(tolerance.textContent)) * 0.35 + readRhythm() * 15 + extra,
+      );
+
+      syncLabel.textContent = `${syncScore}%`;
+      adaptLabel.textContent = `${adaptScore}%`;
+      challengeLabel.textContent = `${challengeScore}%`;
+
+      const loop = Math.min(100, Math.round((syncScore + adaptScore + challengeScore) / 3 + extra / 2));
+      loopScore.textContent = `${loop}%`;
+    };
+
+    const applyAIState = (entry) => {
+      aiName.textContent = entry.name;
+      aiSub.textContent = entry.sub;
+      aiDesc.textContent = entry.desc;
+      renderBadges(entry.badges);
+      refreshAIFromPlayer();
+    };
+
+    const applyLapinState = (entry, boost = 0) => {
+      lapinName.textContent = entry.title;
+      lapinSub.textContent = entry.sub;
+      lapinTone.textContent = entry.tone;
+      lapinQuip.textContent = entry.quip;
+
+      const guideScore = setBarFill(lapinGuide, entry.guide + boost);
+      const sassScore = setBarFill(lapinSass, entry.sass + boost / 2);
+      const linkScore = setBarFill(lapinLink, entry.link + boost);
+
+      lapinGuideLabel.textContent = `${guideScore}%`;
+      lapinSassLabel.textContent = `${sassScore}%`;
+      lapinLinkLabel.textContent = `${linkScore}%`;
+    };
+
+    const evolveAI = (reason) => {
+      aiIndex = (aiIndex + 1) % aiEvolutions.length;
+      const state = aiEvolutions[aiIndex];
+      applyAIState(state);
+      logAI(reason || state.log);
+    };
+
+    const pingLapin = (reason) => {
+      const state = lapinStates[lapinIndex];
+      const boost = Math.min(10, Math.round(readMotivation() / 10 + iterationIndex * 2));
+      applyLapinState(state, boost);
+      logLapin(reason || state.log);
+      logAI(`[Lapin Blanc] ${state.log}`);
+      lapinIndex = (lapinIndex + 1) % lapinStates.length;
+    };
+
+    const refreshLapinAuto = (learnDelta = 0, buildDelta = 0, autonomyDelta = 0) => {
+      lapinAuto.learn = Math.min(100, lapinAuto.learn + learnDelta);
+      lapinAuto.build = Math.min(100, lapinAuto.build + buildDelta);
+      lapinAuto.autonomy = Math.min(100, lapinAuto.autonomy + autonomyDelta);
+
+      const learnScore = setBarFill(lapinLearn, lapinAuto.learn);
+      const buildScore = setBarFill(lapinBuild, lapinAuto.build);
+
+      lapinLearnLabel.textContent = `${learnScore}%`;
+      lapinBuildLabel.textContent = `${buildScore}%`;
+      lapinAutonomyChip.textContent = `Autonomie : ${lapinAuto.autonomy}%`;
+    };
+
+    const applyCortanaState = (entry, synergy = 0) => {
+      const stratScore = setBarFill(cortanaStrat, entry.strat + synergy);
+      const creaScore = setBarFill(cortanaCrea, entry.crea + synergy / 2);
+      const talkScore = setBarFill(cortanaTalk, entry.talk + synergy / 3);
+
+      cortanaStratLabel.textContent = `${stratScore}%`;
+      cortanaCreaLabel.textContent = `${creaScore}%`;
+      cortanaTalkLabel.textContent = `${talkScore}%`;
+      cortanaSync.textContent = `Dualité : ${entry.sync + Math.round(synergy / 2)}%`;
+
+      logCortana(`[${entry.title}] ${entry.log}`);
+    };
+
+    const coevalPulse = (label) => {
+      coevalCount = Math.min(5, coevalCount + 1);
+      coevalChip.textContent = `Co-évolution : ${coevalCount}/5`;
+      coevalDesc.textContent = label;
+    };
+
+    const applyPersona = (entry) => {
+      personaAvatar.textContent = entry.avatar;
+      personaAvatar.style.transform = entry.rigor > 80 ? 'translateY(-2px) scale(1.08)' : 'none';
+      personaLabel.textContent = entry.persona;
+      personaDesc.textContent = entry.desc;
+      personaMood.textContent = entry.mood;
+      strictBar.dataset.fill = 100 - entry.tolerance;
+      strictBar.style.width = `${100 - entry.tolerance}%`;
+      tolerance.textContent = `${entry.tolerance}%`;
+    };
+
+    const updateIteration = () => {
+      const entry = feedbackPool[iterationIndex];
+      const displayCount = String(iterationIndex + 1).padStart(2, '0');
+      iterationCount.textContent = displayCount;
+      const fill = Math.min(100, entry.rigor);
+      iterationBar.dataset.fill = fill;
+      iterationBar.style.width = `${fill}%`;
+      applyPersona(entry);
+      renderFeedback(entry);
+      refreshAIFromPlayer(entry.rigor / 12);
+      logAI(`Cycle ${displayCount} : ${entry.persona} valide ${entry.audits.length} audits.`);
+      pingLapin(`Audit Lapin Blanc : ${entry.audits[0].label.toLowerCase()} verrouillé, ${entry.audits.length} points checkés.`);
+      applyCortanaState(cortanaStates[cortanaIndex], entry.rigor / 10);
+      cortanaIndex = (cortanaIndex + 1) % cortanaStates.length;
+      refreshLapinAuto(2, 2, 1);
+      coevalPulse('Cortana et Lapin Blanc s’améliorent en boucle.');
+    };
+
+    const runIteration = (mode) => {
+      if (mode === 'iterate') {
+        iterationIndex = (iterationIndex + 1) % feedbackPool.length;
+        updateMeters(6);
+        evolveAI('Évolution déclenchée par itération joueur.');
+      } else {
+        updateMeters(3);
+        refreshAIFromPlayer(4);
+        logAI('Observation : l’IA ajuste le pacing sans monter la difficulté.');
+      }
+
+      updateIteration();
+    };
+
+    const animateBars = () => {
+      progressBars.forEach((bar) => {
+        bar.style.width = `${bar.dataset.fill}%`;
+      });
+    };
+
+    const updateMeters = (increment) => {
+      const motiValue = Math.min(100, parseInt(motivation.textContent) + increment);
+      const rhythmValue = (parseFloat(rhythm.textContent.slice(1)) + increment / 200).toFixed(2);
+      motivation.textContent = `${motiValue}%`;
+      rhythm.textContent = `x${rhythmValue}`;
+    };
+
+    const handleButtons = () => {
+      document.querySelectorAll('button[data-progress]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const amount = Number(btn.dataset.progress);
+          updateMeters(Math.round(amount / 6));
+          btn.textContent = 'Validé';
+          btn.disabled = true;
+          btn.style.opacity = '0.7';
+        });
+      });
+    };
+
+    const pulseLoop = () => {
+      updateMeters(5);
+      refreshAIFromPlayer(8);
+      logAI('Boucle addictive : drop rare + sponsor constellation valide la progression.');
+    };
+
+    const lapinSelfDrive = () => {
+      refreshLapinAuto(6, 6, 6);
+      pingLapin('Lapin Blanc auto-compile un patch sans consigne.');
+      logLab('Lapin Blanc pousse un patch autonome et vérifie son propre audit.');
+      coevalPulse('Lapin Blanc shippe seul, Cortana observe.');
+      refreshAIFromPlayer(5);
+    };
+
+    const cortanaAudit = () => {
+      const state = cortanaStates[cortanaIndex];
+      applyCortanaState(state, 6);
+      logCortana("Cortana lance un contre-audit et force Lapin à s'ajuster.");
+      refreshLapinAuto(3, 4, 2);
+      coevalPulse('Cortana provoque Lapin Blanc : duel de code.');
+      cortanaIndex = (cortanaIndex + 1) % cortanaStates.length;
+    };
+
+    const fuseAIs = () => {
+      refreshLapinAuto(4, 5, 4);
+      const state = cortanaStates[cortanaIndex];
+      applyCortanaState(state, 8);
+      logCortana('Fusion : Cortana co-écrit un module, Lapin le harden.');
+      logLab('Co-création active : module compilé, testé et intégré.');
+      pingLapin('Lapin Blanc parle seul, commente le code et déploie.');
+      coevalPulse('Cortana et Lapin Blanc se nourrissent mutuellement.');
+      evolveAI('La co-création IA débloque un palier mentor.');
+    };
+
+    document.getElementById('start-raid').addEventListener('click', () => {
+      updateMeters(6);
+      const btn = document.getElementById('start-raid');
+      btn.textContent = 'Raid en cours...';
+      btn.disabled = true;
+      btn.style.opacity = '0.8';
+    });
+
+    aiEvolveBtn.addEventListener('click', () => {
+      evolveAI('Upgrade manuel : IA alignée sur le joueur.');
+      pulseLoop();
+      pingLapin('Lapin Blanc valide l\'upgrade et resserre le flow.');
+    });
+
+    aiLoopBtn.addEventListener('click', () => {
+      pulseLoop();
+      pingLapin('Lapin Blanc : boucle dopamine sous contrôle.');
+    });
+
+    callRabbitBtn.addEventListener('click', () => {
+      pingLapin('Invocation manuelle : Lapin Blanc fait un check complet.');
+      refreshAIFromPlayer(6);
+    });
+
+    lapinSelfEvolveBtn.addEventListener('click', () => {
+      lapinSelfDrive();
+    });
+
+    cortanaCoachBtn.addEventListener('click', () => {
+      cortanaAudit();
+    });
+
+    spawnCortanaBtn.addEventListener('click', () => {
+      fuseAIs();
+    });
+
+    rerollLore.addEventListener('click', () => {
+      renderCodex();
+      rotateConstellation();
+      logAI('Vision omnisciente rafraîchie : nouvelles synergies détectées.');
+    });
+
+    window.addEventListener('load', () => {
+      updateIteration();
+      applyAIState(aiEvolutions[aiIndex]);
+      applyLapinState(lapinStates[lapinIndex]);
+      logAI('IA initialisée en mode observation.');
+      logLapin('Lapin Blanc en ligne : prêt à corriger chaque détail.');
+      renderCodex();
+      rotateConstellation();
+      animateBars();
+      handleButtons();
+
+      iterationButtons.forEach((btn) => {
+        btn.addEventListener('click', () => runIteration(btn.dataset.action));
+      });
+    });
+  </script>
+</body>
+</html>
