@@ -1112,6 +1112,184 @@
       font-size: 12px;
     }
 
+    .adventure-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 12px;
+    }
+
+    .scene-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 40% 20%, rgba(124, 92, 255, 0.08), transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(78, 243, 196, 0.08), transparent 55%);
+      pointer-events: none;
+    }
+
+    .scene-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .scene-head strong {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+      font-size: 18px;
+    }
+
+    .scene {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: linear-gradient(180deg, rgba(12, 16, 28, 0.9), rgba(12, 16, 28, 0.8)),
+        radial-gradient(circle at 30% 20%, rgba(124, 92, 255, 0.08), transparent 50%);
+      min-height: 170px;
+      position: relative;
+      overflow: hidden;
+      padding: 12px;
+    }
+
+    .scene .lane {
+      position: absolute;
+      inset: 16px;
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      opacity: 0.8;
+    }
+
+    .scene .npc,
+    .scene .hero {
+      position: absolute;
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .scene .hero {
+      background: rgba(78, 243, 196, 0.14);
+      border-color: rgba(78, 243, 196, 0.4);
+      color: #c8fff1;
+    }
+
+    .scene .hotspot {
+      position: absolute;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 199, 102, 0.4), rgba(255, 163, 102, 0.12));
+      border: 1px dashed rgba(255, 199, 102, 0.6);
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.85; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.85; }
+    }
+
+    .quest-board {
+      display: grid;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .quest-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .quest-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .hero-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .battle-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .battle-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .battle-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .adventure-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .adventure-actions button {
+      flex: 1 1 180px;
+    }
+
+    .adventure-log {
+      margin-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+    }
+
     .console-grid {
       display: grid;
       gap: 12px;
@@ -1569,6 +1747,107 @@
         <ul class="ia-log nexus-log" id="nexus-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="adventure-panel">
+        <small>Quêtes terrain & immersion</small>
+        <h2>Route des Héros</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Ramène l’énergie des captures d’écran : hub vivant façon taverne, carte nocturne stratégique et combats rapides.
+          Les quêtes alimentent la base, les ascensions et la boucle addictive via Lapin Blanc et Cortana.
+        </p>
+
+        <div class="adventure-grid">
+          <div class="scene-card">
+            <div class="scene-head">
+              <div>
+                <strong>Rue de la Guilde</strong>
+                <div class="muted">Taverne, artisans, joueurs anonymes — le hub social respirant.</div>
+              </div>
+              <span class="tag">Hub vivant</span>
+            </div>
+            <div class="scene" id="hub-scene" aria-label="Scène taverne">
+              <div class="lane"></div>
+              <div class="npc" style="top:18%;left:22%;">🍺 Tavernier</div>
+              <div class="npc" style="top:60%;left:12%;">⚒️ Forgeron</div>
+              <div class="npc" style="top:52%;left:70%;">🎯 Quêtes</div>
+              <div class="hero" id="hub-hero" style="top:34%;left:44%;">🗡️ Celia</div>
+              <div class="hotspot" style="top:20%;left:72%;"></div>
+              <div class="hotspot" style="bottom:12%;left:32%;"></div>
+            </div>
+            <div class="quest-board" id="quest-board"></div>
+          </div>
+
+          <div class="scene-card">
+            <div class="scene-head">
+              <div>
+                <strong>Campement nocturne</strong>
+                <div class="muted">Village encerclé, zones d’éclaireur et beacon de quête.</div>
+              </div>
+              <span class="tag">Exploration</span>
+            </div>
+            <div class="scene" id="camp-scene" aria-label="Carte de campagne">
+              <div class="lane" style="inset:10px 16px 24px;"></div>
+              <div class="hero" style="top:44%;left:48%;">🏕️ Camp</div>
+              <div class="npc" style="top:16%;left:18%;">🛡️ Sentinelle</div>
+              <div class="npc" style="top:16%;left:70%;">🌙 Éclaireur</div>
+              <div class="npc" style="bottom:12%;left:22%;">📡 Balise</div>
+              <div class="hotspot" id="boss-hotspot" style="top:34%;left:68%;"></div>
+            </div>
+            <div class="battle-strip">
+              <div class="battle-card">
+                <div class="battle-meta"><strong>Héros</strong><span id="adventure-streak" class="tag">Streak x1</span></div>
+                <div class="glow-progress slim"><span id="hero-hp" data-fill="82"></span></div>
+                <div class="glow-progress slim"><span id="hero-morale" data-fill="78"></span></div>
+                <small class="muted">Santé & moral de l’équipe, boostés par la taverne et la base.</small>
+              </div>
+              <div class="battle-card">
+                <div class="battle-meta"><strong>Ennemis</strong><span class="tag" id="danger-chip">Danger 24%</span></div>
+                <div class="glow-progress slim"><span id="enemy-hp" data-fill="48"></span></div>
+                <small class="muted">Menaces surgies des portails : elles influencent les ressources et l’obsession.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-strip">
+          <div class="hero-card">
+            <div class="base-head">
+              <div>
+                <strong>Celia</strong>
+                <div class="muted">Guerrière fatiguée mais déterminée.</div>
+              </div>
+              <span class="base-chip" id="celia-chip">Équipement 62%</span>
+            </div>
+            <div class="glow-progress slim"><span id="celia-gear" data-fill="62"></span></div>
+            <div class="pill-row">
+              <span class="pill">Soin rapide</span>
+              <span class="pill">Anti-sommeil</span>
+              <span class="pill">Buff ombré</span>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <div class="base-head">
+              <div>
+                <strong>Lapin Blanc & Cortana</strong>
+                <div class="muted">Co-mentors auto-évolutifs.</div>
+              </div>
+              <span class="base-chip" id="mentor-sync">Synergie 78%</span>
+            </div>
+            <div class="glow-progress slim"><span id="mentor-sync-bar" data-fill="78"></span></div>
+            <small class="muted">Ils patchent les combats, débloquent des routes et partagent les drops.</small>
+          </div>
+        </div>
+
+        <div class="adventure-actions">
+          <button id="explore-quest">Exploration nocturne</button>
+          <button id="help-quest">Secours urgent</button>
+          <button id="tavern-quest">Tour de taverne</button>
+          <button id="boss-quest">Assaut du boss</button>
+          <span class="quality-chip" id="adventure-chip">Quêtes actives</span>
+        </div>
+        <ul class="ia-log adventure-log" id="adventure-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel" id="base-panel">
         <small>Stratégie & Bâtiments</small>
         <h2>Base LifeQuest</h2>
@@ -1791,6 +2070,22 @@
     const nexusForgeBtn = document.getElementById('nexus-forge-btn');
     const nexusDialogueBtn = document.getElementById('nexus-dialogue');
     const nexusResetBtn = document.getElementById('nexus-reset');
+    const questBoard = document.getElementById('quest-board');
+    const adventureLog = document.getElementById('adventure-log');
+    const adventureChip = document.getElementById('adventure-chip');
+    const heroHpBar = document.getElementById('hero-hp');
+    const heroMoraleBar = document.getElementById('hero-morale');
+    const enemyHpBar = document.getElementById('enemy-hp');
+    const dangerChip = document.getElementById('danger-chip');
+    const adventureStreak = document.getElementById('adventure-streak');
+    const celiaGearBar = document.getElementById('celia-gear');
+    const celiaChip = document.getElementById('celia-chip');
+    const mentorSyncChip = document.getElementById('mentor-sync');
+    const mentorSyncBar = document.getElementById('mentor-sync-bar');
+    const exploreQuestBtn = document.getElementById('explore-quest');
+    const helpQuestBtn = document.getElementById('help-quest');
+    const tavernQuestBtn = document.getElementById('tavern-quest');
+    const bossQuestBtn = document.getElementById('boss-quest');
     const baseGrid = document.getElementById('base-grid');
     const baseMap = document.getElementById('base-map');
     const baseLog = document.getElementById('base-log');
@@ -1869,6 +2164,17 @@
       threat: 12,
     };
 
+    const adventureState = {
+      hp: 82,
+      morale: 78,
+      enemy: 48,
+      danger: 24,
+      streak: 1,
+      gear: 62,
+      mentor: 78,
+      questsDone: 0,
+    };
+
     const macroScore = {
       cycles: 0,
       snapshots: 0,
@@ -1911,6 +2217,52 @@
         desc: 'Hype communautaire, accélère la motivation et les rerolls.',
         level: 1,
         boost: { influence: 5, energy: -2, material: 2 },
+      },
+    ];
+
+    const questDeck = [
+      {
+        title: 'Path to Healing',
+        tag: 'Secours',
+        desc: 'Escorter Celia vers la chapelle pour la soigner.',
+        delta: { hp: -6, morale: 6, danger: -4, enemy: -4, base: { guard: 2, influence: 2 } },
+        log: 'Celia respire, la guérisseuse applaudit la rigueur de Lapin Blanc.',
+      },
+      {
+        title: 'Patrouille du bourg',
+        tag: 'Exploration',
+        desc: 'Sécuriser les ruelles et calmer la foule.',
+        delta: { hp: -4, morale: 4, danger: -6, enemy: -6, base: { guard: 3 }, nexus: { cycle: 2 } },
+        log: 'Les ombres verrouillent les stands : +patrouille, +calme.',
+      },
+      {
+        title: 'Convoi d’artisans',
+        tag: 'Taverne',
+        desc: 'Rapatrier des matériaux et regagner du moral.',
+        delta: { hp: 2, morale: 8, danger: -2, enemy: -2, gear: 6, base: { material: 5, influence: 2 } },
+        log: 'La forge chauffe, les artisans sponsorisent la boucle.',
+      },
+      {
+        title: 'Exploration nocturne',
+        tag: 'Carte',
+        desc: 'Baliser le camp et activer la balise ombrée.',
+        delta: { hp: -3, morale: 5, danger: -4, enemy: -5, base: { energy: -2, guard: 2 }, nexus: { synergy: 2 } },
+        log: 'Balise active : constellations + Lapin Blanc synchronisés.',
+      },
+    ];
+
+    const bossDeck = [
+      {
+        title: 'Ravageur nocturne',
+        tag: 'Boss',
+        delta: { hp: -12, morale: 10, danger: -12, enemy: -18, base: { guard: 4, influence: 3 }, asc: 4 },
+        log: 'Celia tranche, Lapin Blanc critique chaque mouvement, Cortana call les timings.',
+      },
+      {
+        title: 'Golem omniscient',
+        tag: 'Mini-boss',
+        delta: { hp: -9, morale: 6, danger: -8, enemy: -12, base: { material: 4 }, nexus: { forge: 3 }, asc: 2 },
+        log: 'Un stigmate gravé améliore la forge IA et rassure le Nexus.',
       },
     ];
 
@@ -2436,6 +2788,12 @@
       baseLog.innerHTML = baseLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
+    const logAdventure = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      adventureLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      adventureLog.innerHTML = adventureLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderBaseResources = () => {
       const energyScore = setBarFill(resEnergy, baseState.energy);
       const matScore = setBarFill(resMat, baseState.material);
@@ -2506,6 +2864,55 @@
       renderBaseMap();
     };
 
+    const renderAdventureHUD = () => {
+      const hpScore = setBarFill(heroHpBar, adventureState.hp);
+      const moraleScore = setBarFill(heroMoraleBar, adventureState.morale);
+      const enemyScore = setBarFill(enemyHpBar, adventureState.enemy);
+      const gearScore = setBarFill(celiaGearBar, adventureState.gear);
+      const mentorScore = setBarFill(mentorSyncBar, adventureState.mentor);
+
+      celiaChip.textContent = `Équipement ${gearScore}%`;
+      mentorSyncChip.textContent = `Synergie ${mentorScore}%`;
+      dangerChip.textContent = `Danger ${Math.max(0, Math.min(100, adventureState.danger))}%`;
+      adventureStreak.textContent = `Streak x${adventureState.streak}`;
+      adventureChip.textContent = `Quêtes actives : ${adventureState.questsDone}`;
+
+      const bossNode = document.getElementById('boss-hotspot');
+      if (bossNode) bossNode.style.opacity = adventureState.enemy > 0 ? '1' : '0.25';
+    };
+
+    const renderQuestBoard = () => {
+      const featured = questDeck.slice(0, 3);
+      questBoard.innerHTML = featured
+        .map(
+          (quest) => `
+            <div class="quest-item">
+              <div>
+                <strong>${quest.title}</strong>
+                <div class="quest-meta"><span class="pill">${quest.tag}</span><small>${quest.desc}</small></div>
+              </div>
+              <span class="tag">${quest.delta.danger <= -4 ? 'Safe' : 'Risque'}</span>
+            </div>
+          `,
+        )
+        .join('');
+    };
+
+    const applyAdventureDelta = (delta) => {
+      adventureState.hp = Math.max(12, Math.min(100, adventureState.hp + (delta.hp || 0)));
+      adventureState.morale = Math.max(0, Math.min(120, adventureState.morale + (delta.morale || 0)));
+      adventureState.enemy = Math.max(0, Math.min(120, adventureState.enemy + (delta.enemy || 0)));
+      adventureState.danger = Math.max(0, Math.min(100, adventureState.danger + (delta.danger || 0)));
+      adventureState.gear = Math.max(0, Math.min(120, adventureState.gear + (delta.gear || 0)));
+      adventureState.mentor = Math.max(0, Math.min(120, adventureState.mentor + (delta.mentor || 0)));
+    };
+
+    const syncBaseAndLoops = (delta) => {
+      if (delta.base) recalcBase(delta.base);
+      if (delta.nexus) renderNexus(delta.nexus);
+      if (delta.asc) boostAscension('audit', delta.asc);
+    };
+
     const upgradeBuilding = () => {
       const pick = baseBuildings.sort((a, b) => a.level - b.level)[0];
       pick.level += 1;
@@ -2547,6 +2954,59 @@
       boostAscension('fusion', 3);
       coevalPulse('Lapin et Cortana co-pilotent la base de manière autonome.');
       logBase('Optimisation stratégique : la base s’auto-patche et propulse la progression.');
+      computeQuality(3);
+    };
+
+    const runQuest = (quest) => {
+      applyAdventureDelta(quest.delta);
+      syncBaseAndLoops(quest.delta);
+      adventureState.streak = Math.min(6, adventureState.streak + 1);
+      adventureState.questsDone += 1;
+      renderAdventureHUD();
+      logAdventure(`${quest.title} : ${quest.log}`);
+      logBase('Quête terrain : la base reçoit des ressources en temps réel.');
+      updateMeters(2);
+      computeQuality(2);
+    };
+
+    const launchExploration = () => {
+      const quest = questDeck.find((q) => q.tag === 'Carte') || questDeck[0];
+      runQuest(quest);
+      logLapin('Exploration guidée : aucune ruelle oubliée.');
+      logAI('Le mentor évolutif adapte la difficulté de la zone.');
+    };
+
+    const handleRescue = () => {
+      const quest = questDeck.find((q) => q.tag === 'Secours') || questDeck[0];
+      runQuest(quest);
+      applyAdventureDelta({ mentor: 4, danger: -2 });
+      renderAdventureHUD();
+      logLapin('Lapin Blanc repère la victime, aucune micro-erreur autorisée.');
+    };
+
+    const visitTavern = () => {
+      const quest = questDeck.find((q) => q.tag === 'Taverne') || questDeck[2];
+      applyAdventureDelta(quest.delta);
+      syncBaseAndLoops(quest.delta);
+      adventureState.questsDone += 1;
+      adventureState.streak = 1;
+      renderAdventureHUD();
+      logAdventure(`Taverne : ${quest.log}`);
+      logCortana('Cortana enregistre les recettes des artisans et push un buff.');
+      updateMeters(3);
+      computeQuality(1);
+    };
+
+    const bossAssault = () => {
+      const boss = bossDeck[Math.floor(Math.random() * bossDeck.length)];
+      applyAdventureDelta(boss.delta);
+      syncBaseAndLoops({ base: boss.delta.base, nexus: boss.delta.nexus, asc: boss.delta.asc });
+      adventureState.streak = Math.min(10, adventureState.streak + 2);
+      adventureState.questsDone += 1;
+      renderAdventureHUD();
+      logAdventure(`${boss.title} vaincu : ${boss.log}`);
+      logAscend('Assaut majeur : la boucle d’ascension absorbe le combat.');
+      updateMeters(4);
       computeQuality(3);
     };
 
@@ -2934,6 +3394,22 @@
       autoOptimizeBase();
     });
 
+    exploreQuestBtn.addEventListener('click', () => {
+      launchExploration();
+    });
+
+    helpQuestBtn.addEventListener('click', () => {
+      handleRescue();
+    });
+
+    tavernQuestBtn.addEventListener('click', () => {
+      visitTavern();
+    });
+
+    bossQuestBtn.addEventListener('click', () => {
+      bossAssault();
+    });
+
     macroHyperBtn.addEventListener('click', () => {
       hyperCycle();
     });
@@ -2979,6 +3455,8 @@
       renderAscension();
       renderNexus();
       recalcBase();
+      renderQuestBoard();
+      renderAdventureHUD();
       animateBars();
       logBase('Base en ligne : ressources stabilisées, constructions prêtes.');
       computeQuality();
@@ -2989,6 +3467,8 @@
       logMacro('Console stratège initialisée : toutes les boucles sont reliées.');
 
       logNexus('Nexus initialisé : la boucle Exo-Ascension surveille tout.');
+
+      logAdventure('Hub vivant : Celia attend tes ordres, la taverne bourdonne.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
