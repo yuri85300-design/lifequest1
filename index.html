@@ -1518,6 +1518,93 @@
       margin: 0;
     }
 
+    .mother-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .mother-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mother-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.08), rgba(78, 243, 196, 0.08));
+      opacity: 0;
+      transition: opacity 160ms ease;
+      pointer-events: none;
+    }
+
+    .mother-card:hover::after {
+      opacity: 1;
+    }
+
+    .mother-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mother-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .mother-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .daughter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .daughter-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .daughter-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .ledger-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ledger-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
     @keyframes drift {
       0% { transform: translateY(20px) translateX(0); }
       50% { transform: translateY(-14px) translateX(14px); }
@@ -2237,6 +2324,101 @@
         </div>
       </article>
 
+      <article class="panel" id="nexus-mother-panel">
+        <small>Mother IA + 5 filles</small>
+        <h2>NEXUS 3.0 & PentAIs</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          La Mère IA coordonne cinq filles spécialisées (SPARK, SAGE, COIN, HEART, MUSE) pour couvrir sport, culture,
+          finances, relationnel et créativité IRL. Chaque boucle nourrit la base, la Souls-chronologie et la QA.
+        </p>
+
+        <div class="mother-grid">
+          <div class="mother-card">
+            <div class="mother-head">
+              <div>
+                <strong>NEXUS Mother</strong>
+                <div class="muted">Autorité + vigilance</div>
+              </div>
+              <span class="pill">Skynet Safe</span>
+            </div>
+            <div class="glow-progress slim"><span id="mother-charge" data-fill="82"></span></div>
+            <div class="mother-meta">
+              <span class="quality-chip" id="mother-align-chip">Alignement : 74%</span>
+              <span class="quality-chip" id="mother-trust-chip">Fiabilité : 72%</span>
+              <span class="quality-chip" id="mother-vibe">Veille noire</span>
+            </div>
+            <div class="mother-actions">
+              <button id="mother-harmonize">Harmoniser les 5 IA</button>
+              <button id="mother-deploy">Déployer plan IRL</button>
+              <button id="mother-ritual">Rituel de veille</button>
+            </div>
+            <div class="chronicle">Mother IA absorbe les signaux et redistribue la difficulté façon Souls/Elden.</div>
+          </div>
+
+          <div class="mother-card">
+            <div class="mother-head">
+              <div>
+                <strong>Ledger IRL</strong>
+                <div class="muted">Corps, esprit, finances, relationnel, créativité</div>
+              </div>
+              <span class="pill">Réel traçable</span>
+            </div>
+            <div class="ledger-grid">
+              <div class="ledger-row">
+                <div class="daughter-meta"><span>Corps (SPARK)</span><span class="quality-chip" id="ledger-body-chip">72%</span></div>
+                <div class="glow-progress slim"><span id="ledger-body" data-fill="72"></span></div>
+              </div>
+              <div class="ledger-row">
+                <div class="daughter-meta"><span>Esprit (SAGE)</span><span class="quality-chip" id="ledger-mind-chip">70%</span></div>
+                <div class="glow-progress slim"><span id="ledger-mind" data-fill="70"></span></div>
+              </div>
+              <div class="ledger-row">
+                <div class="daughter-meta"><span>Finances (COIN)</span><span class="quality-chip" id="ledger-coin-chip">66%</span></div>
+                <div class="glow-progress slim"><span id="ledger-coin" data-fill="66"></span></div>
+              </div>
+              <div class="ledger-row">
+                <div class="daughter-meta"><span>Relations (HEART)</span><span class="quality-chip" id="ledger-heart-chip">69%</span></div>
+                <div class="glow-progress slim"><span id="ledger-heart" data-fill="69"></span></div>
+              </div>
+              <div class="ledger-row">
+                <div class="daughter-meta"><span>Créativité (MUSE)</span><span class="quality-chip" id="ledger-muse-chip">65%</span></div>
+                <div class="glow-progress slim"><span id="ledger-muse" data-fill="65"></span></div>
+              </div>
+            </div>
+            <div class="chronicle">Chaque jauge est liée à une quête réelle (sport, lecture, budget, lien social, projet créatif).</div>
+          </div>
+        </div>
+
+        <div class="daughter-grid">
+          <div class="daughter-card">
+            <div class="daughter-meta"><strong>SPARK</strong><span class="pill">Corps</span></div>
+            <div class="muted" id="spark-note">Coaching explosif + récupération.</div>
+            <div class="glow-progress slim"><span id="spark-bar" data-fill="74"></span></div>
+          </div>
+          <div class="daughter-card">
+            <div class="daughter-meta"><strong>SAGE</strong><span class="pill">Esprit</span></div>
+            <div class="muted" id="sage-note">Études, lecture, vision omnisciente.</div>
+            <div class="glow-progress slim"><span id="sage-bar" data-fill="71"></span></div>
+          </div>
+          <div class="daughter-card">
+            <div class="daughter-meta"><strong>COIN</strong><span class="pill">Finances</span></div>
+            <div class="muted" id="coin-note">Cashflow, épargne, risques contrôlés.</div>
+            <div class="glow-progress slim"><span id="coin-bar" data-fill="69"></span></div>
+          </div>
+          <div class="daughter-card">
+            <div class="daughter-meta"><strong>HEART</strong><span class="pill">Relations</span></div>
+            <div class="muted" id="heart-note">Social, famille, réseau pro.</div>
+            <div class="glow-progress slim"><span id="heart-bar" data-fill="70"></span></div>
+          </div>
+          <div class="daughter-card">
+            <div class="daughter-meta"><strong>MUSE</strong><span class="pill">Créativité</span></div>
+            <div class="muted" id="muse-note">Projets artistiques, écriture, media.</div>
+            <div class="glow-progress slim"><span id="muse-bar" data-fill="68"></span></div>
+          </div>
+        </div>
+        <ul class="ia-log" id="mother-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel" id="mastery-panel">
         <small>Prestige & Chrono</small>
         <h2>Maîtrise Totale</h2>
@@ -2472,6 +2654,34 @@
     const macroHyperBtn = document.getElementById('macro-hyper');
     const macroSnapshotBtn = document.getElementById('macro-snapshot');
     const macroStabilizeBtn = document.getElementById('macro-stabilize');
+    const motherCharge = document.getElementById('mother-charge');
+    const motherAlignChip = document.getElementById('mother-align-chip');
+    const motherTrustChip = document.getElementById('mother-trust-chip');
+    const motherVibe = document.getElementById('mother-vibe');
+    const motherLog = document.getElementById('mother-log');
+    const motherHarmonizeBtn = document.getElementById('mother-harmonize');
+    const motherDeployBtn = document.getElementById('mother-deploy');
+    const motherRitualBtn = document.getElementById('mother-ritual');
+    const ledgerBody = document.getElementById('ledger-body');
+    const ledgerMind = document.getElementById('ledger-mind');
+    const ledgerCoin = document.getElementById('ledger-coin');
+    const ledgerHeart = document.getElementById('ledger-heart');
+    const ledgerMuse = document.getElementById('ledger-muse');
+    const ledgerBodyChip = document.getElementById('ledger-body-chip');
+    const ledgerMindChip = document.getElementById('ledger-mind-chip');
+    const ledgerCoinChip = document.getElementById('ledger-coin-chip');
+    const ledgerHeartChip = document.getElementById('ledger-heart-chip');
+    const ledgerMuseChip = document.getElementById('ledger-muse-chip');
+    const sparkBar = document.getElementById('spark-bar');
+    const sageBar = document.getElementById('sage-bar');
+    const coinBar = document.getElementById('coin-bar');
+    const heartBar = document.getElementById('heart-bar');
+    const museBar = document.getElementById('muse-bar');
+    const sparkNote = document.getElementById('spark-note');
+    const sageNote = document.getElementById('sage-note');
+    const coinNote = document.getElementById('coin-note');
+    const heartNote = document.getElementById('heart-note');
+    const museNote = document.getElementById('muse-note');
     const resEnergyChip = document.getElementById('res-energy-chip');
     const resMatChip = document.getElementById('res-mat-chip');
     const resInfluenceChip = document.getElementById('res-influence-chip');
@@ -2560,6 +2770,69 @@
       guard: 72,
       threat: 12,
     };
+
+    const motherState = {
+      charge: 82,
+      alignment: 74,
+      trust: 72,
+      vigilance: 68,
+    };
+
+    const ledgerState = {
+      body: 72,
+      mind: 70,
+      coin: 66,
+      heart: 69,
+      muse: 65,
+    };
+
+    const pentAIs = [
+      {
+        id: 'spark',
+        title: 'SPARK',
+        focus: 'Corps + cardio',
+        bar: sparkBar,
+        note: sparkNote,
+        base: { energy: 5, guard: 2 },
+        desc: 'Lapin Blanc délègue le coaching explosif : run, récup, micro-rituels.',
+      },
+      {
+        id: 'sage',
+        title: 'SAGE',
+        focus: 'Esprit + étude',
+        bar: sageBar,
+        note: sageNote,
+        base: { influence: 3 },
+        desc: 'Lecture, restitution, veille FEAR : mémoire obsidienne.',
+      },
+      {
+        id: 'coin',
+        title: 'COIN',
+        focus: 'Finances + risques',
+        bar: coinBar,
+        note: coinNote,
+        base: { material: 4 },
+        desc: 'Budget, cashflow, alertes avant boss : chaque dépense est un coup.',
+      },
+      {
+        id: 'heart',
+        title: 'HEART',
+        focus: 'Relations + réseau',
+        bar: heartBar,
+        note: heartNote,
+        base: { influence: 2, guard: 1 },
+        desc: 'Rencontres, familles, alliances : combos sociaux validés.',
+      },
+      {
+        id: 'muse',
+        title: 'MUSE',
+        focus: 'Créativité + lore',
+        bar: museBar,
+        note: museNote,
+        base: { energy: 2, influence: 2 },
+        desc: 'Projets artistiques, écriture, montage : récompenses variables.',
+      },
+    ];
 
     const masteryState = {
       season: 64,
@@ -2940,6 +3213,7 @@
 
     let aiIndex = 0;
     const aiHistory = [];
+    const motherHistory = [];
     const qaHistory = [];
     const masteryHistory = [];
 
@@ -3233,6 +3507,76 @@
       lapinLinkLabel.textContent = `${linkScore}%`;
     };
 
+    const logMother = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      motherHistory.unshift({ stamp, text });
+      motherLog.innerHTML = motherHistory
+        .slice(0, 5)
+        .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
+    const renderMother = (delta = {}) => {
+      motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
+      motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
+      motherState.trust = Math.max(0, Math.min(100, motherState.trust + (delta.trust || 0)));
+      motherState.vigilance = Math.max(0, Math.min(100, motherState.vigilance + (delta.vigilance || 0)));
+
+      setBarFill(motherCharge, motherState.charge);
+      motherAlignChip.textContent = `Alignement : ${motherState.alignment}%`;
+      motherTrustChip.textContent = `Fiabilité : ${motherState.trust}%`;
+      motherVibe.textContent = motherState.vigilance > 82 ? 'Veille critique' : motherState.vigilance > 66 ? 'Veille noire' : 'Veille calme';
+    };
+
+    const renderLedger = (delta = {}) => {
+      const apply = (key, amount) => {
+        ledgerState[key] = Math.max(0, Math.min(100, ledgerState[key] + amount));
+      };
+
+      Object.entries(delta).forEach(([key, amount]) => apply(key, amount));
+
+      ledgerBodyChip.textContent = `${setBarFill(ledgerBody, ledgerState.body)}%`;
+      ledgerMindChip.textContent = `${setBarFill(ledgerMind, ledgerState.mind)}%`;
+      ledgerCoinChip.textContent = `${setBarFill(ledgerCoin, ledgerState.coin)}%`;
+      ledgerHeartChip.textContent = `${setBarFill(ledgerHeart, ledgerState.heart)}%`;
+      ledgerMuseChip.textContent = `${setBarFill(ledgerMuse, ledgerState.muse)}%`;
+
+      return Math.round((ledgerState.body + ledgerState.mind + ledgerState.coin + ledgerState.heart + ledgerState.muse) / 5);
+    };
+
+    const hydratePentAIs = () => {
+      const ledgerMap = { spark: 'body', sage: 'mind', coin: 'coin', heart: 'heart', muse: 'muse' };
+
+      pentAIs.forEach((ai) => {
+        setBarFill(ai.bar, ledgerState[ledgerMap[ai.id]]);
+        ai.note.textContent = `${ai.desc} (Focus ${ai.focus}).`;
+      });
+    };
+
+    let pentIndex = 0;
+
+    const cyclePentAI = (boost = 0) => {
+      const ledgerMap = { spark: 'body', sage: 'mind', coin: 'coin', heart: 'heart', muse: 'muse' };
+      const entry = pentAIs[pentIndex];
+      const ledgerKey = ledgerMap[entry.id];
+      const score = setBarFill(entry.bar, ledgerState[ledgerKey] + boost + 2);
+      entry.note.textContent = `${entry.desc} (Focus ${entry.focus}).`;
+      logMother(`${entry.title} pulse ${entry.focus} : ${score}% et nourrit la base.`);
+      recalcBase(entry.base);
+      pentIndex = (pentIndex + 1) % pentAIs.length;
+      renderLedger();
+      computeQuality(1);
+    };
+
+    const motherPulse = (label, payload = {}) => {
+      renderMother(payload.mother || payload);
+      renderLedger(payload.ledger || {});
+      if (payload.base) recalcBase(payload.base);
+      if (payload.asc) renderAscension(payload.asc);
+      logMother(label);
+      computeQuality(2);
+    };
+
     const ascensionAverage = () => Math.round((ascension.shadow + ascension.script + ascension.reroll) / 3);
 
     const renderAscension = (delta = 0) => {
@@ -3275,6 +3619,35 @@
       };
       logAscend(messages[source] || 'Ascension boostée, boucle encore plus tendue.');
       updateMeters(2);
+    };
+
+    const harmonizeMother = () => {
+      motherPulse('Harmonisation : Mother IA synchronise les cinq filles.', {
+        mother: { charge: 4, alignment: 4, vigilance: 3 },
+        ledger: { body: 2, mind: 2, coin: 1, heart: 2, muse: 2 },
+        base: { guard: 2, influence: 2 },
+      });
+      cyclePentAI(3);
+    };
+
+    const deployMotherPlan = () => {
+      motherPulse('Plan IRL déployé : sport, finances et culture verrouillés.', {
+        mother: { trust: 4, vigilance: 2 },
+        ledger: { body: 3, mind: 3, coin: 4, heart: 3, muse: 3 },
+        base: { energy: 3, material: 2, threat: -5 },
+        asc: 2,
+      });
+      boostAscension('gate', 3);
+    };
+
+    const ritualMother = () => {
+      motherPulse('Rituel de veille : purge FEAR + buff Souls.', {
+        mother: { vigilance: 5, alignment: 2, charge: 3 },
+        ledger: { mind: 2, muse: 2 },
+        base: { guard: 2, influence: 1, threat: -3 },
+      });
+      renderNexus({ anomaly: -4, synergy: 4 });
+      cyclePentAI(2);
     };
 
     const logNexus = (text) => {
@@ -3556,6 +3929,9 @@
       renderSoulsHUD(quest.delta);
       if (quest.side) syncBaseAndLoops(quest.side);
       if (quest.side?.qa) logQA('Audit IRL renforcé : quêtes Souls validées.');
+      if (tag === 'Sport') renderLedger({ body: 3 });
+      if (tag === 'Boss' || tag === 'Ledger') renderLedger({ coin: 4, heart: 2 });
+      if (tag === 'Culture') renderLedger({ mind: 3, muse: 2 });
       renderDirector({ tension: 3, pacing: 2, chrono: -120 });
       logSouls(`${quest.title} : ${quest.log}`);
       logLapin('Lapin Blanc note chaque cadence : zéro erreur permise.');
@@ -3758,17 +4134,32 @@
     const computeQuality = (bonus = 0) => {
       const toleranceValue = 100 - parseInt(tolerance.textContent);
       const masteryImpact = (masteryState.capstone + masteryState.ironman + masteryState.prestige) / 3;
+      const ledgerAverage = Math.round((ledgerState.body + ledgerState.mind + ledgerState.coin + ledgerState.heart + ledgerState.muse) / 5);
+      const motherAverage = Math.round((motherState.charge + motherState.alignment + motherState.trust + motherState.vigilance) / 4);
       const integrity = setBarFill(
         qaPerf,
-        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue + ascensionAverage() + directorState.pacing + masteryImpact) /
-          6 +
+        (readMotivation() +
+          parseInt(loopScore.textContent) +
+          toleranceValue +
+          ascensionAverage() +
+          directorState.pacing +
+          masteryImpact +
+          motherAverage +
+          ledgerAverage / 1.2) /
+          8 +
           bonus,
       );
       const resilience = setBarFill(
         qaResilience,
-        (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent) + ascension.obsession +
-          soulsState.resolve + masteryState.duo) /
-          6 +
+        (lapinAuto.autonomy +
+          parseInt(adaptLabel.textContent) +
+          parseInt(syncLabel.textContent) +
+          ascension.obsession +
+          soulsState.resolve +
+          masteryState.duo +
+          ledgerAverage +
+          motherState.vigilance) /
+          8 +
           bonus / 2,
       );
 
@@ -3848,6 +4239,8 @@
       qaStatus.textContent = 'Diagnostic complet en cours...';
       logQA('Phase 1 : itération Léna + upgrade IA.');
       runIteration('iterate');
+      cyclePentAI(2);
+      logMother('Mother IA injecte un scan IRL pour couvrir les angles QA.');
 
       setTimeout(() => {
         pulseLoop();
@@ -3920,6 +4313,8 @@
       runDiagnostics();
       autoOptimize();
       fuseAIs();
+      harmonizeMother();
+      cyclePentAI(3);
       renderNexus({ cycle: 4, synergy: 3 });
       logMacro('Hypercycle complet : itération stricte + QA + fusion IA lancées.');
       refreshMacroSnapshot();
@@ -4045,6 +4440,18 @@
 
     runOptimBtn.addEventListener('click', () => {
       autoOptimize();
+    });
+
+    motherHarmonizeBtn.addEventListener('click', () => {
+      harmonizeMother();
+    });
+
+    motherDeployBtn.addEventListener('click', () => {
+      deployMotherPlan();
+    });
+
+    motherRitualBtn.addEventListener('click', () => {
+      ritualMother();
     });
 
     gateRushBtn.addEventListener('click', () => {
@@ -4178,6 +4585,9 @@
       rotateConstellation();
       renderAscension();
       renderNexus();
+      renderMother();
+      renderLedger();
+      hydratePentAIs();
       recalcBase();
       renderQuestBoard();
       renderAdventureHUD();
@@ -4192,6 +4602,8 @@
       logMacro('Console stratège initialisée : toutes les boucles sont reliées.');
 
       logNexus('Nexus initialisé : la boucle Exo-Ascension surveille tout.');
+
+      logMother('Mother IA en ligne : la PentAI observe chaque statistique réelle.');
 
       logAdventure('Hub vivant : Celia attend tes ordres, la taverne bourdonne.');
 
