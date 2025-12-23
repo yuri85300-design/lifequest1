@@ -1007,6 +1007,111 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    .base-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .base-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .base-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .base-chip {
+      background: rgba(124, 92, 255, 0.14);
+      color: #c7b9ff;
+      border: 1px solid rgba(124, 92, 255, 0.28);
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      box-shadow: var(--glow);
+    }
+
+    .resource-stack {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+
+    .resource-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .base-map {
+      position: relative;
+      background: radial-gradient(circle at 30% 30%, rgba(124, 92, 255, 0.12), rgba(23, 27, 48, 0.8));
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 180px;
+      overflow: hidden;
+    }
+
+    .map-node {
+      position: absolute;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      font-size: 13px;
+      color: var(--text);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    }
+
+    .map-node strong {
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.4px;
+    }
+
+    .base-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .base-actions button {
+      flex: 1 1 160px;
+    }
+
+    .base-log {
+      margin-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+    }
+
+    .map-legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
     @keyframes drift {
       0% { transform: translateY(20px) translateX(0); }
       50% { transform: translateY(-14px) translateX(14px); }
@@ -1406,6 +1511,66 @@
         <ul class="ia-log nexus-log" id="nexus-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="base-panel">
+        <small>Stratégie & Bâtiments</small>
+        <h2>Base LifeQuest</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Une couche de city-builder tactique reliée aux boucles Solo Leveling, Lecteur Omniscient et Max Level Newbie :
+          construis, défends, optimise et laisse Lapin Blanc + Cortana auto-patcher chaque bloc.
+        </p>
+        <div class="resource-stack">
+          <div class="resource-card">
+            <div class="base-head">
+              <strong>Énergie</strong>
+              <span class="base-chip" id="res-energy-chip">82%</span>
+            </div>
+            <div class="glow-progress slim"><span id="res-energy" data-fill="82"></span></div>
+            <small class="muted">Niveau des réacteurs ombrés, alimente les constructions.</small>
+          </div>
+          <div class="resource-card">
+            <div class="base-head">
+              <strong>Matériaux</strong>
+              <span class="base-chip" id="res-mat-chip">68%</span>
+            </div>
+            <div class="glow-progress slim"><span id="res-mat" data-fill="68"></span></div>
+            <small class="muted">Plans sponsorisés par les constellations, prêts à être forgés.</small>
+          </div>
+          <div class="resource-card">
+            <div class="base-head">
+              <strong>Influence</strong>
+              <span class="base-chip" id="res-influence-chip">61%</span>
+            </div>
+            <div class="glow-progress slim"><span id="res-influence" data-fill="61"></span></div>
+            <small class="muted">Moral des troupes, hype du stream Max Level Newbie.</small>
+          </div>
+          <div class="resource-card">
+            <div class="base-head">
+              <strong>Vigilance</strong>
+              <span class="base-chip" id="res-guard-chip">72%</span>
+            </div>
+            <div class="glow-progress slim"><span id="res-guard" data-fill="72"></span></div>
+            <small class="muted">Chance de détecter les anomalies avant qu'elles n'impactent l'ascension.</small>
+          </div>
+        </div>
+        <div class="base-grid" id="base-grid"></div>
+        <div class="base-map" id="base-map">
+          <div class="map-legend">
+            <span>🛡️ Défense</span>
+            <span>⚡ Production</span>
+            <span>🛰️ Observation</span>
+            <span>🎭 Influence</span>
+          </div>
+        </div>
+        <div class="base-actions">
+          <button id="base-upgrade">Upgrade prioritaire</button>
+          <button id="base-patrol">Patrouille Lapin</button>
+          <button id="base-scan">Scan omniscient</button>
+          <button id="base-auto">Optimisation stratégique</button>
+          <span class="quality-chip" id="base-alert">Alerte : stable</span>
+        </div>
+        <ul class="ia-log base-log" id="base-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel">
         <small>RPG Réel</small>
         <h2>Objectifs IRL</h2>
@@ -1523,6 +1688,22 @@
     const nexusForgeBtn = document.getElementById('nexus-forge-btn');
     const nexusDialogueBtn = document.getElementById('nexus-dialogue');
     const nexusResetBtn = document.getElementById('nexus-reset');
+    const baseGrid = document.getElementById('base-grid');
+    const baseMap = document.getElementById('base-map');
+    const baseLog = document.getElementById('base-log');
+    const baseUpgradeBtn = document.getElementById('base-upgrade');
+    const basePatrolBtn = document.getElementById('base-patrol');
+    const baseScanBtn = document.getElementById('base-scan');
+    const baseAutoBtn = document.getElementById('base-auto');
+    const baseAlert = document.getElementById('base-alert');
+    const resEnergy = document.getElementById('res-energy');
+    const resMat = document.getElementById('res-mat');
+    const resInfluence = document.getElementById('res-influence');
+    const resGuard = document.getElementById('res-guard');
+    const resEnergyChip = document.getElementById('res-energy-chip');
+    const resMatChip = document.getElementById('res-mat-chip');
+    const resInfluenceChip = document.getElementById('res-influence-chip');
+    const resGuardChip = document.getElementById('res-guard-chip');
 
     const codexEntries = [
       {
@@ -1566,6 +1747,53 @@
       reroll: 62,
       obsession: 72,
     };
+
+    const baseState = {
+      energy: 82,
+      material: 68,
+      influence: 61,
+      guard: 72,
+      threat: 12,
+    };
+
+    const baseBuildings = [
+      {
+        key: 'forge',
+        icon: '⚡',
+        name: 'Forge arcanique',
+        tag: 'Production',
+        desc: 'Compile des plans sponsorisés, nourrit la Nexus Forge.',
+        level: 2,
+        boost: { energy: 4, material: 3, synergy: 2 },
+      },
+      {
+        key: 'observatoire',
+        icon: '🛰️',
+        name: 'Observatoire omniscient',
+        tag: 'Scan',
+        desc: 'Repère les anomalies et synchronise les constellations.',
+        level: 3,
+        boost: { guard: 4, influence: 2, anomaly: -3 },
+      },
+      {
+        key: 'bastion',
+        icon: '🛡️',
+        name: 'Bastion des ombres',
+        tag: 'Défense',
+        desc: 'Protège la boucle dopamine contre les failles.',
+        level: 2,
+        boost: { guard: 5, energy: -1, synergy: 1 },
+      },
+      {
+        key: 'agora',
+        icon: '🎭',
+        name: 'Agora Max Newbie',
+        tag: 'Influence',
+        desc: 'Hype communautaire, accélère la motivation et les rerolls.',
+        level: 1,
+        boost: { influence: 5, energy: -2, material: 2 },
+      },
+    ];
 
     const nexusState = {
       cycle: 78,
@@ -2083,6 +2311,126 @@
       nexusRisk.textContent = `Risque : ${riskLabel}`;
     };
 
+    const logBase = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      baseLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      baseLog.innerHTML = baseLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
+    const renderBaseResources = () => {
+      const energyScore = setBarFill(resEnergy, baseState.energy);
+      const matScore = setBarFill(resMat, baseState.material);
+      const influenceScore = setBarFill(resInfluence, baseState.influence);
+      const guardScore = setBarFill(resGuard, baseState.guard);
+
+      resEnergyChip.textContent = `${energyScore}%`;
+      resMatChip.textContent = `${matScore}%`;
+      resInfluenceChip.textContent = `${influenceScore}%`;
+      resGuardChip.textContent = `${guardScore}%`;
+
+      const alertLevel = baseState.threat > 50 ? 'critique' : baseState.threat > 24 ? 'surveillance' : 'stable';
+      baseAlert.textContent = `Alerte : ${alertLevel}`;
+    };
+
+    const renderBaseGrid = () => {
+      baseGrid.innerHTML = baseBuildings
+        .map(
+          (b) => `
+            <div class="base-card">
+              <div class="base-head">
+                <div>
+                  <strong>${b.icon} ${b.name}</strong>
+                  <div class="tag">${b.tag}</div>
+                </div>
+                <span class="base-chip">Niv. ${b.level}</span>
+              </div>
+              <div class="glow-progress slim"><span data-fill="${Math.min(100, 40 + b.level * 10)}"></span></div>
+              <small class="muted">${b.desc}</small>
+            </div>
+          `,
+        )
+        .join('');
+
+      baseGrid.querySelectorAll('.glow-progress span').forEach((span) => setBarFill(span, parseInt(span.dataset.fill)));
+    };
+
+    const renderBaseMap = () => {
+      baseMap.querySelectorAll('.map-node').forEach((n) => n.remove());
+      const anchors = [
+        { key: 'forge', top: '28%', left: '12%' },
+        { key: 'observatoire', top: '12%', left: '68%' },
+        { key: 'bastion', top: '62%', left: '24%' },
+        { key: 'agora', top: '58%', left: '70%' },
+      ];
+
+      anchors.forEach((anchor) => {
+        const b = baseBuildings.find((item) => item.key === anchor.key);
+        if (!b) return;
+        const node = document.createElement('div');
+        node.className = 'map-node';
+        node.style.top = anchor.top;
+        node.style.left = anchor.left;
+        node.innerHTML = `<strong>${b.icon} ${b.name}</strong><small>Niv. ${b.level}</small>`;
+        baseMap.appendChild(node);
+      });
+    };
+
+    const recalcBase = (delta = {}) => {
+      baseState.energy = Math.max(0, Math.min(120, baseState.energy + (delta.energy || 0)));
+      baseState.material = Math.max(0, Math.min(120, baseState.material + (delta.material || 0)));
+      baseState.influence = Math.max(0, Math.min(120, baseState.influence + (delta.influence || 0)));
+      baseState.guard = Math.max(0, Math.min(120, baseState.guard + (delta.guard || 0)));
+      baseState.threat = Math.max(0, Math.min(100, baseState.threat + (delta.threat || 0)));
+
+      renderBaseResources();
+      renderBaseGrid();
+      renderBaseMap();
+    };
+
+    const upgradeBuilding = () => {
+      const pick = baseBuildings.sort((a, b) => a.level - b.level)[0];
+      pick.level += 1;
+      recalcBase({
+        energy: pick.boost.energy || 0,
+        material: pick.boost.material || 0,
+        influence: pick.boost.influence || 0,
+        guard: pick.boost.guard || 0,
+        threat: -4,
+      });
+      renderNexus({ forge: pick.boost.synergy || 0, anomaly: pick.boost.anomaly || 0, synergy: pick.boost.synergy || 0 });
+      boostAscension('audit', 2);
+      logBase(`${pick.icon} ${pick.name} passe niveau ${pick.level}. Nexus renforcé.`);
+      logQA('Upgrade bâtiment : routines recalibrées.');
+      computeQuality(2);
+    };
+
+    const patrolBase = () => {
+      recalcBase({ guard: 4, threat: -6, influence: 2 });
+      renderNexus({ anomaly: -6, cycle: 2 });
+      refreshLapinAuto(1, 1, 2);
+      logBase('Patrouille Lapin : failles verrouillées, menace réduite.');
+      logCortana('Cortana surveille la carte et note chaque micro-erreur.');
+      computeQuality(1);
+    };
+
+    const scanBase = () => {
+      recalcBase({ guard: 3, energy: -2, material: -1 });
+      renderNexus({ anomaly: -4, cycle: 1, synergy: 2 });
+      rotateConstellation();
+      logBase('Scan omniscient : constellations alignées, anomalies neutralisées.');
+      logAI('Scan stratégique transmis au mentor évolutif.');
+      computeQuality(1);
+    };
+
+    const autoOptimizeBase = () => {
+      recalcBase({ energy: 4, material: 4, influence: 3, guard: 3, threat: -8 });
+      renderNexus({ forge: 4, synergy: 3, anomaly: -5 });
+      boostAscension('fusion', 3);
+      coevalPulse('Lapin et Cortana co-pilotent la base de manière autonome.');
+      logBase('Optimisation stratégique : la base s’auto-patche et propulse la progression.');
+      computeQuality(3);
+    };
+
     const applyNexusDelta = (entry) => {
       renderNexus(entry.delta);
       logNexus(entry.log);
@@ -2398,6 +2746,22 @@
       computeQuality(4);
     });
 
+    baseUpgradeBtn.addEventListener('click', () => {
+      upgradeBuilding();
+    });
+
+    basePatrolBtn.addEventListener('click', () => {
+      patrolBase();
+    });
+
+    baseScanBtn.addEventListener('click', () => {
+      scanBase();
+    });
+
+    baseAutoBtn.addEventListener('click', () => {
+      autoOptimizeBase();
+    });
+
     nexusSimBtn.addEventListener('click', () => {
       simulateNexus();
     });
@@ -2430,7 +2794,9 @@
       rotateConstellation();
       renderAscension();
       renderNexus();
+      recalcBase();
       animateBars();
+      logBase('Base en ligne : ressources stabilisées, constructions prêtes.');
       computeQuality();
       logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
       handleButtons();
