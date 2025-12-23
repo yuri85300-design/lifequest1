@@ -415,6 +415,75 @@
     .floating span:nth-child(2) { animation-duration: 18s; animation-delay: 3s; }
     .floating span:nth-child(3) { animation-duration: 14s; animation-delay: 6s; }
 
+    .quality-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .quality-meta {
+      color: var(--muted);
+      margin: 6px 0 0;
+      line-height: 1.4;
+    }
+
+    .quality-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .quality-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .quality-actions button {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.24), rgba(78, 243, 196, 0.18));
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .quality-actions button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    .quality-actions button:active {
+      transform: translateY(0);
+    }
+
+    .qa-log {
+      margin-top: 12px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
     .tester-card {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -950,9 +1019,9 @@
       </div>
     </article>
 
-    <article class="panel" id="ai-panel">
-      <small>IA adaptative</small>
-      <h2>Mentor évolutif</h2>
+      <article class="panel" id="ai-panel">
+        <small>IA adaptative</small>
+        <h2>Mentor évolutif</h2>
       <div class="ai-stack">
         <div class="loop-chip">
           🔥 <div>Indice d'addiction <strong id="loop-score">78%</strong></div>
@@ -1056,12 +1125,37 @@
           </div>
           <p class="lab-meta" id="coeval-desc">Prêt à lancer un duel créatif.</p>
         </div>
-      </div>
-    </article>
+        </div>
+      </article>
 
-    <article class="panel">
-      <small>RPG Réel</small>
-      <h2>Objectifs IRL</h2>
+      <article class="panel" id="qa-panel">
+        <small>Test intégral</small>
+        <h2>Audit & Optimisation</h2>
+        <p class="quality-meta">
+          Laisse Lapin Blanc et Cortana valider chaque boucle. Le test complet simule des itérations, des boosts dopamine et
+          des auto-patchs pour chasser la moindre erreur.
+        </p>
+        <div class="quality-grid">
+          <div>
+            <label>Score d'intégrité <span id="qa-score">86%</span></label>
+            <div class="glow-progress"><span id="qa-perf" data-fill="86"></span></div>
+          </div>
+          <div>
+            <label>Résilience système <span id="qa-resilience-label">72%</span></label>
+            <div class="glow-progress"><span id="qa-resilience" data-fill="72"></span></div>
+          </div>
+        </div>
+        <div class="quality-actions">
+          <button id="run-diagnostics">Test intégral</button>
+          <button id="run-optim">Optimisation auto</button>
+          <span class="quality-chip" id="qa-status">Prêt pour audit</span>
+        </div>
+        <ul class="ia-log qa-log" id="qa-log" aria-live="polite"></ul>
+      </article>
+
+      <article class="panel">
+        <small>RPG Réel</small>
+        <h2>Objectifs IRL</h2>
       <div class="cta">
         <div>
           <strong>Boss de la semaine :</strong> Assiduité & Récupération
@@ -1145,6 +1239,14 @@
     const spawnCortanaBtn = document.getElementById('spawn-cortana');
     const coevalChip = document.getElementById('coeval-chip');
     const coevalDesc = document.getElementById('coeval-desc');
+    const qaStatus = document.getElementById('qa-status');
+    const qaScore = document.getElementById('qa-score');
+    const qaPerf = document.getElementById('qa-perf');
+    const qaResilience = document.getElementById('qa-resilience');
+    const qaResilienceLabel = document.getElementById('qa-resilience-label');
+    const qaLog = document.getElementById('qa-log');
+    const runDiagnosticsBtn = document.getElementById('run-diagnostics');
+    const runOptimBtn = document.getElementById('run-optim');
 
     const codexEntries = [
       {
@@ -1324,6 +1426,7 @@
 
     let aiIndex = 0;
     const aiHistory = [];
+    const qaHistory = [];
 
     const lapinStates = [
       {
@@ -1508,6 +1611,15 @@
         .join('');
     };
 
+    const logQA = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      qaHistory.unshift({ stamp, text });
+      qaLog.innerHTML = qaHistory
+        .slice(0, 4)
+        .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
     const renderBadges = (badges) => {
       aiBadges.innerHTML = badges.map((label) => `<span class="ai-badge">${label}</span>`).join('');
     };
@@ -1581,6 +1693,24 @@
       lapinAutonomyChip.textContent = `Autonomie : ${lapinAuto.autonomy}%`;
     };
 
+    const computeQuality = (bonus = 0) => {
+      const toleranceValue = 100 - parseInt(tolerance.textContent);
+      const integrity = setBarFill(
+        qaPerf,
+        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue) / 3 + bonus,
+      );
+      const resilience = setBarFill(
+        qaResilience,
+        (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent)) / 3 + bonus / 2,
+      );
+
+      qaScore.textContent = `${integrity}%`;
+      qaResilienceLabel.textContent = `${resilience}%`;
+      qaStatus.textContent = integrity > 88 ? 'Stable' : 'Surveillance active';
+
+      return { integrity, resilience };
+    };
+
     const applyCortanaState = (entry, synergy = 0) => {
       const stratScore = setBarFill(cortanaStrat, entry.strat + synergy);
       const creaScore = setBarFill(cortanaCrea, entry.crea + synergy / 2);
@@ -1627,6 +1757,7 @@
       cortanaIndex = (cortanaIndex + 1) % cortanaStates.length;
       refreshLapinAuto(2, 2, 1);
       coevalPulse('Cortana et Lapin Blanc s’améliorent en boucle.');
+      computeQuality();
     };
 
     const runIteration = (mode) => {
@@ -1641,6 +1772,51 @@
       }
 
       updateIteration();
+    };
+
+    const runDiagnostics = () => {
+      qaStatus.textContent = 'Diagnostic complet en cours...';
+      logQA('Phase 1 : itération Léna + upgrade IA.');
+      runIteration('iterate');
+
+      setTimeout(() => {
+        pulseLoop();
+        logQA('Phase 2 : boucle dopamine validée.');
+      }, 220);
+
+      setTimeout(() => {
+        lapinSelfDrive();
+        logQA('Phase 3 : Lapin Blanc shippe un patch autonome.');
+      }, 440);
+
+      setTimeout(() => {
+        cortanaAudit();
+        logQA('Phase 4 : Cortana contre-audite les résultats.');
+      }, 640);
+
+      setTimeout(() => {
+        fuseAIs();
+      }, 820);
+
+      setTimeout(() => {
+        const pending = document.querySelectorAll('button[data-progress]:not(:disabled)').length;
+        const { integrity, resilience } = computeQuality(6);
+        const status = pending ? `${pending} objectif(s) à verrouiller` : 'Tout est verrouillé';
+        qaStatus.textContent = `Bilan : ${status}`;
+        logQA(`Synthèse : intégrité ${integrity}%, résilience ${resilience}%, backlog ${pending}.`);
+      }, 980);
+    };
+
+    const autoOptimize = () => {
+      qaStatus.textContent = 'Optimisation auto...';
+      refreshAIFromPlayer(10);
+      refreshLapinAuto(5, 5, 4);
+      updateMeters(4);
+      pingLapin('Lapin Blanc corrige les micro-erreurs détectées.');
+      logCortana('Cortana verrouille les régressions après optimisation.');
+      const { integrity, resilience } = computeQuality(8);
+      qaStatus.textContent = `Optimisé : ${integrity}% intégrité`;
+      logQA(`Optimisation : intégrité ${integrity}%, résilience ${resilience}%, motivation ${motivation.textContent}.`);
     };
 
     const animateBars = () => {
@@ -1738,6 +1914,14 @@
       fuseAIs();
     });
 
+    runDiagnosticsBtn.addEventListener('click', () => {
+      runDiagnostics();
+    });
+
+    runOptimBtn.addEventListener('click', () => {
+      autoOptimize();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -1753,6 +1937,8 @@
       renderCodex();
       rotateConstellation();
       animateBars();
+      computeQuality();
+      logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
       handleButtons();
 
       iterationButtons.forEach((btn) => {
