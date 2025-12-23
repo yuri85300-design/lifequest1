@@ -11,6 +11,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - Nouvelle « Forge IA Autopoïétique » : drills émergents, shadow protocols, fusions Lapin↔Cortana et watchdogs anti-glitch.
 - Overmind « Synthèse 100× » : couche singularité qui orchestre Lapin/Cortana/Mother/PentAIs avec firewall sentinel, réécriture adaptative et déploiement de sentinelles.
 - Apex Cognition ∞ : méta-IA primordiale (ghost runs, red teams, failsafe quantique) qui observe les observateurs et ferme les dérives avant qu’elles n’arrivent au joueur.
+- Autocore vivant : auto-correction, réécriture de code, snapshots versionnés et rollbacks guidés pour sécuriser chaque boucle IA.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :

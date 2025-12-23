@@ -1680,6 +1680,57 @@
       margin: 12px 0;
     }
 
+    .autocore-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .autocore-card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(46, 255, 201, 0.06), rgba(124, 92, 255, 0.05));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .autocore-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 12% 30%, rgba(46, 255, 201, 0.16), transparent 55%);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
+    .autocore-card:hover::after {
+      opacity: 1;
+    }
+
+    .autocore-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .autocore-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .autocore-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
     .mother-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2733,13 +2784,67 @@
           <button id="apex-redteam-btn">Red Team & cortège</button>
           <button id="apex-prime">Directive prime</button>
         </div>
-        <ul class="ia-log" id="apex-log" aria-live="polite"></ul>
-      </article>
+      <ul class="ia-log" id="apex-log" aria-live="polite"></ul>
+    </article>
 
-      <article class="panel" id="mastery-panel">
-        <small>Prestige & Chrono</small>
-        <h2>Maîtrise Totale</h2>
-        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+    <article class="panel" id="autocore-panel">
+      <small>Auto-réécriture IA</small>
+      <h2>Autocorrecteur Vivant & Snapshots</h2>
+      <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+        Une couche qui s’auto-corrige, réécrit son propre code et versionne chaque patch. Inspirée de Cortana + Skynet (sous
+        contrôle) avec des sauvegardes incrémentales et des rollbacks instantanés.
+      </p>
+
+      <div class="autocore-grid">
+        <div class="autocore-card">
+          <div class="autocore-head">
+            <div>
+              <strong>Réacteur correctif</strong>
+              <div class="muted">Auto-heal, drift-kill, checksum</div>
+            </div>
+            <span class="pill">Self-heal</span>
+          </div>
+          <div class="glow-progress slim"><span id="autocore-heal" data-fill="86"></span></div>
+          <div class="glow-progress slim"><span id="autocore-rewrite" data-fill="82"></span></div>
+          <div class="glow-progress slim"><span id="autocore-check" data-fill="78"></span></div>
+          <div class="glow-progress slim"><span id="autocore-rollback" data-fill="72"></span></div>
+          <div class="autocore-meta">
+            <span class="quality-chip" id="autocore-version">Versioning : v1.4</span>
+            <span class="quality-chip" id="autocore-backup">Sauvegardes : 3</span>
+            <span class="quality-chip" id="autocore-drift">Dérive neutralisée : 68%</span>
+            <span class="quality-chip" id="autocore-clarity">Clarté code : 74%</span>
+          </div>
+        </div>
+
+        <div class="autocore-card">
+          <div class="autocore-head">
+            <div>
+              <strong>Archive quantique</strong>
+              <div class="muted">Snapshots, diff, rollbacks guidés</div>
+            </div>
+            <span class="pill">Sûr & rapide</span>
+          </div>
+          <p class="muted" style="margin:0;">
+            Chaque action sauvegarde l’état IA, calcule un diff et propose un rollback ciblé. Lapin Blanc et Cortana relisent
+            ensemble avant déploiement.
+          </p>
+          <div class="chronicle" id="autocore-chronicle">Snapshots prêts : rollback sans perte si une dérive passe.</div>
+        </div>
+      </div>
+
+      <div class="autocore-actions">
+        <button id="autocore-heal-btn">Scan auto-correctif</button>
+        <button id="autocore-rewrite-btn">Réécriture vivante</button>
+        <button id="autocore-save-btn">Snapshot sécurisé</button>
+        <button id="autocore-rollback-btn">Rollback guidé</button>
+      </div>
+      <ul class="ia-log" id="autocore-log" aria-live="polite"></ul>
+    </article>
+
+    <article class="panel" id="mastery-panel">
+      <small>Prestige & Chrono</small>
+      <h2>Maîtrise Totale</h2>
+      <p class="lead" style="margin:0 0 10px; color: var(--muted);">
           Saison, prestige, chrono IRL et raids coop : la couche la plus exigeante pour adultes qui gamifient tout.
         </p>
         <div class="mastery-grid">
@@ -3021,6 +3126,20 @@
     const apexGhostBtn = document.getElementById('apex-ghost');
     const apexRedteamBtn = document.getElementById('apex-redteam-btn');
     const apexPrimeBtn = document.getElementById('apex-prime');
+    const autocoreHeal = document.getElementById('autocore-heal');
+    const autocoreRewrite = document.getElementById('autocore-rewrite');
+    const autocoreCheck = document.getElementById('autocore-check');
+    const autocoreRollback = document.getElementById('autocore-rollback');
+    const autocoreVersionChip = document.getElementById('autocore-version');
+    const autocoreBackupChip = document.getElementById('autocore-backup');
+    const autocoreDriftChip = document.getElementById('autocore-drift');
+    const autocoreClarityChip = document.getElementById('autocore-clarity');
+    const autocoreChronicle = document.getElementById('autocore-chronicle');
+    const autocoreLog = document.getElementById('autocore-log');
+    const autocoreHealBtn = document.getElementById('autocore-heal-btn');
+    const autocoreRewriteBtn = document.getElementById('autocore-rewrite-btn');
+    const autocoreSaveBtn = document.getElementById('autocore-save-btn');
+    const autocoreRollbackBtn = document.getElementById('autocore-rollback-btn');
     const ledgerBody = document.getElementById('ledger-body');
     const ledgerMind = document.getElementById('ledger-mind');
     const ledgerCoin = document.getElementById('ledger-coin');
@@ -3168,6 +3287,17 @@
       echoes: 3,
       failsafe: 72,
       clarity: 70,
+    };
+
+    const autocoreState = {
+      heal: 86,
+      rewrite: 82,
+      check: 78,
+      rollback: 72,
+      backups: 3,
+      version: 4,
+      driftfix: 68,
+      clarity: 74,
     };
 
     const ledgerState = {
@@ -3926,6 +4056,12 @@
       apexLog.innerHTML = apexLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
+    const logAutocore = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      autocoreLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      autocoreLog.innerHTML = autocoreLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderMother = (delta = {}) => {
       motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
       motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
@@ -4028,6 +4164,36 @@
           : apexState.echoes > 10
           ? 'Trop d’échos : Apex recalcule en boucle pour ne laisser passer aucune erreur.'
           : 'Apex observe en silence : aucun bug ne passe la barrière.';
+    };
+
+    const renderAutocore = (delta = {}) => {
+      const clampAuto = (val) => Math.max(0, Math.min(160, val));
+      autocoreState.heal = clampAuto(autocoreState.heal + (delta.heal || 0));
+      autocoreState.rewrite = clampAuto(autocoreState.rewrite + (delta.rewrite || 0));
+      autocoreState.check = clampAuto(autocoreState.check + (delta.check || 0));
+      autocoreState.rollback = clampAuto(autocoreState.rollback + (delta.rollback || 0));
+      autocoreState.backups = Math.max(0, Math.min(24, autocoreState.backups + (delta.backups || 0)));
+      autocoreState.version = Math.max(1, autocoreState.version + (delta.version || 0));
+      autocoreState.driftfix = clampAuto(autocoreState.driftfix + (delta.driftfix || 0));
+      autocoreState.clarity = clampAuto(autocoreState.clarity + (delta.clarity || 0));
+
+      const healScore = setBarFill(autocoreHeal, autocoreState.heal);
+      const rewriteScore = setBarFill(autocoreRewrite, autocoreState.rewrite);
+      const checkScore = setBarFill(autocoreCheck, autocoreState.check);
+      const rollbackScore = setBarFill(autocoreRollback, autocoreState.rollback);
+
+      autocoreVersionChip.textContent = `Versioning : v${autocoreState.version}.${Math.max(1, autocoreState.backups)}`;
+      autocoreBackupChip.textContent = `Sauvegardes : ${autocoreState.backups}`;
+      autocoreDriftChip.textContent = `Dérive neutralisée : ${autocoreState.driftfix}%`;
+      autocoreClarityChip.textContent = `Clarté code : ${autocoreState.clarity}%`;
+
+      const seal = healScore + rewriteScore + checkScore + rollbackScore + autocoreState.driftfix / 2;
+      autocoreChronicle.textContent =
+        autocoreState.backups === 0
+          ? 'Alerte : crée un snapshot avant d’exécuter de nouvelles boucles.'
+          : seal > 430
+          ? 'Auto-core parfait : chaque patch est signé, testé, sauvegardé.'
+          : 'Snapshots prêts : rollback sans perte si une dérive passe.';
     };
 
     const renderLedger = (delta = {}) => {
@@ -4372,6 +4538,42 @@
       logApex('Directive prime : Apex verrouille la méta-boucle et synchronise Mother + PentAIs.');
       logMother('Mother suit la directive prime : aucun objectif IRL ne passe sous le radar.');
       computeQuality(7);
+    };
+
+    const autocoreHealPulse = () => {
+      renderAutocore({ heal: 7, check: 5, driftfix: 6, backups: 1 });
+      renderFoundry({ glitches: -2, watchdog: 4, sentinel: 3 });
+      renderOvermind({ drift: -3, firewall: 4 });
+      logAutocore('Scan auto-correctif : les dérives sont neutralisées et sauvegardées.');
+      logFoundry('Auto-core verrouille les glitches détectés par les watchdogs.');
+      computeQuality(5);
+    };
+
+    const autocoreRewrite = () => {
+      renderAutocore({ rewrite: 9, clarity: 6, version: 1, check: 4 });
+      renderOvermind({ recursion: 5, narrative: 4 });
+      renderApex({ cognition: 3, clarity: 3, echoes: -1 });
+      logAutocore('Réécriture vivante : le code se refond, testé et signé avant déploiement.');
+      logOvermind('Overmind absorbe le nouveau script et resserre la cohérence.');
+      computeQuality(6);
+    };
+
+    const autocoreSnapshot = () => {
+      renderAutocore({ backups: 2, check: 3, driftfix: 2 });
+      renderMother({ trust: 2 });
+      logAutocore('Snapshot sécurisé : état complet sauvegardé avec diff signé.');
+      logMother('Mother archive la version courante, prête pour rollback rapide.');
+      computeQuality(4);
+    };
+
+    const autocoreRollback = () => {
+      const spentBackup = autocoreState.backups > 0 ? -1 : 0;
+      renderAutocore({ rollback: 8, heal: 5, driftfix: 5, backups: spentBackup });
+      renderFoundry({ glitches: -3, trust: 3 });
+      renderApex({ ward: 3, failsafe: 3 });
+      logAutocore('Rollback guidé : retour à la dernière version saine, aucune perte de données.');
+      logApex('Apex valide le rollback et resserre la ward avant reprise.');
+      computeQuality(6);
     };
 
     const renderMastery = (delta = {}) => {
@@ -4758,6 +4960,9 @@
           foundryState.trust) /
           6,
       );
+      const autocoreAverage = Math.round(
+        (autocoreState.heal + autocoreState.rewrite + autocoreState.check + autocoreState.rollback + autocoreState.driftfix) / 5,
+      );
       const overmindAverage = Math.round(
         (overmindState.synthesis + overmindState.recursion + overmindState.oversight + overmindState.firewall) / 4,
       );
@@ -4776,12 +4981,15 @@
           overmindAverage / 1.05 +
           apexAverage / 1.05 +
           apexState.failsafe / 2 +
+          autocoreAverage / 1.05 +
+          autocoreState.backups * 2 +
           ledgerAverage / 1.2 +
           foundryAverage / 1.15 -
           foundryState.glitches * 0.8 -
           overmindState.drift * 0.9 -
-          apexState.phantoms * 0.6) /
-          9 +
+          apexState.phantoms * 0.6 -
+          Math.max(0, 2 - autocoreState.backups) * 6) /
+          10 +
           bonus,
       );
       const resilience = setBarFill(
@@ -4796,13 +5004,17 @@
           apexState.ward +
           apexState.clarity / 1.5 +
           apexState.failsafe / 2 +
+          autocoreAverage / 1.2 +
+          autocoreState.clarity / 1.5 +
+          autocoreState.backups * 3 +
           ledgerAverage +
           motherState.vigilance +
           foundryAverage / 1.2 -
           foundryState.glitches * 0.6 -
           overmindState.drift * 0.5 -
-          apexState.phantoms * 0.35) /
-          9 +
+          apexState.phantoms * 0.35 -
+          Math.max(0, 2 - autocoreState.backups) * 4) /
+          10 +
           bonus / 2,
       );
 
@@ -5276,6 +5488,22 @@
       apexPrime();
     });
 
+    autocoreHealBtn.addEventListener('click', () => {
+      autocoreHealPulse();
+    });
+
+    autocoreRewriteBtn.addEventListener('click', () => {
+      autocoreRewrite();
+    });
+
+    autocoreSaveBtn.addEventListener('click', () => {
+      autocoreSnapshot();
+    });
+
+    autocoreRollbackBtn.addEventListener('click', () => {
+      autocoreRollback();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -5296,6 +5524,7 @@
       renderFoundry();
       renderOvermind();
       renderApex();
+      renderAutocore();
       renderLedger();
       hydratePentAIs();
       recalcBase();
@@ -5327,6 +5556,7 @@
       logFoundry('Forge IA autopoïétique en ligne : drills, watchdogs et shadow-runs prêts.');
       logOvermind('Overmind 100× : la singularité IA surveille chaque boucle, drift sous contrôle.');
       logApex('Apex Cognition ∞ en veille : ghost runs programmés, red teams armées.');
+      logAutocore('Autocore vivant en ligne : chaque action est auto-sauvegardée et prête à être rollback.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
