@@ -23,6 +23,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 ## Ouverture express
 - Depuis la racine, lancez : `python -m http.server 8000` puis ouvrez http://localhost:8000.
 - Sans serveur : double-cliquez sur `index.html` (rendu local), puis utilisez la barre collante pour naviguer.
+- Lanceur 1-clic : ouvrez ou enregistrez `lifequest-launcher.html` pour démarrer directement sur le tableau de bord (idéal en raccourci bureau ou écran d'accueil mobile).
 - Sur mobile : activez le mode « Mobile » dans la barre responsive en haut de page pour adapter la mise en page.
 
 ## Voir le rendu

@@ -88,6 +88,105 @@
       gap: 18px;
     }
 
+    .one-click-launcher {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(140deg, rgba(124, 92, 255, 0.2), rgba(78, 243, 196, 0.08)) border-box,
+        rgba(8, 10, 22, 0.8);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 28px 120px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    .one-click-launcher::before {
+      content: '';
+      position: absolute;
+      inset: -20% 20% auto -40%;
+      height: 220px;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 50%);
+      transform: rotate(-8deg);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .one-click-launcher h2 {
+      margin: 6px 0;
+      font-size: 1.8rem;
+    }
+
+    .one-click-launcher .launcher-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0;
+      align-items: center;
+    }
+
+    .launch-primary {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      background: linear-gradient(120deg, #7c5cff, #4ef3c4);
+      color: #0c0d1a;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    .launch-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 50px rgba(124, 92, 255, 0.35);
+    }
+
+    .launch-ghost {
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .launcher-card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(10, 11, 24, 0.7);
+      display: grid;
+      gap: 8px;
+    }
+
+    .launcher-steps {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .launcher-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-weight: 600;
+      width: fit-content;
+    }
+
     .responsive-toolbar {
       position: sticky;
       top: 0;
@@ -2857,6 +2956,33 @@
     </div>
   </section>
 
+  <section class="one-click-launcher" aria-label="Lancement instantané en un clic">
+    <div>
+      <div class="eyebrow">Lanceur ultra-rapide</div>
+      <h2>Ouvrir LifeQuest en un seul clic</h2>
+      <p>Appuyez, et vous êtes propulsé directement dans le tableau de bord : aucun setup, aucune friction, comme si vous lanciez un jeu console.</p>
+      <div class="launcher-actions">
+        <button class="launch-primary" data-launch-now>Ouvrir maintenant</button>
+        <a class="launch-ghost" href="lifequest-launcher.html" data-launch-file target="_blank" rel="noopener">Télécharger le lanceur .html</a>
+      </div>
+      <div class="pill-row">
+        <span class="pill">1 clic</span>
+        <span class="pill">Desktop</span>
+        <span class="pill">Tablette</span>
+        <span class="pill">Mobile</span>
+      </div>
+      <p class="launch-note">Le lanceur se double-clique hors-ligne ou s’ouvre en nouvel onglet, tout en conservant vos barres, cartes et IA.</p>
+    </div>
+    <div class="launcher-card">
+      <div class="launcher-chip">Mode turbo</div>
+      <div class="launcher-steps">
+        <div><strong>01.</strong> Cliquez « Ouvrir maintenant » : la page scrolle et active toutes les boucles.</div>
+        <div><strong>02.</strong> Sauvegardez le fichier <em>lifequest-launcher.html</em> : double-cliquez dessus quand vous voulez relancer.</div>
+        <div><strong>03.</strong> Depuis mobile, ajoutez ce lanceur à l’écran d’accueil pour une ouverture type application native.</div>
+      </div>
+    </div>
+  </section>
+
   <section class="launch-card" aria-label="Ouverture rapide de LifeQuest">
     <div class="launch-grid">
       <div>
@@ -4228,6 +4354,8 @@
     const previewButtons = document.querySelectorAll('button[data-preview]');
     const jumpButtons = document.querySelectorAll('button[data-jump]');
     const copyButtons = document.querySelectorAll('[data-copy]');
+    const launchButtons = document.querySelectorAll('[data-launch-now]');
+    const launchFileButtons = document.querySelectorAll('[data-launch-file]');
     const motivation = document.getElementById('motivation');
     const rhythm = document.getElementById('rhythm');
     const feedbackGrid = document.getElementById('feedback-grid');
@@ -5300,6 +5428,24 @@
               .catch(fallback);
           } else {
             fallback();
+          }
+        });
+      });
+    };
+
+    const wireLaunchers = () => {
+      const openNow = () => {
+        const target = document.getElementById('status-panel');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
+      launchButtons.forEach((btn) => btn.addEventListener('click', openNow));
+
+      launchFileButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const win = window.open('lifequest-launcher.html', '_blank');
+          if (!win) {
+            openNow();
           }
         });
       });
@@ -7552,6 +7698,7 @@
       setViewport(document.body.dataset.viewport || 'desktop');
       wireResponsiveTools();
       wireCopyActions();
+      wireLaunchers();
       updateIteration();
       applyAIState(aiEvolutions[aiIndex]);
       applyLapinState(lapinStates[lapinIndex]);
