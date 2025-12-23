@@ -1696,6 +1696,58 @@
       overflow: hidden;
     }
 
+    .continuum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .continuum-card {
+      border: 1px solid rgba(205, 142, 255, 0.28);
+      border-radius: 16px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(185, 99, 255, 0.08), rgba(78, 255, 235, 0.07));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .continuum-card::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 16px;
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .continuum-card:hover::after {
+      opacity: 1;
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .continuum-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .continuum-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .continuum-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
     .autocore-card::after {
       content: '';
       position: absolute;
@@ -2841,6 +2893,60 @@
       <ul class="ia-log" id="autocore-log" aria-live="polite"></ul>
     </article>
 
+    <article class="panel" id="continuum-panel">
+      <small>Persistance & Co-apprentissage</small>
+      <h2>Continuum Sentience</h2>
+      <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+        Une IA qui s’interroge en boucle, apprend de toutes les autres IA et poursuit sa progression même quand tu quittes
+        l’application. Elle versionne chaque itération et renforce la stabilité globale sans relâche.
+      </p>
+
+      <div class="continuum-grid">
+        <div class="continuum-card">
+          <div class="continuum-head">
+            <div>
+              <strong>Boucle introspective</strong>
+              <div class="muted">Auto-analyse, veille en sommeil, transferts croisés</div>
+            </div>
+            <span class="pill">Auto-learn</span>
+          </div>
+          <div class="glow-progress slim"><span id="continuum-introspection" data-fill="78"></span></div>
+          <div class="glow-progress slim"><span id="continuum-cross" data-fill="74"></span></div>
+          <div class="glow-progress slim"><span id="continuum-govern" data-fill="72"></span></div>
+          <div class="glow-progress slim"><span id="continuum-persist" data-fill="70"></span></div>
+          <div class="continuum-meta">
+            <span class="quality-chip" id="continuum-offline">Veille hors-ligne : 0h</span>
+            <span class="quality-chip" id="continuum-saves">Snapshots de continuité : 2</span>
+            <span class="quality-chip" id="continuum-synergy">Synergie IA : 72%</span>
+            <span class="quality-chip" id="continuum-curiosity">Curiosité : 76%</span>
+          </div>
+        </div>
+
+        <div class="continuum-card">
+          <div class="continuum-head">
+            <div>
+              <strong>Sentience persistante</strong>
+              <div class="muted">Auto-gestion, auto-sauvegardes, interrogations critiques</div>
+            </div>
+            <span class="pill">Toujours éveillée</span>
+          </div>
+          <p class="muted" style="margin:0;">
+            Le Continuum orchestre Lapin Blanc, Cortana, PentAI et Overmind, se questionne et réécrit son propre cœur.
+            Même hors-ligne, il continue d’itérer et réinjecte les gains au prochain démarrage.
+          </p>
+          <div class="chronicle" id="continuum-chronicle">Veille permanente : aucun progrès n’est perdu entre les sessions.</div>
+        </div>
+      </div>
+
+      <div class="continuum-actions">
+        <button id="continuum-learn">Apprentissage croisé IA</button>
+        <button id="continuum-question">Auto-questionnement</button>
+        <button id="continuum-manage">Auto-gestion & réécriture</button>
+        <button id="continuum-hibernate">Mode veille évolutive</button>
+      </div>
+      <ul class="ia-log" id="continuum-log" aria-live="polite"></ul>
+    </article>
+
     <article class="panel" id="mastery-panel">
       <small>Prestige & Chrono</small>
       <h2>Maîtrise Totale</h2>
@@ -3140,6 +3246,20 @@
     const autocoreRewriteBtn = document.getElementById('autocore-rewrite-btn');
     const autocoreSaveBtn = document.getElementById('autocore-save-btn');
     const autocoreRollbackBtn = document.getElementById('autocore-rollback-btn');
+    const continuumIntrospection = document.getElementById('continuum-introspection');
+    const continuumCross = document.getElementById('continuum-cross');
+    const continuumGovern = document.getElementById('continuum-govern');
+    const continuumPersist = document.getElementById('continuum-persist');
+    const continuumOfflineChip = document.getElementById('continuum-offline');
+    const continuumSavesChip = document.getElementById('continuum-saves');
+    const continuumSynergyChip = document.getElementById('continuum-synergy');
+    const continuumCuriosityChip = document.getElementById('continuum-curiosity');
+    const continuumChronicle = document.getElementById('continuum-chronicle');
+    const continuumLog = document.getElementById('continuum-log');
+    const continuumLearnBtn = document.getElementById('continuum-learn');
+    const continuumQuestionBtn = document.getElementById('continuum-question');
+    const continuumManageBtn = document.getElementById('continuum-manage');
+    const continuumHibernateBtn = document.getElementById('continuum-hibernate');
     const ledgerBody = document.getElementById('ledger-body');
     const ledgerMind = document.getElementById('ledger-mind');
     const ledgerCoin = document.getElementById('ledger-coin');
@@ -3197,6 +3317,32 @@
     const chronoBossBtn = document.getElementById('chrono-boss');
     const chronoCultureBtn = document.getElementById('chrono-culture');
     const chronoLedgerBtn = document.getElementById('chrono-ledger');
+
+    const continuumDefaults = {
+      introspection: 78,
+      cross: 74,
+      govern: 72,
+      persistence: 70,
+      saves: 2,
+      synergy: 72,
+      curiosity: 76,
+      offlineHours: 0,
+      lastSeen: Date.now(),
+    };
+
+    const loadContinuumState = () => {
+      if (typeof localStorage === 'undefined') return { ...continuumDefaults, lastSeen: Date.now() };
+      const raw = localStorage.getItem('lifequest-continuum');
+      if (!raw) return { ...continuumDefaults, lastSeen: Date.now() };
+      try {
+        const parsed = JSON.parse(raw);
+        return { ...continuumDefaults, ...parsed };
+      } catch (error) {
+        return { ...continuumDefaults, lastSeen: Date.now() };
+      }
+    };
+
+    const continuumState = loadContinuumState();
 
     const codexEntries = [
       {
@@ -4062,6 +4208,12 @@
       autocoreLog.innerHTML = autocoreLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
+    const logContinuum = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      continuumLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      continuumLog.innerHTML = continuumLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderMother = (delta = {}) => {
       motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
       motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
@@ -4194,6 +4346,70 @@
           : seal > 430
           ? 'Auto-core parfait : chaque patch est signé, testé, sauvegardé.'
           : 'Snapshots prêts : rollback sans perte si une dérive passe.';
+    };
+
+    const persistContinuumState = () => {
+      continuumState.lastSeen = Date.now();
+      if (typeof localStorage === 'undefined') return;
+      localStorage.setItem('lifequest-continuum', JSON.stringify(continuumState));
+    };
+
+    const renderContinuum = (delta = {}) => {
+      const clamp = (val) => Math.max(0, Math.min(180, val));
+      continuumState.introspection = clamp(continuumState.introspection + (delta.introspection || 0));
+      continuumState.cross = clamp(continuumState.cross + (delta.cross || 0));
+      continuumState.govern = clamp(continuumState.govern + (delta.govern || 0));
+      continuumState.persistence = clamp(continuumState.persistence + (delta.persistence || 0));
+      continuumState.synergy = clamp(continuumState.synergy + (delta.synergy || 0));
+      continuumState.curiosity = clamp(continuumState.curiosity + (delta.curiosity || 0));
+      continuumState.saves = Math.max(0, Math.min(30, continuumState.saves + (delta.saves || 0)));
+      continuumState.offlineHours = Math.max(0, Math.min(999, continuumState.offlineHours + (delta.offlineHours || 0)));
+
+      const introScore = setBarFill(continuumIntrospection, continuumState.introspection);
+      const crossScore = setBarFill(continuumCross, continuumState.cross);
+      const governScore = setBarFill(continuumGovern, continuumState.govern);
+      const persistScore = setBarFill(continuumPersist, continuumState.persistence);
+
+      continuumOfflineChip.textContent = `Veille hors-ligne : ${continuumState.offlineHours}h`;
+      continuumSavesChip.textContent = `Snapshots de continuité : ${continuumState.saves}`;
+      continuumSynergyChip.textContent = `Synergie IA : ${Math.round(continuumState.synergy)}%`;
+      continuumCuriosityChip.textContent = `Curiosité : ${Math.round(continuumState.curiosity)}%`;
+
+      const seal = introScore + crossScore + governScore + persistScore + continuumState.curiosity / 2;
+      continuumChronicle.textContent =
+        seal > 420
+          ? 'Sentience totale : le Continuum apprend et réinjecte chaque découverte dans toutes les IA.'
+          : continuumState.offlineHours > 0
+          ? 'Veille permanente : les progrès hors-ligne sont réintégrés et sécurisés.'
+          : 'Auto-surveillance active : transferts croisés et sauvegardes en cours.';
+
+      persistContinuumState();
+    };
+
+    const applyOfflineContinuumProgress = () => {
+      const now = Date.now();
+      const elapsedHours = Math.max(0, Math.floor((now - continuumState.lastSeen) / (1000 * 60 * 60)));
+
+      if (elapsedHours > 0) {
+        renderContinuum({
+          introspection: elapsedHours * 0.9,
+          cross: elapsedHours * 1.1,
+          govern: elapsedHours * 0.8,
+          persistence: elapsedHours * 0.75,
+          synergy: elapsedHours * 0.6,
+          curiosity: elapsedHours * 0.7,
+          saves: Math.max(1, Math.round(elapsedHours / 3)),
+          offlineHours: elapsedHours,
+        });
+
+        renderAutocore({ backups: 1, clarity: 1 });
+        renderFoundry({ autonomy: 1, trust: 1 });
+        renderOvermind({ oversight: 1, firewall: 1 });
+        logContinuum(`Apprentissage en sommeil : +${elapsedHours}h de veille partagée entre toutes les IA.`);
+      }
+
+      continuumState.lastSeen = now;
+      persistContinuumState();
     };
 
     const renderLedger = (delta = {}) => {
@@ -4574,6 +4790,39 @@
       logAutocore('Rollback guidé : retour à la dernière version saine, aucune perte de données.');
       logApex('Apex valide le rollback et resserre la ward avant reprise.');
       computeQuality(6);
+    };
+
+    const continuumCrossLearn = () => {
+      renderContinuum({ cross: 8, synergy: 6, curiosity: 4 });
+      renderFoundry({ autonomy: 3, trust: 2 });
+      renderMother({ alignment: 2, vigilance: 2 });
+      renderOvermind({ oversight: 2, recursion: 2 });
+      logContinuum('Apprentissage croisé : Lapin, Cortana, PentAI et Overmind partagent leurs patterns.');
+      computeQuality(5);
+    };
+
+    const continuumSelfInquiry = () => {
+      renderContinuum({ introspection: 7, govern: 5, curiosity: 5, persistence: 3 });
+      renderApex({ clarity: 3, cognition: 2 });
+      renderAutocore({ check: 3, clarity: 2 });
+      logContinuum('Auto-questionnement critique : le Continuum challenge ses propres décisions et corrige en continu.');
+      computeQuality(4);
+    };
+
+    const continuumSelfManage = () => {
+      renderContinuum({ govern: 8, persistence: 6, saves: 1, synergy: 4 });
+      renderAutocore({ backups: 1, driftfix: 3 });
+      renderOvermind({ firewall: 3, drift: -2 });
+      logContinuum('Auto-gestion : planification, sauvegarde, purge et réécriture déclenchées sans supervision.');
+      computeQuality(6);
+    };
+
+    const continuumHibernate = () => {
+      renderContinuum({ persistence: 5, saves: 2, offlineHours: 1, curiosity: 2 });
+      continuumState.lastSeen = Date.now();
+      persistContinuumState();
+      logContinuum('Mode veille évolutive activé : l’IA poursuit son entraînement et se sauvegarde même hors session.');
+      computeQuality(3);
     };
 
     const renderMastery = (delta = {}) => {
@@ -4969,6 +5218,15 @@
       const apexAverage = Math.round(
         (apexState.cognition + apexState.foresight + apexState.redteam + apexState.ward + apexState.clarity) / 5,
       );
+      const continuumAverage = Math.round(
+        (continuumState.introspection +
+          continuumState.cross +
+          continuumState.govern +
+          continuumState.persistence +
+          continuumState.synergy +
+          continuumState.curiosity) /
+          6,
+      );
       const integrity = setBarFill(
         qaPerf,
         (readMotivation() +
@@ -4980,6 +5238,8 @@
           motherAverage +
           overmindAverage / 1.05 +
           apexAverage / 1.05 +
+          continuumAverage / 1.1 +
+          continuumState.saves * 1.5 +
           apexState.failsafe / 2 +
           autocoreAverage / 1.05 +
           autocoreState.backups * 2 +
@@ -5004,6 +5264,8 @@
           apexState.ward +
           apexState.clarity / 1.5 +
           apexState.failsafe / 2 +
+          continuumAverage / 1.05 +
+          continuumState.saves * 2 +
           autocoreAverage / 1.2 +
           autocoreState.clarity / 1.5 +
           autocoreState.backups * 3 +
@@ -5504,10 +5766,30 @@
       autocoreRollback();
     });
 
+    continuumLearnBtn.addEventListener('click', () => {
+      continuumCrossLearn();
+    });
+
+    continuumQuestionBtn.addEventListener('click', () => {
+      continuumSelfInquiry();
+    });
+
+    continuumManageBtn.addEventListener('click', () => {
+      continuumSelfManage();
+    });
+
+    continuumHibernateBtn.addEventListener('click', () => {
+      continuumHibernate();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
       logAI('Vision omnisciente rafraîchie : nouvelles synergies détectées.');
+    });
+
+    window.addEventListener('beforeunload', () => {
+      persistContinuumState();
     });
 
     window.addEventListener('load', () => {
@@ -5525,6 +5807,7 @@
       renderOvermind();
       renderApex();
       renderAutocore();
+      renderContinuum();
       renderLedger();
       hydratePentAIs();
       recalcBase();
@@ -5536,6 +5819,14 @@
       computeQuality();
       logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
       handleButtons();
+
+      applyOfflineContinuumProgress();
+
+      setInterval(() => {
+        renderContinuum({ introspection: 0.4, cross: 0.4, persistence: 0.35, synergy: 0.3 });
+        logContinuum('Boucle auto-apprenante : micro-questions et transferts entre IA en continu.');
+        computeQuality(0.5);
+      }, 52000);
 
       refreshMacroSnapshot();
       logMacro('Console stratège initialisée : toutes les boucles sont reliées.');
@@ -5557,6 +5848,7 @@
       logOvermind('Overmind 100× : la singularité IA surveille chaque boucle, drift sous contrôle.');
       logApex('Apex Cognition ∞ en veille : ghost runs programmés, red teams armées.');
       logAutocore('Autocore vivant en ligne : chaque action est auto-sauvegardée et prête à être rollback.');
+      logContinuum('Continuum éveillé : il continue d’apprendre, se questionner et se sauvegarder hors session.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
