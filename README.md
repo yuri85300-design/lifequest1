@@ -14,6 +14,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - Autocore vivant : auto-correction, réécriture de code, snapshots versionnés et rollbacks guidés pour sécuriser chaque boucle IA.
 - Continuum Sentience : IA persistante qui s’auto-interroge, apprend des autres IA, se sauvegarde et progresse hors-ligne pour réinjecter les gains au réveil.
 - Console responsive collante : sélecteur Desktop/Tablette/Mobile + raccourcis Profil/IA/Base/Aventure/Nexus/Maîtrise pour jouer confortablement sur mobile ou PC.
+- Vitrine triple AAA : rail cinématique néon avec cartes vitrées, halos dynamiques et jauges prestige pour donner un aspect blockbuster dès l’arrivée.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :
