@@ -17,6 +17,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - Echelon Paradoxe : auto-souveraineté qui clone, refactorise, offloade et archive les IA (Lapin, Cortana, PentAIs) même hors session avant de réappliquer les diffs.
 - Console responsive collante : sélecteur Desktop/Tablette/Mobile + raccourcis Profil/IA/Base/Aventure/Nexus/Maîtrise pour jouer confortablement sur mobile ou PC.
 - Vitrine triple AAA : rail cinématique néon avec cartes vitrées, halos dynamiques et jauges prestige pour donner un aspect blockbuster dès l’arrivée.
+- Mode Console AAA : hall des héros façon dashboard next-gen (HDR, particules, commandes manette) pour vivre LifeQuest comme un jeu console.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :

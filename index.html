@@ -502,6 +502,209 @@
       mix-blend-mode: screen;
     }
 
+    .console-elite {
+      position: relative;
+      width: min(1260px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 12% 20%, rgba(124, 92, 255, 0.16), transparent 32%),
+        radial-gradient(circle at 88% 12%, rgba(78, 243, 196, 0.14), transparent 30%),
+        linear-gradient(135deg, rgba(6, 10, 28, 0.9), rgba(5, 8, 18, 0.84));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 110px rgba(0, 0, 0, 0.6), 0 0 60px rgba(124, 92, 255, 0.35);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .console-ambient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, rgba(255, 255, 255, 0.04), transparent 50%),
+        radial-gradient(circle at 30% 70%, rgba(255, 151, 109, 0.16), transparent 40%),
+        radial-gradient(circle at 70% 30%, rgba(82, 255, 191, 0.16), transparent 34%);
+      filter: blur(10px);
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .console-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .overtitle {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      margin: 0 0 6px;
+    }
+
+    .console-head h2 {
+      margin: 0;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .console-flares {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .console-flare {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 16px rgba(78, 243, 196, 0.6);
+      animation: pulse 2.8s ease-in-out infinite;
+    }
+
+    .console-head p {
+      margin: 6px 0 0;
+      max-width: 780px;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .console-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .console-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      display: grid;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .console-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(140deg, rgba(124, 92, 255, 0.18), transparent 40%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .console-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .console-chip {
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: rgba(124, 92, 255, 0.15);
+      color: #d9c8ff;
+      border: 1px solid rgba(124, 92, 255, 0.36);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .console-card h3 {
+      margin: 0;
+      letter-spacing: 0.6px;
+    }
+
+    .console-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .console-progress {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .console-progress span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #ff9a6f, #7cffd3);
+      box-shadow: 0 0 16px rgba(124, 92, 255, 0.5);
+      width: 0;
+      animation: fillBar 2.1s ease-out forwards;
+    }
+
+    .console-hints {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .hint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hint-btn {
+      min-width: 42px;
+      text-align: center;
+      padding: 7px 10px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1f2235, #2d2f45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35), 0 0 18px rgba(78, 243, 196, 0.35);
+      font-weight: 700;
+    }
+
+    .hint strong {
+      display: block;
+      color: #cde4ff;
+      letter-spacing: 0.3px;
+    }
+
+    .hint span {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 13px;
+    }
+
+    @keyframes fillBar {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: var(--fill, 90%);
+      }
+    }
+
     .cinematic-meta {
       display: flex;
       align-items: center;
@@ -2371,6 +2574,88 @@
           <span style="width: 90%"></span>
         </div>
       </article>
+    </div>
+  </section>
+
+  <section class="console-elite" aria-label="Expérience console triple AAA">
+    <div class="console-ambient" aria-hidden="true"></div>
+    <div class="console-head">
+      <div>
+        <p class="overtitle">Hall des Héros • Console+</p>
+        <h2><span class="console-flare"></span> Mode plateau console AAA</h2>
+        <p>Caméra rail cinématique, HDR, particules réactives et UI haptique : la page se comporte comme un dashboard de console nouvelle génération.</p>
+      </div>
+      <div class="console-flares" aria-hidden="true">
+        <span class="console-chip">HDR+</span>
+        <span class="console-chip">Ray Neon</span>
+        <span class="console-chip">120 FPS UI</span>
+        <span class="console-chip">Haptique</span>
+      </div>
+    </div>
+    <div class="console-grid">
+      <article class="console-card">
+        <div class="console-meta">
+          <span class="console-chip">Console Hub</span>
+          <div class="mini-meter" aria-hidden="true"><span style="width: 92%"></span></div>
+        </div>
+        <h3>Lobby cinématique</h3>
+        <p>Écran d'accueil façon triple AAA : panoramas animés, reflets verre/acier et halo dynamique autour des stats et quêtes IRL.</p>
+        <div class="console-progress" aria-label="Immersion lobby">
+          <span style="--fill: 94%"></span>
+        </div>
+      </article>
+      <article class="console-card">
+        <div class="console-meta">
+          <span class="console-chip">Gameplay</span>
+          <div class="mini-meter" aria-hidden="true"><span style="width: 89%"></span></div>
+        </div>
+        <h3>Commandes manette</h3>
+        <p>Transitions rapides, vibrations symboliques, focus rings et inputs L1/R1 pour alterner entre IA, Nexus, Base et Maîtrise.</p>
+        <div class="console-progress" aria-label="Fluidité des contrôles">
+          <span style="--fill: 90%"></span>
+        </div>
+      </article>
+      <article class="console-card">
+        <div class="console-meta">
+          <span class="console-chip">Spectacle</span>
+          <div class="mini-meter" aria-hidden="true"><span style="width: 96%"></span></div>
+        </div>
+        <h3>Flares & particules</h3>
+        <p>Lens flares doux, particules subtiles et vignettes lumineuses qui accompagnent chaque action IA pour un rendu blockbuster.</p>
+        <div class="console-progress" aria-label="Effet spectacle">
+          <span style="--fill: 96%"></span>
+        </div>
+      </article>
+    </div>
+    <div class="console-hints" aria-label="Raccourcis façon manette">
+      <div class="hint">
+        <div class="hint-btn">L1</div>
+        <div>
+          <strong>Switcher IA</strong>
+          <span>Cycle Lapin Blanc ↔ Cortana ↔ Mother/PentAIs</span>
+        </div>
+      </div>
+      <div class="hint">
+        <div class="hint-btn">R1</div>
+        <div>
+          <strong>Déclencheur Raid</strong>
+          <span>Lance un hypercycle + QA + Gate Rush pour tester la stabilité</span>
+        </div>
+      </div>
+      <div class="hint">
+        <div class="hint-btn">△</div>
+        <div>
+          <strong>Focus Nexus</strong>
+          <span>Centre la caméra sur l'ascension/Nexus et la Forge IA</span>
+        </div>
+      </div>
+      <div class="hint">
+        <div class="hint-btn">⬜</div>
+        <div>
+          <strong>Photo Mode</strong>
+          <span>Gèle les particules, ajoute un bloom léger et sauvegarde un souvenir</span>
+        </div>
+      </div>
     </div>
   </section>
 
