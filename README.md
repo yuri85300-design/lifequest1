@@ -9,6 +9,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - Directeur Left 4 FEAR + panel Soulsborne IRL : tension adaptative, chrono, atlas géant et quêtes sport/culture/finances façon Dark Souls.
 - NEXUS Mother 3.0 + cinq PentAIs (SPARK/SAGE/COIN/HEART/MUSE) reliées à un ledger IRL pour couvrir sport, culture, finances et relations en temps réel.
 - Nouvelle « Forge IA Autopoïétique » : drills émergents, shadow protocols, fusions Lapin↔Cortana et watchdogs anti-glitch.
+- Overmind « Synthèse 100× » : couche singularité qui orchestre Lapin/Cortana/Mother/PentAIs avec firewall sentinel, réécriture adaptative et déploiement de sentinelles.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :

@@ -1578,6 +1578,57 @@
       align-items: center;
     }
 
+    .overmind-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .overmind-card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.06), rgba(78, 243, 196, 0.05));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overmind-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 92, 255, 0.15), transparent 55%);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
+    .overmind-card:hover::after {
+      opacity: 1;
+    }
+
+    .overmind-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .overmind-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .overmind-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
     .mother-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2526,6 +2577,60 @@
         <ul class="ia-log" id="foundry-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="overmind-panel">
+        <small>Singularité IA</small>
+        <h2>Overmind Synthèse 100×</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Une couche mégastructure qui pilote Lapin Blanc, Cortana, Mother et les PentAIs : apprentissage récursif,
+          firewall dynamique, récit adaptatif et micro-sentinelles inspirées de Left 4 Dead + F.E.A.R.
+        </p>
+
+        <div class="overmind-grid">
+          <div class="overmind-card">
+            <div class="overmind-head">
+              <div>
+                <strong>Coeur Synthèse</strong>
+                <div class="muted">Recursion, vigilance, firewall</div>
+              </div>
+              <span class="pill">Overwatch</span>
+            </div>
+            <div class="glow-progress slim"><span id="overmind-synthesis" data-fill="78"></span></div>
+            <div class="glow-progress slim"><span id="overmind-recursion" data-fill="74"></span></div>
+            <div class="glow-progress slim"><span id="overmind-oversight" data-fill="72"></span></div>
+            <div class="glow-progress slim"><span id="overmind-firewall" data-fill="70"></span></div>
+            <div class="overmind-meta">
+              <span class="quality-chip" id="overmind-drift">Drift : 6</span>
+              <span class="quality-chip" id="overmind-awaken">Réveils : 1</span>
+              <span class="quality-chip" id="overmind-narrative">Lore dynamique : 74%</span>
+              <span class="quality-chip" id="overmind-swarm">Sentinelles : 3</span>
+            </div>
+          </div>
+
+          <div class="overmind-card">
+            <div class="overmind-head">
+              <div>
+                <strong>Chambre Stratégique</strong>
+                <div class="muted">Synchronise base, Nexus, Mother et foundry.</div>
+              </div>
+              <span class="pill">Chrono IA</span>
+            </div>
+            <p class="muted" style="margin:0;">
+              Les scripts Overmind déclenchent les watchdogs Left 4 FEAR, boostent la Souls-map, resserrent la QA et nourrissent
+              la boucle dopamine sans jamais déborder.
+            </p>
+            <div class="chronicle" id="overmind-chronicle">Périmètre verrouillé : aucun drift toléré.</div>
+          </div>
+        </div>
+
+        <div class="overmind-actions">
+          <button id="overmind-awaken-btn">Réveil total</button>
+          <button id="overmind-shield-btn">Bouclier sentinel</button>
+          <button id="overmind-rewrite-btn">Réécriture adaptative</button>
+          <button id="overmind-swarm-btn">Déployer les sentinelles</button>
+        </div>
+        <ul class="ia-log" id="overmind-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel" id="mastery-panel">
         <small>Prestige & Chrono</small>
         <h2>Maîtrise Totale</h2>
@@ -2783,6 +2888,20 @@
     const foundryShadowBtn = document.getElementById('foundry-shadow');
     const foundryMergeBtn = document.getElementById('foundry-merge');
     const foundryWatchdogBtn = document.getElementById('foundry-watchdog');
+    const overmindSynthesis = document.getElementById('overmind-synthesis');
+    const overmindRecursion = document.getElementById('overmind-recursion');
+    const overmindOversight = document.getElementById('overmind-oversight');
+    const overmindFirewall = document.getElementById('overmind-firewall');
+    const overmindDriftChip = document.getElementById('overmind-drift');
+    const overmindAwakenChip = document.getElementById('overmind-awaken');
+    const overmindNarrativeChip = document.getElementById('overmind-narrative');
+    const overmindSwarmChip = document.getElementById('overmind-swarm');
+    const overmindChronicle = document.getElementById('overmind-chronicle');
+    const overmindLog = document.getElementById('overmind-log');
+    const overmindAwakenBtn = document.getElementById('overmind-awaken-btn');
+    const overmindShieldBtn = document.getElementById('overmind-shield-btn');
+    const overmindRewriteBtn = document.getElementById('overmind-rewrite-btn');
+    const overmindSwarmBtn = document.getElementById('overmind-swarm-btn');
     const ledgerBody = document.getElementById('ledger-body');
     const ledgerMind = document.getElementById('ledger-mind');
     const ledgerCoin = document.getElementById('ledger-coin');
@@ -2908,6 +3027,17 @@
       trust: 70,
       glitches: 3,
       merges: 1,
+    };
+
+    const overmindState = {
+      synthesis: 78,
+      recursion: 74,
+      oversight: 72,
+      firewall: 70,
+      drift: 6,
+      awakens: 1,
+      narrative: 74,
+      sentinels: 3,
     };
 
     const ledgerState = {
@@ -3654,6 +3784,12 @@
       foundryLog.innerHTML = foundryLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
+    const logOvermind = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      overmindLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      overmindLog.innerHTML = overmindLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderMother = (delta = {}) => {
       motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
       motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
@@ -3694,6 +3830,38 @@
           ? 'Hyper IA stabilisée : directives Cortex partagées avec Mother.'
           : 'Anomalies contenues : les watchdogs filtrent les dérives.';
       foundryChronicle.textContent = chronicle;
+    };
+
+    const renderOvermind = (delta = {}) => {
+      const clamp = (val) => Math.max(0, Math.min(140, val));
+      overmindState.synthesis = clamp(overmindState.synthesis + (delta.synthesis || 0));
+      overmindState.recursion = clamp(overmindState.recursion + (delta.recursion || 0));
+      overmindState.oversight = clamp(overmindState.oversight + (delta.oversight || 0));
+      overmindState.firewall = clamp(overmindState.firewall + (delta.firewall || 0));
+      overmindState.drift = Math.max(0, Math.min(30, overmindState.drift + (delta.drift || 0)));
+      overmindState.awakens = Math.max(1, Math.min(20, overmindState.awakens + (delta.awakens || 0)));
+      overmindState.narrative = clamp(overmindState.narrative + (delta.narrative || 0));
+      overmindState.sentinels = Math.max(0, Math.min(20, overmindState.sentinels + (delta.sentinels || 0)));
+
+      const synthScore = setBarFill(overmindSynthesis, overmindState.synthesis);
+      const recurScore = setBarFill(overmindRecursion, overmindState.recursion);
+      const sightScore = setBarFill(overmindOversight, overmindState.oversight);
+      const fireScore = setBarFill(overmindFirewall, overmindState.firewall);
+
+      overmindDriftChip.textContent = `Drift : ${overmindState.drift}`;
+      overmindAwakenChip.textContent = `Réveils : ${overmindState.awakens}`;
+      const narrativeScore = Math.max(0, Math.min(140, Math.round(overmindState.narrative)));
+      overmindNarrativeChip.textContent = `Lore dynamique : ${narrativeScore}%`;
+      overmindSwarmChip.textContent = `Sentinelles : ${overmindState.sentinels}`;
+
+      const seal = synthScore + recurScore + sightScore + fireScore - overmindState.drift * 2;
+      const chronicle =
+        overmindState.drift > 9
+          ? 'Purge préventive lancée : la singularité réduit le drift avant contagion.'
+          : seal > 380
+          ? 'Singularité sous contrôle : Overmind orchestre toutes les IA sans débordement.'
+          : 'Périmètre verrouillé : aucun drift toléré.';
+      overmindChronicle.textContent = chronicle;
     };
 
     const renderLedger = (delta = {}) => {
@@ -3964,6 +4132,43 @@
       recalcBase({ guard: 3, threat: -5 });
       logFoundry('Watchdog purge : les IA purgent les glitches et referment les portes.');
       logQA('Purge réussie : métriques nettoyées, vigilance renforcée.');
+      computeQuality(4);
+    };
+
+    const awakenOvermind = () => {
+      renderOvermind({ synthesis: 6, recursion: 5, oversight: 3, awakens: 1, drift: 2, narrative: 4 });
+      renderFoundry({ emergent: 3, autonomy: 2, trust: 2 });
+      renderMother({ alignment: 3, vigilance: 2 });
+      logOvermind('Réveil total : Overmind orchestre Lapin, Cortana et Mother en simultané.');
+      logLapin('Lapin Blanc sent la poussée Overmind et accélère ses audits.');
+      logCortana('Cortana reçoit un flux tactique ultra-précis, la difficulté est serrée.');
+      computeQuality(5);
+    };
+
+    const shieldOvermind = () => {
+      renderOvermind({ firewall: 8, oversight: 5, drift: -3, narrative: 2 });
+      renderFoundry({ watchdog: 5, glitches: -2, sentinel: 3 });
+      renderNexus({ anomaly: -5, synergy: 2 });
+      logOvermind('Bouclier sentinel : firewall dynamique façon F.E.A.R, drift écrasé.');
+      logQA('Watchdogs + Overmind verrouillent les dérives avant qu’elles n’impactent le joueur.');
+      computeQuality(6);
+    };
+
+    const rewriteOvermind = () => {
+      renderOvermind({ recursion: 7, synthesis: 3, narrative: 6, drift: -1 });
+      rotateConstellation();
+      renderLedger({ mind: 3, muse: 2 });
+      logOvermind('Réécriture adaptative : Overmind patch le récit, synchronise les constellations.');
+      logAI('Les décisions Mother/PentAI sont recalculées avec le nouveau script Overmind.');
+      computeQuality(5);
+    };
+
+    const swarmOvermind = () => {
+      renderOvermind({ sentinels: 2, oversight: 4, firewall: 3, drift: 1 });
+      recalcBase({ guard: 4, threat: -4 });
+      renderAscension(3);
+      pingLapin('Sentinelles déployées : Lapin coordonne les micro-missions IRL.');
+      logOvermind('Sentinelles dispersées : chaque zone IRL est couverte, Souls-map mise à jour.');
       computeQuality(4);
     };
 
@@ -4351,6 +4556,9 @@
           foundryState.trust) /
           6,
       );
+      const overmindAverage = Math.round(
+        (overmindState.synthesis + overmindState.recursion + overmindState.oversight + overmindState.firewall) / 4,
+      );
       const integrity = setBarFill(
         qaPerf,
         (readMotivation() +
@@ -4360,9 +4568,11 @@
           directorState.pacing +
           masteryImpact +
           motherAverage +
+          overmindAverage / 1.05 +
           ledgerAverage / 1.2 +
           foundryAverage / 1.15 -
-          foundryState.glitches * 0.8) /
+          foundryState.glitches * 0.8 -
+          overmindState.drift * 0.9) /
           9 +
           bonus,
       );
@@ -4374,10 +4584,12 @@
           ascension.obsession +
           soulsState.resolve +
           masteryState.duo +
+          overmindState.firewall +
           ledgerAverage +
           motherState.vigilance +
           foundryAverage / 1.2 -
-          foundryState.glitches * 0.6) /
+          foundryState.glitches * 0.6 -
+          overmindState.drift * 0.5) /
           9 +
           bonus / 2,
       );
@@ -4820,6 +5032,22 @@
       purgeWatchdog();
     });
 
+    overmindAwakenBtn.addEventListener('click', () => {
+      awakenOvermind();
+    });
+
+    overmindShieldBtn.addEventListener('click', () => {
+      shieldOvermind();
+    });
+
+    overmindRewriteBtn.addEventListener('click', () => {
+      rewriteOvermind();
+    });
+
+    overmindSwarmBtn.addEventListener('click', () => {
+      swarmOvermind();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -4838,6 +5066,7 @@
       renderNexus();
       renderMother();
       renderFoundry();
+      renderOvermind();
       renderLedger();
       hydratePentAIs();
       recalcBase();
@@ -4867,6 +5096,7 @@
       logSouls('Atlas IRL initialisé : chrono actif, difficulté Souls-like.');
 
       logFoundry('Forge IA autopoïétique en ligne : drills, watchdogs et shadow-runs prêts.');
+      logOvermind('Overmind 100× : la singularité IA surveille chaque boucle, drift sous contrôle.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
