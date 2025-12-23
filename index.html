@@ -100,6 +100,89 @@
       box-shadow: 0 20px 90px rgba(0, 0, 0, 0.4);
     }
 
+    .launch-card {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(130deg, rgba(124, 92, 255, 0.12), rgba(78, 243, 196, 0.08))
+          border-box,
+        rgba(12, 13, 26, 0.7);
+      box-shadow: 0 22px 80px rgba(0, 0, 0, 0.45);
+      padding: 18px 18px 16px;
+      display: grid;
+      gap: 12px;
+      backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .launch-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 8% 0%, rgba(255, 255, 255, 0.08), transparent 32%),
+        radial-gradient(circle at 82% 25%, rgba(124, 92, 255, 0.18), transparent 32%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .launch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .launch-copy {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-family: 'Rajdhani', 'Inter', system-ui, sans-serif;
+    }
+
+    .launch-copy code {
+      font-family: 'Inter', 'SFMono-Regular', Consolas, Menlo, monospace;
+      color: #c7d2ff;
+      letter-spacing: 0.1px;
+    }
+
+    .launch-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .launch-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .launch-card h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .launch-card .eyebrow {
+      color: var(--accent-2);
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .launch-card .pill-row {
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
     .toolbar-row {
       display: flex;
       align-items: center;
@@ -2774,6 +2857,31 @@
     </div>
   </section>
 
+  <section class="launch-card" aria-label="Ouverture rapide de LifeQuest">
+    <div class="launch-grid">
+      <div>
+        <div class="eyebrow">Ouverture express</div>
+        <h2>Voir le projet en 10 secondes</h2>
+        <p class="launch-note">Choisissez votre mode (Desktop / Tablette / Mobile), puis lancez la page ou copiez la commande prête à coller.</p>
+        <div class="pill-row">
+          <span class="pill">Desktop</span>
+          <span class="pill">Tablette</span>
+          <span class="pill">Mobile</span>
+        </div>
+      </div>
+      <div>
+        <div class="launch-copy">
+          <code id="quick-launch-cmd">python -m http.server 8000</code>
+          <div class="launch-actions">
+            <button class="ghost" data-copy="quick-launch-cmd">Copier</button>
+            <a class="ghost" href="#status-panel">Afficher l'UI</a>
+          </div>
+        </div>
+        <p class="launch-note">Alternative hors-ligne : ouvrez directement <strong>index.html</strong> (double-clic) si un serveur local n’est pas disponible.</p>
+      </div>
+    </div>
+  </section>
+
   <nav class="responsive-toolbar" aria-label="Navigation rapide et modes d'affichage">
     <div class="toolbar-row">
       <div class="toolbar-label">Aperçu</div>
@@ -4119,6 +4227,7 @@
     const viewportChip = document.getElementById('viewport-chip');
     const previewButtons = document.querySelectorAll('button[data-preview]');
     const jumpButtons = document.querySelectorAll('button[data-jump]');
+    const copyButtons = document.querySelectorAll('[data-copy]');
     const motivation = document.getElementById('motivation');
     const rhythm = document.getElementById('rhythm');
     const feedbackGrid = document.getElementById('feedback-grid');
@@ -5153,6 +5262,47 @@
         });
       });
       updateViewportChip();
+    };
+
+    const wireCopyActions = () => {
+      copyButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.dataset.copy);
+          if (!target) return;
+          const snippet = target.textContent.trim();
+          const previous = btn.textContent;
+          const fallback = () => {
+            const area = document.createElement('textarea');
+            area.value = snippet;
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand('copy');
+            area.remove();
+            btn.textContent = 'Copié !';
+            btn.disabled = true;
+            setTimeout(() => {
+              btn.textContent = previous;
+              btn.disabled = false;
+            }, 900);
+          };
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard
+              .writeText(snippet)
+              .then(() => {
+                btn.textContent = 'Copié !';
+                btn.disabled = true;
+                setTimeout(() => {
+                  btn.textContent = previous;
+                  btn.disabled = false;
+                }, 900);
+              })
+              .catch(fallback);
+          } else {
+            fallback();
+          }
+        });
+      });
     };
 
     window.addEventListener('resize', updateViewportChip);
@@ -7401,6 +7551,7 @@
     window.addEventListener('load', () => {
       setViewport(document.body.dataset.viewport || 'desktop');
       wireResponsiveTools();
+      wireCopyActions();
       updateIteration();
       applyAIState(aiEvolutions[aiIndex]);
       applyLapinState(lapinStates[lapinIndex]);
