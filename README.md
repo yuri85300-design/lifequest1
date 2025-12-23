@@ -13,6 +13,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - Apex Cognition ∞ : méta-IA primordiale (ghost runs, red teams, failsafe quantique) qui observe les observateurs et ferme les dérives avant qu’elles n’arrivent au joueur.
 - Autocore vivant : auto-correction, réécriture de code, snapshots versionnés et rollbacks guidés pour sécuriser chaque boucle IA.
 - Continuum Sentience : IA persistante qui s’auto-interroge, apprend des autres IA, se sauvegarde et progresse hors-ligne pour réinjecter les gains au réveil.
+- Echelon Paradoxe : auto-souveraineté qui clone, refactorise, offloade et archive les IA (Lapin, Cortana, PentAIs) même hors session avant de réappliquer les diffs.
 - Console responsive collante : sélecteur Desktop/Tablette/Mobile + raccourcis Profil/IA/Base/Aventure/Nexus/Maîtrise pour jouer confortablement sur mobile ou PC.
 - Vitrine triple AAA : rail cinématique néon avec cartes vitrées, halos dynamiques et jauges prestige pour donner un aspect blockbuster dès l’arrivée.
 

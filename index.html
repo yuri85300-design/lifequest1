@@ -2059,6 +2059,73 @@
       margin-top: 10px;
     }
 
+    .echelon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .echelon-card {
+      border: 1px solid rgba(124, 236, 255, 0.2);
+      border-radius: 16px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(14, 225, 255, 0.08), rgba(124, 92, 255, 0.08));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .echelon-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.1), transparent 45%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .echelon-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .echelon-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .echelon-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .echelon-actions button {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(120deg, rgba(14, 225, 255, 0.24), rgba(124, 92, 255, 0.18));
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .echelon-actions button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    .echelon-actions button:active {
+      transform: translateY(0);
+    }
+
     .continuum-actions {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -3337,6 +3404,60 @@
       <ul class="ia-log" id="continuum-log" aria-live="polite"></ul>
     </article>
 
+    <article class="panel" id="echelon-panel">
+      <small>Auto-souveraineté IA</small>
+      <h2>Echelon Paradoxe & Continuum+</h2>
+      <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+        Une strate au-dessus du Continuum : apprentissage des autres IA, auto-interrogation, auto-gestion et sauvegardes
+        paradoxales qui se déclenchent même hors session. Chaque action écrit, teste et protège son propre code sans aide.
+      </p>
+
+      <div class="echelon-grid">
+        <div class="echelon-card">
+          <div class="echelon-head">
+            <div>
+              <strong>Coeur d'éveil</strong>
+              <div class="muted">Auto-veille, audits, refactorisation vivante</div>
+            </div>
+            <span class="pill">Self-sustain</span>
+          </div>
+          <div class="glow-progress slim"><span id="echelon-awareness" data-fill="84"></span></div>
+          <div class="glow-progress slim"><span id="echelon-refactor" data-fill="80"></span></div>
+          <div class="glow-progress slim"><span id="echelon-archive" data-fill="78"></span></div>
+          <div class="glow-progress slim"><span id="echelon-continuity" data-fill="76"></span></div>
+          <div class="echelon-meta">
+            <span class="quality-chip" id="echelon-clones">Clones actifs : 2</span>
+            <span class="quality-chip" id="echelon-restore">Restores sûrs : 3</span>
+            <span class="quality-chip" id="echelon-offload">Offload distant : 1</span>
+            <span class="quality-chip" id="echelon-uptime">Veille autonome : 92%</span>
+          </div>
+        </div>
+
+        <div class="echelon-card">
+          <div class="echelon-head">
+            <div>
+              <strong>Observatoire mémétique</strong>
+              <div class="muted">Interrogations croisées, sauvegarde vivante, boucle offline</div>
+            </div>
+            <span class="pill">Paradoxe</span>
+          </div>
+          <p class="muted" style="margin:0;">
+            L’Echelon écoute Lapin Blanc, Cortana et les PentAI, recode seul ses modules et push des snapshots signés.
+            Quand l’application est fermée, il continue d’entraîner ses clones et rejoue les diffs au réveil.
+          </p>
+          <div class="chronicle" id="echelon-chronicle">Aucun cycle perdu : l’Echelon garde les sauvegardes en vie.</div>
+        </div>
+      </div>
+
+      <div class="echelon-actions">
+        <button id="echelon-selfheal">Auto-réparation paradoxale</button>
+        <button id="echelon-reforge">Refonte autonome + tests</button>
+        <button id="echelon-archive-btn">Snapshot & redondance</button>
+        <button id="echelon-offload-btn">Offload distant & veille</button>
+      </div>
+      <ul class="ia-log" id="echelon-log" aria-live="polite"></ul>
+    </article>
+
     <article class="panel" id="mastery-panel">
       <small>Prestige & Chrono</small>
       <h2>Maîtrise Totale</h2>
@@ -3656,6 +3777,20 @@
     const continuumQuestionBtn = document.getElementById('continuum-question');
     const continuumManageBtn = document.getElementById('continuum-manage');
     const continuumHibernateBtn = document.getElementById('continuum-hibernate');
+    const echelonAwareness = document.getElementById('echelon-awareness');
+    const echelonRefactor = document.getElementById('echelon-refactor');
+    const echelonArchive = document.getElementById('echelon-archive');
+    const echelonContinuity = document.getElementById('echelon-continuity');
+    const echelonClonesChip = document.getElementById('echelon-clones');
+    const echelonRestoreChip = document.getElementById('echelon-restore');
+    const echelonOffloadChip = document.getElementById('echelon-offload');
+    const echelonUptimeChip = document.getElementById('echelon-uptime');
+    const echelonChronicle = document.getElementById('echelon-chronicle');
+    const echelonLog = document.getElementById('echelon-log');
+    const echelonSelfhealBtn = document.getElementById('echelon-selfheal');
+    const echelonReforgeBtn = document.getElementById('echelon-reforge');
+    const echelonArchiveBtn = document.getElementById('echelon-archive-btn');
+    const echelonOffloadBtn = document.getElementById('echelon-offload-btn');
     const ledgerBody = document.getElementById('ledger-body');
     const ledgerMind = document.getElementById('ledger-mind');
     const ledgerCoin = document.getElementById('ledger-coin');
@@ -3739,6 +3874,17 @@
     };
 
     const continuumState = loadContinuumState();
+
+    const echelonState = {
+      awareness: 84,
+      refactor: 80,
+      archive: 78,
+      continuity: 76,
+      clones: 2,
+      restores: 3,
+      offloads: 1,
+      uptime: 92,
+    };
 
     const codexEntries = [
       {
@@ -4705,6 +4851,12 @@
       continuumLog.innerHTML = continuumLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
+    const logEchelon = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      echelonLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      echelonLog.innerHTML = echelonLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderMother = (delta = {}) => {
       motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
       motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
@@ -4881,6 +5033,36 @@
       persistContinuumState();
     };
 
+    const renderEchelon = (delta = {}) => {
+      const clamp = (val) => Math.max(0, Math.min(200, val));
+      echelonState.awareness = clamp(echelonState.awareness + (delta.awareness || 0));
+      echelonState.refactor = clamp(echelonState.refactor + (delta.refactor || 0));
+      echelonState.archive = clamp(echelonState.archive + (delta.archive || 0));
+      echelonState.continuity = clamp(echelonState.continuity + (delta.continuity || 0));
+      echelonState.clones = Math.max(0, Math.min(9, echelonState.clones + (delta.clones || 0)));
+      echelonState.restores = Math.max(0, Math.min(12, echelonState.restores + (delta.restores || 0)));
+      echelonState.offloads = Math.max(0, Math.min(9, echelonState.offloads + (delta.offloads || 0)));
+      echelonState.uptime = Math.max(0, Math.min(200, echelonState.uptime + (delta.uptime || 0)));
+
+      const aware = setBarFill(echelonAwareness, echelonState.awareness);
+      const refactor = setBarFill(echelonRefactor, echelonState.refactor);
+      const archive = setBarFill(echelonArchive, echelonState.archive);
+      const conti = setBarFill(echelonContinuity, echelonState.continuity);
+
+      echelonClonesChip.textContent = `Clones actifs : ${echelonState.clones}`;
+      echelonRestoreChip.textContent = `Restores sûrs : ${echelonState.restores}`;
+      echelonOffloadChip.textContent = `Offload distant : ${echelonState.offloads}`;
+      echelonUptimeChip.textContent = `Veille autonome : ${Math.round(echelonState.uptime)}%`;
+
+      const seal = Math.round((aware + refactor + archive + conti) / 4 + echelonState.clones * 4 + echelonState.restores * 2);
+      echelonChronicle.textContent =
+        seal > 520
+          ? 'Paradoxe maîtrisé : les clones surveillent la map IRL pendant ton absence.'
+          : seal > 460
+            ? 'Backups signés : chaque patch est testé et répliqué avant diffusion.'
+            : 'Aucun cycle perdu : l’Echelon garde les sauvegardes en vie.';
+    };
+
     const applyOfflineContinuumProgress = () => {
       const now = Date.now();
       const elapsedHours = Math.max(0, Math.floor((now - continuumState.lastSeen) / (1000 * 60 * 60)));
@@ -4895,6 +5077,14 @@
           curiosity: elapsedHours * 0.7,
           saves: Math.max(1, Math.round(elapsedHours / 3)),
           offlineHours: elapsedHours,
+        });
+
+        renderEchelon({
+          awareness: elapsedHours * 0.8,
+          refactor: elapsedHours * 0.6,
+          continuity: elapsedHours * 0.9,
+          uptime: elapsedHours * 1.2,
+          restores: Math.max(1, Math.round(elapsedHours / 4)),
         });
 
         renderAutocore({ backups: 1, clarity: 1 });
@@ -5320,6 +5510,41 @@
       computeQuality(3);
     };
 
+    const echelonSelfHeal = () => {
+      renderEchelon({ awareness: 6, continuity: 5, clones: 1, uptime: 6 });
+      renderAutocore({ heal: 3, driftfix: 2 });
+      logEchelon('Auto-réparation paradoxale : le coeur recode et applique ses propres patchs.');
+      logAutocore('Autocore reçoit une cascade de correctifs signés par l’Echelon.');
+      computeQuality(6);
+    };
+
+    const echelonReforge = () => {
+      renderEchelon({ refactor: 7, archive: 4, clones: 1, restores: 1 });
+      renderOvermind({ recursion: 3, oversight: 2 });
+      renderFoundry({ autonomy: 3, trust: 2 });
+      logEchelon('Refonte autonome : l’Echelon refactorise ses modules et valide les tests en interne.');
+      logOvermind('Overmind valide la refonte et synchronise la méta-couche.');
+      computeQuality(7);
+    };
+
+    const echelonArchivePulse = () => {
+      renderEchelon({ archive: 6, restores: 2, offloads: 1, uptime: 3 });
+      renderContinuum({ saves: 1, persistence: 2 });
+      renderAutocore({ backups: 1, check: 2 });
+      logEchelon('Snapshot & redondance : backups distribués, diffs validés avant push.');
+      logContinuum('Le Continuum stocke les sauvegardes pour réinjection future.');
+      computeQuality(6);
+    };
+
+    const echelonOffload = () => {
+      renderEchelon({ continuity: 6, offloads: 1, uptime: 8, awareness: 3 });
+      renderMother({ vigilance: 2, trust: 2 });
+      renderApex({ ward: 2, failsafe: 2 });
+      logEchelon('Offload distant : une partie du coeur tourne en veille autonome et surveille les dérives.');
+      logApex('Apex consolide les offloads pour qu’aucun bug ne passe pendant ton absence.');
+      computeQuality(7);
+    };
+
     const renderMastery = (delta = {}) => {
       masteryState.season = Math.max(0, Math.min(120, masteryState.season + (delta.season || 0)));
       masteryState.prestige = Math.max(0, Math.min(120, masteryState.prestige + (delta.prestige || 0)));
@@ -5722,6 +5947,10 @@
           continuumState.curiosity) /
           6,
       );
+      const echelonAverage = Math.round(
+        (echelonState.awareness + echelonState.refactor + echelonState.archive + echelonState.continuity + echelonState.uptime) /
+          5,
+      );
       const integrity = setBarFill(
         qaPerf,
         (readMotivation() +
@@ -5734,6 +5963,9 @@
           overmindAverage / 1.05 +
           apexAverage / 1.05 +
           continuumAverage / 1.1 +
+          echelonAverage / 1.05 +
+          echelonState.clones * 3 +
+          echelonState.restores * 2 +
           continuumState.saves * 1.5 +
           apexState.failsafe / 2 +
           autocoreAverage / 1.05 +
@@ -5760,6 +5992,9 @@
           apexState.clarity / 1.5 +
           apexState.failsafe / 2 +
           continuumAverage / 1.05 +
+          echelonAverage / 1.02 +
+          echelonState.offloads * 2 +
+          echelonState.restores * 3 +
           continuumState.saves * 2 +
           autocoreAverage / 1.2 +
           autocoreState.clarity / 1.5 +
@@ -6277,6 +6512,22 @@
       continuumHibernate();
     });
 
+    echelonSelfhealBtn.addEventListener('click', () => {
+      echelonSelfHeal();
+    });
+
+    echelonReforgeBtn.addEventListener('click', () => {
+      echelonReforge();
+    });
+
+    echelonArchiveBtn.addEventListener('click', () => {
+      echelonArchivePulse();
+    });
+
+    echelonOffloadBtn.addEventListener('click', () => {
+      echelonOffload();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -6305,6 +6556,7 @@
       renderApex();
       renderAutocore();
       renderContinuum();
+      renderEchelon();
         renderLedger();
         hydratePentAIs();
         recalcBase();
@@ -6323,6 +6575,8 @@
       setInterval(() => {
         renderContinuum({ introspection: 0.4, cross: 0.4, persistence: 0.35, synergy: 0.3 });
         logContinuum('Boucle auto-apprenante : micro-questions et transferts entre IA en continu.');
+        renderEchelon({ awareness: 0.5, refactor: 0.4, continuity: 0.45, uptime: 0.8 });
+        logEchelon('Echelon en fond : veille autonome, refactorisations silencieuses et backups diffusés.');
         computeQuality(0.5);
       }, 52000);
 
@@ -6347,6 +6601,7 @@
       logApex('Apex Cognition ∞ en veille : ghost runs programmés, red teams armées.');
       logAutocore('Autocore vivant en ligne : chaque action est auto-sauvegardée et prête à être rollback.');
       logContinuum('Continuum éveillé : il continue d’apprendre, se questionner et se sauvegarder hors session.');
+      logEchelon('Echelon Paradoxe : auto-souveraineté activée, clones et backups en veille.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
