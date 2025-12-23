@@ -1297,6 +1297,53 @@
       margin-top: 12px;
     }
 
+    .mastery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .mastery-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .mastery-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mastery-head strong {
+      letter-spacing: 0.3px;
+    }
+
+    .mastery-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mastery-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+    }
+
+    .chronicle {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 8px;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .director-grid,
     .souls-grid {
       display: grid;
@@ -2190,6 +2237,76 @@
         </div>
       </article>
 
+      <article class="panel" id="mastery-panel">
+        <small>Prestige & Chrono</small>
+        <h2>Maîtrise Totale</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Saison, prestige, chrono IRL et raids coop : la couche la plus exigeante pour adultes qui gamifient tout.
+        </p>
+        <div class="mastery-grid">
+          <div class="mastery-card">
+            <div class="mastery-head">
+              <div>
+                <strong>Cycle de saison</strong>
+                <div class="muted">Dark fantasy + IRL</div>
+              </div>
+              <span class="pill">Soulslike</span>
+            </div>
+            <div class="glow-progress slim"><span id="mastery-season" data-fill="64"></span></div>
+            <div class="mastery-meta">
+              <span class="quality-chip" id="mastery-prestige-chip">Prestige 24%</span>
+              <span class="quality-chip" id="mastery-streak">Streak prestige x2</span>
+            </div>
+            <div class="mastery-actions">
+              <button data-master="saison">Relancer une saison</button>
+              <button data-master="reset">Sacrifice & Prestige</button>
+            </div>
+            <div class="chronicle">Reset volontaire type roguelite : on gagne en lore, on perd en confort.</div>
+          </div>
+
+          <div class="mastery-card">
+            <div class="mastery-head">
+              <div>
+                <strong>Chrono & Ironman</strong>
+                <div class="muted">Temps réel + sport + budget</div>
+              </div>
+              <span class="pill">Hardmode</span>
+            </div>
+            <div class="glow-progress slim"><span id="mastery-ironman" data-fill="46"></span></div>
+            <div class="mastery-meta">
+              <span class="chrono-chip" id="mastery-chrono">Run en cours : 38:00</span>
+              <span class="quality-chip" id="mastery-capstone">Indice méta : 72%</span>
+            </div>
+            <div class="mastery-actions">
+              <button data-master="chrono">Accélérer le chrono</button>
+              <button data-master="raid">Raid IRL (Sport/Culture)</button>
+            </div>
+            <div class="chronicle">Les timers réalistes déclenchent le Directeur Left 4 FEAR et les boss IRL.</div>
+          </div>
+
+          <div class="mastery-card">
+            <div class="mastery-head">
+              <div>
+                <strong>Duo Lapin ↔ Cortana</strong>
+                <div class="muted">Auto-patching, sarcasme, coaching</div>
+              </div>
+              <span class="pill">Synergie</span>
+            </div>
+            <div class="glow-progress slim"><span id="mastery-duo" data-fill="66"></span></div>
+            <div class="mastery-meta">
+              <span class="quality-chip" id="mastery-raid">Raids enchaînés : 58%</span>
+              <span class="quality-chip">Auto-buff : +IA</span>
+            </div>
+            <div class="mastery-actions">
+              <button data-master="duo">Coaching croisé</button>
+              <button data-master="raid">Push raid + logs</button>
+            </div>
+            <div class="chronicle">Les deux IA se challengent façon Left 4 FEAR pour serrer la difficulté.</div>
+          </div>
+        </div>
+        <ul class="ia-log" id="mastery-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel">
         <small>RPG Réel</small>
         <h2>Objectifs IRL</h2>
@@ -2331,6 +2448,16 @@
     const baseScanBtn = document.getElementById('base-scan');
     const baseAutoBtn = document.getElementById('base-auto');
     const baseAlert = document.getElementById('base-alert');
+    const masterySeason = document.getElementById('mastery-season');
+    const masteryPrestigeChip = document.getElementById('mastery-prestige-chip');
+    const masteryStreakChip = document.getElementById('mastery-streak');
+    const masteryIronman = document.getElementById('mastery-ironman');
+    const masteryChronoChip = document.getElementById('mastery-chrono');
+    const masteryCapstone = document.getElementById('mastery-capstone');
+    const masteryDuo = document.getElementById('mastery-duo');
+    const masteryRaidChip = document.getElementById('mastery-raid');
+    const masteryButtons = document.querySelectorAll('#mastery-panel button[data-master]');
+    const masteryLog = document.getElementById('mastery-log');
     const resEnergy = document.getElementById('res-energy');
     const resMat = document.getElementById('res-mat');
     const resInfluence = document.getElementById('res-influence');
@@ -2432,6 +2559,17 @@
       influence: 61,
       guard: 72,
       threat: 12,
+    };
+
+    const masteryState = {
+      season: 64,
+      prestige: 24,
+      ironman: 46,
+      chrono: 38 * 60,
+      raid: 58,
+      duo: 66,
+      streak: 2,
+      capstone: 72,
     };
 
     const adventureState = {
@@ -2803,6 +2941,7 @@
     let aiIndex = 0;
     const aiHistory = [];
     const qaHistory = [];
+    const masteryHistory = [];
 
     const lapinStates = [
       {
@@ -3013,6 +3152,15 @@
       qaHistory.unshift({ stamp, text });
       qaLog.innerHTML = qaHistory
         .slice(0, 4)
+        .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
+    const logMastery = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      masteryHistory.unshift({ stamp, text });
+      masteryLog.innerHTML = masteryHistory
+        .slice(0, 5)
         .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
         .join('');
     };
@@ -3240,6 +3388,36 @@
       renderBaseMap();
     };
 
+    const renderMastery = (delta = {}) => {
+      masteryState.season = Math.max(0, Math.min(120, masteryState.season + (delta.season || 0)));
+      masteryState.prestige = Math.max(0, Math.min(120, masteryState.prestige + (delta.prestige || 0)));
+      masteryState.ironman = Math.max(0, Math.min(120, masteryState.ironman + (delta.ironman || 0)));
+      masteryState.chrono = Math.max(18 * 60, masteryState.chrono + (delta.chrono || 0));
+      masteryState.raid = Math.max(0, Math.min(120, masteryState.raid + (delta.raid || 0)));
+      masteryState.duo = Math.max(0, Math.min(120, masteryState.duo + (delta.duo || 0)));
+      masteryState.streak = Math.max(1, Math.min(20, masteryState.streak + (delta.streak || 0)));
+      masteryState.capstone = Math.max(0, Math.min(120, masteryState.capstone + (delta.capstone || 0)));
+
+      const seasonScore = setBarFill(masterySeason, masteryState.season);
+      const ironmanScore = setBarFill(masteryIronman, masteryState.ironman);
+      const duoScore = setBarFill(masteryDuo, masteryState.duo);
+
+      masteryPrestigeChip.textContent = `Prestige ${Math.round(masteryState.prestige)}%`;
+      masteryStreakChip.textContent = `Streak prestige x${masteryState.streak}`;
+      masteryChronoChip.textContent = `Run en cours : ${formatChrono(masteryState.chrono)}`;
+      masteryCapstone.textContent = `Indice méta : ${Math.round(masteryState.capstone)}%`;
+      masteryRaidChip.textContent = `Raids enchaînés : ${Math.round(masteryState.raid)}%`;
+
+      const chronicle = masterySeason.closest('.mastery-card')?.querySelector('.chronicle');
+      if (chronicle) {
+        chronicle.textContent =
+          seasonScore > 90
+            ? 'Cycle d\'élite : récompenses doublées, difficulté maximale.'
+            : 'Reset volontaire type roguelite : on gagne en lore, on perd en confort.';
+      }
+
+    };
+
     const renderAdventureHUD = () => {
       const hpScore = setBarFill(heroHpBar, adventureState.hp);
       const moraleScore = setBarFill(heroMoraleBar, adventureState.morale);
@@ -3383,6 +3561,43 @@
       logLapin('Lapin Blanc note chaque cadence : zéro erreur permise.');
       computeQuality(2);
       refreshAIFromPlayer(4);
+    };
+
+    const runMasteryAction = (action) => {
+      if (action === 'saison') {
+        renderMastery({ season: 8, streak: 1, prestige: 2 });
+        recalcBase({ influence: 2, energy: 2 });
+        renderDirector({ pacing: 4, tension: 3 });
+        logMastery('Nouvelle saison lancée : exigences soul-like + buff ressources.');
+        computeQuality(3);
+      } else if (action === 'reset') {
+        renderMastery({ prestige: 8, season: -6, capstone: 4, streak: 1 });
+        adventureState.streak = 1;
+        soulsState.streak = 1;
+        renderAdventureHUD();
+        renderSoulsHUD({ resolve: 2, focus: 2 });
+        renderDirector({ pacing: -3, horde: -4 });
+        logMastery('Prestige : on sacrifie du confort pour des buffs permanents.');
+        computeQuality(4);
+      } else if (action === 'chrono') {
+        renderMastery({ chrono: -120, ironman: 6, capstone: 2 });
+        renderDirector({ chrono: -120, tension: 4, pacing: 4 });
+        renderSoulsHUD({ chrono: -90, stamina: -2, resolve: 3 });
+        logMastery('Chrono réduit : mode Ironman activé, le Directeur resserre le pacing.');
+        refreshAIFromPlayer(5);
+      } else if (action === 'raid') {
+        applyAdventureDelta({ enemy: 6, danger: 4, morale: 3 });
+        renderAdventureHUD();
+        syncBaseAndLoops({ base: { energy: 3, influence: 2 }, asc: 2 });
+        renderMastery({ raid: 6, capstone: 2 });
+        logMastery('Raid IRL déclenché : sport/culture synchronisés aux ressources de base.');
+        computeQuality(2);
+      } else if (action === 'duo') {
+        renderMastery({ duo: 6, capstone: 3 });
+        logMastery('Coaching croisé Lapin ↔ Cortana : sarcasme + guidance en tandem.');
+        refreshAIFromPlayer(6);
+        computeQuality(1);
+      }
     };
 
     const upgradeBuilding = () => {
@@ -3542,16 +3757,18 @@
 
     const computeQuality = (bonus = 0) => {
       const toleranceValue = 100 - parseInt(tolerance.textContent);
+      const masteryImpact = (masteryState.capstone + masteryState.ironman + masteryState.prestige) / 3;
       const integrity = setBarFill(
         qaPerf,
-        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue + ascensionAverage() + directorState.pacing) / 5 +
+        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue + ascensionAverage() + directorState.pacing + masteryImpact) /
+          6 +
           bonus,
       );
       const resilience = setBarFill(
         qaResilience,
         (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent) + ascension.obsession +
-          soulsState.resolve) /
-          5 +
+          soulsState.resolve + masteryState.duo) /
+          6 +
           bonus / 2,
       );
 
@@ -3869,6 +4086,10 @@
       autoOptimizeBase();
     });
 
+    masteryButtons.forEach((btn) => {
+      btn.addEventListener('click', () => runMasteryAction(btn.dataset.master));
+    });
+
     exploreQuestBtn.addEventListener('click', () => {
       launchExploration();
     });
@@ -3960,6 +4181,7 @@
       recalcBase();
       renderQuestBoard();
       renderAdventureHUD();
+      renderMastery();
       animateBars();
       logBase('Base en ligne : ressources stabilisées, constructions prêtes.');
       computeQuality();
@@ -3972,6 +4194,8 @@
       logNexus('Nexus initialisé : la boucle Exo-Ascension surveille tout.');
 
       logAdventure('Hub vivant : Celia attend tes ordres, la taverne bourdonne.');
+
+      logMastery('Mode Maîtrise chargé : saison, chrono et duo IA prêts.');
 
       renderDirector();
       renderSoulsHUD();

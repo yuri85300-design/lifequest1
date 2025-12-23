@@ -20,3 +20,4 @@ Une capture récente est jointe aux artefacts du PR (vue 1400x900).
 ## Notes de compatibilité
 - Optimisée pour Chrome/Edge récents ; animations réduites si `prefers-reduced-motion` est actif.
 - Aucun build requis : tout est contenu dans `index.html`.
+- Nouvelle couche « Maîtrise Totale » : saisons prestige, chrono Ironman, et duo Lapin ↔ Cortana pour pousser chaque quête IRL.
