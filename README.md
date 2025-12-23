@@ -6,6 +6,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - HUD néon avec stats joueur, itérations Léna, mentor IA et ascension/nexus.
 - Lapin Blanc & Cortana évolutifs : logs, audits, auto-patchs et synergie.
 - Codex omniscient, boucle dopamine, base stratégique et carte holographique.
+- Directeur Left 4 FEAR + panel Soulsborne IRL : tension adaptative, chrono, atlas géant et quêtes sport/culture/finances façon Dark Souls.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :

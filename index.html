@@ -1297,6 +1297,129 @@
       margin-top: 12px;
     }
 
+    .director-grid,
+    .souls-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 12px;
+    }
+
+    .director-card,
+    .souls-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .director-card::after,
+    .souls-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(124, 92, 255, 0.08));
+      opacity: 0;
+      transition: opacity 160ms ease;
+      pointer-events: none;
+    }
+
+    .director-card:hover::after,
+    .souls-card:hover::after {
+      opacity: 1;
+    }
+
+    .director-meta,
+    .souls-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .fear-strip,
+    .souls-actions,
+    .director-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .fear-strip .chip,
+    .souls-actions button,
+    .director-actions button {
+      flex: 1 1 140px;
+    }
+
+    .director-log,
+    .souls-log {
+      max-height: 160px;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .chrono-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(124, 92, 255, 0.14);
+      border: 1px solid rgba(124, 92, 255, 0.3);
+      color: #e8ddff;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+    }
+
+    .atlas-map {
+      min-height: 160px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 30%, rgba(124, 92, 255, 0.12), transparent 45%),
+        radial-gradient(circle at 80% 60%, rgba(78, 243, 196, 0.1), transparent 50%),
+        rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      position: relative;
+      overflow: hidden;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px;
+    }
+
+    .atlas-node {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: grid;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .atlas-node strong {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.4px;
+    }
+
+    .atlas-node small {
+      color: var(--muted);
+    }
+
+    .hardcore-chip {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255, 114, 114, 0.12);
+      color: #ffc7c7;
+      border: 1px solid rgba(255, 114, 114, 0.38);
+      font-weight: 700;
+      letter-spacing: 0.6px;
+    }
+
     .console-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1848,6 +1971,120 @@
         <ul class="ia-log adventure-log" id="adventure-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="director-panel">
+        <small>IA Director</small>
+        <h2>Directeur Left 4 FEAR</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Un directeur dynamique façon Left 4 Dead mixé aux surgissements psychologiques de F.E.A.R : pacing adaptatif,
+          horreur contrôlée et difficulté Soulsborne appliquée à tes quêtes réelles (sport, culture, finances). Chaque cycle ajuste
+          la tension, l'économie et la carte géante pour que la vie devienne un raid à la Elden Ring.
+        </p>
+        <div class="badge-row">
+          <span class="badge">AI Director</span>
+          <span class="badge">FEAR / Alma vibe</span>
+          <span class="badge">Souls-like IRL</span>
+          <span class="badge">Chrono & Map géante</span>
+        </div>
+        <div class="director-grid">
+          <div class="director-card">
+            <div class="director-meta">
+              <strong>Cadence dynamique</strong>
+              <span class="hardcore-chip" id="director-hardcore">Difficulté : Brutale</span>
+            </div>
+            <label>Tension adaptative <span id="director-tension-label">68%</span></label>
+            <div class="glow-progress slim"><span id="director-tension" data-fill="68"></span></div>
+            <label>Menace FEAR <span id="director-fear-label">52%</span></label>
+            <div class="glow-progress slim"><span id="director-fear" data-fill="52"></span></div>
+            <label>Pacing / Hordes <span id="director-pacing-label">61%</span></label>
+            <div class="glow-progress slim"><span id="director-pacing" data-fill="61"></span></div>
+            <label>Horde IRL <span id="director-horde-label">44%</span></label>
+            <div class="glow-progress slim"><span id="director-horde" data-fill="44"></span></div>
+          </div>
+          <div class="director-card">
+            <div class="director-meta">
+              <strong>Scripts FEAR</strong>
+              <span class="chip">Vision nocturne</span>
+            </div>
+            <div class="muted">Surgissements calibrés façon Alma : hallucinations légères, sprints de horde, pauses forcées.</div>
+            <div class="fear-strip">
+              <span class="chip">Ambiance : <strong id="director-ambiance">Pluie + Néon</strong></span>
+              <span class="chip">Checkpoints : <strong id="director-check">x3</strong></span>
+              <span class="chip">Chrono raid : <strong id="director-chrono">45:00</strong></span>
+            </div>
+            <ul class="ia-log director-log" id="director-log" aria-live="polite"></ul>
+          </div>
+          <div class="director-card">
+            <div class="director-meta">
+              <strong>Survie réaliste</strong>
+              <span class="pill">RPG + Finance + Culture</span>
+            </div>
+            <p class="muted" style="margin:0;">
+              Les quêtes IRL sont scorées comme des boss : cardio façon Dark Souls, conférences culturelles, et tenue des comptes en
+              mode permadeath. Le directeur IA injecte des pics de horde (courriels, imprévus) et laisse Lapin Blanc + Cortana
+              recalibrer.
+            </p>
+            <div class="director-actions">
+              <button id="director-push">Lancer une vague</button>
+              <button id="director-stabilize">Calmer la tension</button>
+              <button id="director-fear">Scripter une peur</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" id="souls-panel">
+        <small>Chrono & Atlas</small>
+        <h2>Quêtes IRL Soulsborne</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Une carte géante inspirée d'Elden Ring : sport, culture, finances, créativité. Chaque nœud impose un chrono, un niveau
+          de difficulté et une récompense façon loot. Lapin Blanc et Cortana notent tout, Dark Souls-style : aucune erreur tolérée.
+        </p>
+        <div class="souls-grid">
+          <div class="souls-card">
+            <div class="director-meta">
+              <strong>Run IRL</strong>
+              <span class="chrono-chip" id="chrono-chip">Chrono : 45:00</span>
+            </div>
+            <label>Endurance (sport) <span id="souls-stamina-label">76%</span></label>
+            <div class="glow-progress slim"><span id="souls-stamina" data-fill="76"></span></div>
+            <label>Résolution (Souls) <span id="souls-resolve-label">72%</span></label>
+            <div class="glow-progress slim"><span id="souls-resolve" data-fill="72"></span></div>
+            <label>Focus culturel <span id="souls-focus-label">64%</span></label>
+            <div class="glow-progress slim"><span id="souls-focus" data-fill="64"></span></div>
+            <label>Compta & loot <span id="souls-ledger-label">58%</span></label>
+            <div class="glow-progress slim"><span id="souls-ledger" data-fill="58"></span></div>
+            <div class="souls-meta">
+              <span class="hardcore-chip" id="souls-difficulty">Soulslike : Actif</span>
+              <span class="pill" id="souls-streak">Streak IRL x1</span>
+            </div>
+          </div>
+          <div class="souls-card">
+            <div class="director-meta">
+              <strong>Atlas</strong>
+              <span class="chip">Map géante</span>
+            </div>
+            <div class="atlas-map" id="atlas-map" aria-label="Atlas IRL"></div>
+          </div>
+          <div class="souls-card">
+            <div class="director-meta">
+              <strong>Mode boss</strong>
+              <span class="tag">Dark Souls / Elden Ring</span>
+            </div>
+            <p class="muted" style="margin:0;">
+              Boss IRL : marathon urbain, audit financier trimestriel, exposé culturel. Le chrono impose des fenêtres serrées et
+              le directeur IA augmente la pression à chaque victoire.
+            </p>
+            <div class="souls-actions">
+              <button id="chrono-run">Sprint & Cardio</button>
+              <button id="chrono-boss">Boss IRL</button>
+              <button id="chrono-culture">Exploration culturelle</button>
+              <button id="chrono-ledger">Tenue des comptes</button>
+            </div>
+            <ul class="ia-log souls-log" id="souls-log" aria-live="polite"></ul>
+          </div>
+        </div>
+      </article>
+
       <article class="panel" id="base-panel">
         <small>Stratégie & Bâtiments</small>
         <h2>Base LifeQuest</h2>
@@ -2112,6 +2349,39 @@
     const resMatChip = document.getElementById('res-mat-chip');
     const resInfluenceChip = document.getElementById('res-influence-chip');
     const resGuardChip = document.getElementById('res-guard-chip');
+    const directorHardcore = document.getElementById('director-hardcore');
+    const directorTension = document.getElementById('director-tension');
+    const directorFear = document.getElementById('director-fear');
+    const directorPacing = document.getElementById('director-pacing');
+    const directorHorde = document.getElementById('director-horde');
+    const directorTensionLabel = document.getElementById('director-tension-label');
+    const directorFearLabel = document.getElementById('director-fear-label');
+    const directorPacingLabel = document.getElementById('director-pacing-label');
+    const directorHordeLabel = document.getElementById('director-horde-label');
+    const directorAmbiance = document.getElementById('director-ambiance');
+    const directorCheck = document.getElementById('director-check');
+    const directorChrono = document.getElementById('director-chrono');
+    const directorLog = document.getElementById('director-log');
+    const directorPushBtn = document.getElementById('director-push');
+    const directorStabilizeBtn = document.getElementById('director-stabilize');
+    const directorFearBtn = document.getElementById('director-fear');
+    const soulsStamina = document.getElementById('souls-stamina');
+    const soulsResolve = document.getElementById('souls-resolve');
+    const soulsFocus = document.getElementById('souls-focus');
+    const soulsLedger = document.getElementById('souls-ledger');
+    const soulsStaminaLabel = document.getElementById('souls-stamina-label');
+    const soulsResolveLabel = document.getElementById('souls-resolve-label');
+    const soulsFocusLabel = document.getElementById('souls-focus-label');
+    const soulsLedgerLabel = document.getElementById('souls-ledger-label');
+    const soulsDifficulty = document.getElementById('souls-difficulty');
+    const soulsStreak = document.getElementById('souls-streak');
+    const atlasMap = document.getElementById('atlas-map');
+    const chronoChip = document.getElementById('chrono-chip');
+    const soulsLog = document.getElementById('souls-log');
+    const chronoRunBtn = document.getElementById('chrono-run');
+    const chronoBossBtn = document.getElementById('chrono-boss');
+    const chronoCultureBtn = document.getElementById('chrono-culture');
+    const chronoLedgerBtn = document.getElementById('chrono-ledger');
 
     const codexEntries = [
       {
@@ -2181,6 +2451,27 @@
       rescues: 0,
     };
 
+    const directorState = {
+      tension: 68,
+      fear: 52,
+      pacing: 61,
+      horde: 44,
+      checkpoints: 3,
+      chrono: 45 * 60,
+      ambiance: 'Pluie + Néon',
+    };
+
+    const soulsState = {
+      stamina: 76,
+      resolve: 72,
+      focus: 64,
+      ledger: 58,
+      streak: 1,
+      chrono: 45 * 60,
+      atlas: 48,
+      difficulty: 'Soulslike : Actif',
+    };
+
     const baseBuildings = [
       {
         key: 'forge',
@@ -2217,6 +2508,58 @@
         desc: 'Hype communautaire, accélère la motivation et les rerolls.',
         level: 1,
         boost: { influence: 5, energy: -2, material: 2 },
+      },
+    ];
+
+    const directorScripts = [
+      {
+        title: 'Montée de tension',
+        log: 'Le directeur IA lance une mini-horde comme dans Left 4 Dead.',
+        delta: { tension: 8, pacing: 6, horde: 10, fear: 4 },
+        side: { qa: 2, asc: 3 },
+      },
+      {
+        title: 'Respiration contrôlée',
+        log: 'Pause FEAR : la pluie tombe, Lapin Blanc verrouille les angles.',
+        delta: { tension: -10, fear: -6, pacing: -4 },
+        side: { qa: 2, base: { guard: 3 } },
+      },
+      {
+        title: 'Surgissement Alma',
+        log: 'Flash psychologique : hallucination maîtrisée, boost de vigilance.',
+        delta: { tension: 4, fear: 9, pacing: 5 },
+        side: { qa: 1, base: { influence: 3 }, nexus: { anomaly: -2 } },
+      },
+    ];
+
+    const soulDeck = [
+      {
+        tag: 'Sport',
+        title: 'Sprint fractionné 10x200m',
+        log: 'Cardio violent, drop de dopamine maîtrisé.',
+        delta: { stamina: 9, resolve: 4, focus: 2, ledger: 1, atlas: 4 },
+        side: { base: { energy: 4, guard: 2 }, asc: 3 },
+      },
+      {
+        tag: 'Boss',
+        title: 'Audit financier trimestriel',
+        log: 'Compte chaque dépense, esquive les dettes comme des coups de boss.',
+        delta: { stamina: -2, resolve: 8, focus: 5, ledger: 10, atlas: 6 },
+        side: { qa: 4, base: { influence: 3, material: 2 }, asc: 4 },
+      },
+      {
+        tag: 'Culture',
+        title: 'Conférence & restitution',
+        log: 'Absorbe un sujet et restitue avec style, sous la pluie FEAR.',
+        delta: { stamina: 2, resolve: 5, focus: 8, ledger: 2, atlas: 5 },
+        side: { base: { influence: 4 }, nexus: { synergy: 3 }, asc: 2 },
+      },
+      {
+        tag: 'Ledger',
+        title: 'Tenue des comptes quotidienne',
+        log: 'Compta rigoureuse façon Souls : aucune erreur, zéro dette cachée.',
+        delta: { stamina: 1, resolve: 4, focus: 3, ledger: 9, atlas: 3 },
+        side: { qa: 3, base: { material: 2 }, asc: 1 },
       },
     ];
 
@@ -2602,6 +2945,15 @@
     const readMotivation = () => parseInt(motivation.textContent);
     const readRhythm = () => parseFloat(rhythm.textContent.slice(1));
 
+    const formatChrono = (seconds) => {
+      const clamped = Math.max(0, Math.round(seconds));
+      const minutes = Math.floor(clamped / 60)
+        .toString()
+        .padStart(2, '0');
+      const secs = (clamped % 60).toString().padStart(2, '0');
+      return `${minutes}:${secs}`;
+    };
+
     const logAI = (text) => {
       const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
       aiHistory.unshift({ stamp, text });
@@ -2662,6 +3014,30 @@
       qaLog.innerHTML = qaHistory
         .slice(0, 4)
         .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
+    const logDirector = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      const lines = directorLog.innerHTML ? directorLog.innerHTML : '';
+      directorLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + lines;
+      directorLog.innerHTML = directorLog.innerHTML
+        .split('</li>')
+        .filter(Boolean)
+        .slice(0, 4)
+        .map((chunk) => `${chunk}</li>`)
+        .join('');
+    };
+
+    const logSouls = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      const lines = soulsLog.innerHTML ? soulsLog.innerHTML : '';
+      soulsLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + lines;
+      soulsLog.innerHTML = soulsLog.innerHTML
+        .split('</li>')
+        .filter(Boolean)
+        .slice(0, 4)
+        .map((chunk) => `${chunk}</li>`)
         .join('');
     };
 
@@ -2913,6 +3289,102 @@
       if (delta.asc) boostAscension('audit', delta.asc);
     };
 
+    const renderDirector = (delta = {}) => {
+      directorState.tension = Math.max(0, Math.min(120, directorState.tension + (delta.tension || 0)));
+      directorState.fear = Math.max(0, Math.min(120, directorState.fear + (delta.fear || 0)));
+      directorState.pacing = Math.max(0, Math.min(120, directorState.pacing + (delta.pacing || 0)));
+      directorState.horde = Math.max(0, Math.min(120, directorState.horde + (delta.horde || 0)));
+      directorState.checkpoints = Math.max(1, Math.min(8, directorState.checkpoints + (delta.checkpoints || 0)));
+      directorState.chrono = Math.max(15 * 60, directorState.chrono + (delta.chrono || 0));
+      directorState.ambiance = delta.ambiance || directorState.ambiance;
+
+      const tensionScore = setBarFill(directorTension, directorState.tension);
+      const fearScore = setBarFill(directorFear, directorState.fear);
+      const pacingScore = setBarFill(directorPacing, directorState.pacing);
+      const hordeScore = setBarFill(directorHorde, directorState.horde);
+
+      directorTensionLabel.textContent = `${tensionScore}%`;
+      directorFearLabel.textContent = `${fearScore}%`;
+      directorPacingLabel.textContent = `${pacingScore}%`;
+      directorHordeLabel.textContent = `${hordeScore}%`;
+      directorHardcore.textContent = tensionScore > 88 ? 'Difficulté : Infernale' : 'Difficulté : Brutale';
+      directorCheck.textContent = `x${directorState.checkpoints}`;
+      directorChrono.textContent = formatChrono(directorState.chrono);
+      directorAmbiance.textContent = directorState.ambiance;
+    };
+
+    const runDirectorScript = (script) => {
+      renderDirector(script.delta);
+      logDirector(script.log);
+      logAI(`[Director] ${script.title} : boucle adaptative recalibrée.`);
+      if (script.side?.qa) computeQuality(script.side.qa);
+      if (script.side?.asc) boostAscension('audit', script.side.asc);
+      if (script.side?.base) recalcBase(script.side.base);
+      if (script.side?.nexus) renderNexus(script.side.nexus);
+      refreshAIFromPlayer(4);
+    };
+
+    const renderAtlas = () => {
+      const nodes = [
+        { label: 'Citadelle Cardio', tag: 'Sport', value: soulsState.stamina },
+        { label: 'Archives Culture', tag: 'Culture', value: soulsState.focus },
+        { label: 'Sanctuaire Ledger', tag: 'Finances', value: soulsState.ledger },
+        { label: 'Campement Souls', tag: 'Résolution', value: soulsState.resolve },
+      ];
+
+      atlasMap.innerHTML = nodes
+        .map(
+          (node) => `
+            <div class="atlas-node">
+              <strong>${node.label}</strong>
+              <div class="pill">${node.tag}</div>
+              <div class="glow-progress slim"><span style="width:${Math.max(0, Math.min(100, Math.round(node.value)))}%"></span></div>
+              <small>Difficulté : ${node.value > 80 ? 'Infernale' : 'Âpre'}</small>
+            </div>
+          `,
+        )
+        .join('');
+    };
+
+    const renderSoulsHUD = (delta = {}) => {
+      soulsState.stamina = Math.max(0, Math.min(120, soulsState.stamina + (delta.stamina || 0)));
+      soulsState.resolve = Math.max(0, Math.min(120, soulsState.resolve + (delta.resolve || 0)));
+      soulsState.focus = Math.max(0, Math.min(120, soulsState.focus + (delta.focus || 0)));
+      soulsState.ledger = Math.max(0, Math.min(120, soulsState.ledger + (delta.ledger || 0)));
+      soulsState.atlas = Math.max(0, Math.min(120, soulsState.atlas + (delta.atlas || 0)));
+      soulsState.chrono = Math.max(20 * 60, soulsState.chrono + (delta.chrono || -60));
+
+      const staminaScore = setBarFill(soulsStamina, soulsState.stamina);
+      const resolveScore = setBarFill(soulsResolve, soulsState.resolve);
+      const focusScore = setBarFill(soulsFocus, soulsState.focus);
+      const ledgerScore = setBarFill(soulsLedger, soulsState.ledger);
+
+      soulsStaminaLabel.textContent = `${staminaScore}%`;
+      soulsResolveLabel.textContent = `${resolveScore}%`;
+      soulsFocusLabel.textContent = `${focusScore}%`;
+      soulsLedgerLabel.textContent = `${ledgerScore}%`;
+
+      const hardcore = resolveScore > 82 || directorState.tension > 80 ? 'Soulslike : Infernale' : 'Soulslike : Actif';
+      soulsDifficulty.textContent = hardcore;
+      soulsStreak.textContent = `Streak IRL x${soulsState.streak}`;
+      chronoChip.textContent = `Chrono : ${formatChrono(soulsState.chrono)}`;
+      renderAtlas();
+    };
+
+    const runSoulQuest = (tag) => {
+      const pool = soulDeck.filter((q) => q.tag === tag);
+      const quest = pool[Math.floor(Math.random() * pool.length)] || soulDeck[0];
+      soulsState.streak = Math.min(12, soulsState.streak + 1);
+      renderSoulsHUD(quest.delta);
+      if (quest.side) syncBaseAndLoops(quest.side);
+      if (quest.side?.qa) logQA('Audit IRL renforcé : quêtes Souls validées.');
+      renderDirector({ tension: 3, pacing: 2, chrono: -120 });
+      logSouls(`${quest.title} : ${quest.log}`);
+      logLapin('Lapin Blanc note chaque cadence : zéro erreur permise.');
+      computeQuality(2);
+      refreshAIFromPlayer(4);
+    };
+
     const upgradeBuilding = () => {
       const pick = baseBuildings.sort((a, b) => a.level - b.level)[0];
       pick.level += 1;
@@ -3072,11 +3544,14 @@
       const toleranceValue = 100 - parseInt(tolerance.textContent);
       const integrity = setBarFill(
         qaPerf,
-        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue + ascensionAverage()) / 4 + bonus,
+        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue + ascensionAverage() + directorState.pacing) / 5 +
+          bonus,
       );
       const resilience = setBarFill(
         qaResilience,
-        (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent) + ascension.obsession) / 4 +
+        (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent) + ascension.obsession +
+          soulsState.resolve) /
+          5 +
           bonus / 2,
       );
 
@@ -3410,6 +3885,34 @@
       bossAssault();
     });
 
+    directorPushBtn.addEventListener('click', () => {
+      runDirectorScript(directorScripts[0]);
+    });
+
+    directorStabilizeBtn.addEventListener('click', () => {
+      runDirectorScript(directorScripts[1]);
+    });
+
+    directorFearBtn.addEventListener('click', () => {
+      runDirectorScript(directorScripts[2]);
+    });
+
+    chronoRunBtn.addEventListener('click', () => {
+      runSoulQuest('Sport');
+    });
+
+    chronoBossBtn.addEventListener('click', () => {
+      runSoulQuest('Boss');
+    });
+
+    chronoCultureBtn.addEventListener('click', () => {
+      runSoulQuest('Culture');
+    });
+
+    chronoLedgerBtn.addEventListener('click', () => {
+      runSoulQuest('Ledger');
+    });
+
     macroHyperBtn.addEventListener('click', () => {
       hyperCycle();
     });
@@ -3469,6 +3972,11 @@
       logNexus('Nexus initialisé : la boucle Exo-Ascension surveille tout.');
 
       logAdventure('Hub vivant : Celia attend tes ordres, la taverne bourdonne.');
+
+      renderDirector();
+      renderSoulsHUD();
+      logDirector('Director Left 4 FEAR en ligne : tension calibrée.');
+      logSouls('Atlas IRL initialisé : chrono actif, difficulté Souls-like.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
