@@ -1112,6 +1112,64 @@
       font-size: 12px;
     }
 
+    .console-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 12px;
+    }
+
+    .console-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .console-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(124, 92, 255, 0.08), rgba(78, 243, 196, 0.08));
+      opacity: 0;
+      transition: opacity 160ms ease;
+      pointer-events: none;
+    }
+
+    .console-card:hover::after {
+      opacity: 1;
+    }
+
+    .console-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .console-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .console-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .console-log {
+      max-height: 160px;
+      overflow: hidden;
+      margin: 0;
+    }
+
     @keyframes drift {
       0% { transform: translateY(20px) translateX(0); }
       50% { transform: translateY(-14px) translateX(14px); }
@@ -1571,6 +1629,51 @@
         <ul class="ia-log base-log" id="base-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="console-panel">
+        <small>Macro contrôle</small>
+        <h2>Console du Stratège</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Orchestre toutes les boucles en un clic : hypercycle Lapin x Cortana, snapshots QA + base et stabilisation
+          instantanée pour éviter toute dérive.
+        </p>
+        <div class="console-grid">
+          <div class="console-card">
+            <div class="console-head">
+              <div>
+                <strong>Hypercycle total</strong>
+                <div class="muted">Itération stricte + QA + fusion IA</div>
+              </div>
+              <span class="tag">Lapin x Cortana</span>
+            </div>
+            <div class="glow-progress slim"><span id="macro-stability" data-fill="72"></span></div>
+            <div class="console-actions">
+              <button id="macro-hyper">Lancer un hypercycle</button>
+              <button id="macro-snapshot">Snapshot global</button>
+              <button id="macro-stabilize">Stabiliser</button>
+            </div>
+            <div class="console-meta">
+              <span class="quality-chip" id="macro-health">Stabilité : 72%</span>
+              <span class="quality-chip" id="macro-cycle-chip">Hypercycles : 0</span>
+              <span class="quality-chip" id="macro-snapshot-chip">Snapshots : 0</span>
+              <span class="quality-chip" id="macro-rescue-chip">Stabilisations : 0</span>
+            </div>
+          </div>
+          <div class="console-card">
+            <div class="console-head">
+              <div>
+                <strong>État consolidé</strong>
+                <div class="muted">QA + Base + Nexus + Ascension</div>
+              </div>
+              <span class="tag">Vision omnisciente</span>
+            </div>
+            <div class="muted" id="macro-stats">
+              QA 0% / 0%, Base 0%, Menace 0%, Obsession 0%, Nexus 0%
+            </div>
+            <ul class="ia-log console-log" id="macro-log" aria-live="polite"></ul>
+          </div>
+        </div>
+      </article>
+
       <article class="panel">
         <small>RPG Réel</small>
         <h2>Objectifs IRL</h2>
@@ -1700,6 +1803,16 @@
     const resMat = document.getElementById('res-mat');
     const resInfluence = document.getElementById('res-influence');
     const resGuard = document.getElementById('res-guard');
+    const macroStability = document.getElementById('macro-stability');
+    const macroHealth = document.getElementById('macro-health');
+    const macroCycleChip = document.getElementById('macro-cycle-chip');
+    const macroSnapshotChip = document.getElementById('macro-snapshot-chip');
+    const macroRescueChip = document.getElementById('macro-rescue-chip');
+    const macroStats = document.getElementById('macro-stats');
+    const macroLog = document.getElementById('macro-log');
+    const macroHyperBtn = document.getElementById('macro-hyper');
+    const macroSnapshotBtn = document.getElementById('macro-snapshot');
+    const macroStabilizeBtn = document.getElementById('macro-stabilize');
     const resEnergyChip = document.getElementById('res-energy-chip');
     const resMatChip = document.getElementById('res-mat-chip');
     const resInfluenceChip = document.getElementById('res-influence-chip');
@@ -1754,6 +1867,12 @@
       influence: 61,
       guard: 72,
       threat: 12,
+    };
+
+    const macroScore = {
+      cycles: 0,
+      snapshots: 0,
+      rescues: 0,
     };
 
     const baseBuildings = [
@@ -2618,6 +2737,59 @@
       logQA(`Optimisation : intégrité ${integrity}%, résilience ${resilience}%, motivation ${motivation.textContent}.`);
     };
 
+    const logMacro = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      macroLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      macroLog.innerHTML = macroLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
+    const refreshMacroCounters = () => {
+      macroCycleChip.textContent = `Hypercycles : ${macroScore.cycles}`;
+      macroSnapshotChip.textContent = `Snapshots : ${macroScore.snapshots}`;
+      macroRescueChip.textContent = `Stabilisations : ${macroScore.rescues}`;
+    };
+
+    const refreshMacroSnapshot = () => {
+      const { integrity, resilience } = computeQuality(2);
+      const baseAvg = Math.round((baseState.energy + baseState.material + baseState.influence + baseState.guard) / 4);
+      const stability = Math.max(
+        12,
+        Math.min(100, Math.round((integrity + resilience + baseAvg - baseState.threat / 1.6 + nexusState.synergy / 2) / 3)),
+      );
+      setBarFill(macroStability, stability);
+      macroHealth.textContent = `Stabilité : ${stability}%`;
+      macroStats.textContent = `QA ${integrity}% / ${resilience}%, Base ${baseAvg}%, Menace ${baseState.threat}%, Obsession ${ascension.obsession}%, Nexus ${nexusState.synergy}%`;
+      refreshMacroCounters();
+    };
+
+    const hyperCycle = () => {
+      macroScore.cycles += 1;
+      runIteration('iterate');
+      runDiagnostics();
+      autoOptimize();
+      fuseAIs();
+      renderNexus({ cycle: 4, synergy: 3 });
+      logMacro('Hypercycle complet : itération stricte + QA + fusion IA lancées.');
+      refreshMacroSnapshot();
+    };
+
+    const macroSnapshot = () => {
+      macroScore.snapshots += 1;
+      refreshMacroSnapshot();
+      logMacro('Snapshot consolidé : QA, base et ascension archivées.');
+    };
+
+    const macroStabilize = () => {
+      macroScore.rescues += 1;
+      renderNexus({ anomaly: -8, synergy: 3 });
+      recalcBase({ guard: 6, threat: -12, influence: 2 });
+      boostAscension('audit', 3);
+      refreshLapinAuto(2, 3, 2);
+      logMacro('Stabilisation rapide : menaces purgées, ascension resserrée.');
+      computeQuality(4);
+      refreshMacroSnapshot();
+    };
+
     const animateBars = () => {
       progressBars.forEach((bar) => {
         bar.style.width = `${bar.dataset.fill}%`;
@@ -2762,6 +2934,18 @@
       autoOptimizeBase();
     });
 
+    macroHyperBtn.addEventListener('click', () => {
+      hyperCycle();
+    });
+
+    macroSnapshotBtn.addEventListener('click', () => {
+      macroSnapshot();
+    });
+
+    macroStabilizeBtn.addEventListener('click', () => {
+      macroStabilize();
+    });
+
     nexusSimBtn.addEventListener('click', () => {
       simulateNexus();
     });
@@ -2800,6 +2984,9 @@
       computeQuality();
       logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
       handleButtons();
+
+      refreshMacroSnapshot();
+      logMacro('Console stratège initialisée : toutes les boucles sont reliées.');
 
       logNexus('Nexus initialisé : la boucle Exo-Ascension surveille tout.');
 
