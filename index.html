@@ -4119,17 +4119,85 @@
         .join('');
     };
 
-    const logSouls = (text) => {
-      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
-      const lines = soulsLog.innerHTML ? soulsLog.innerHTML : '';
-      soulsLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + lines;
-      soulsLog.innerHTML = soulsLog.innerHTML
-        .split('</li>')
-        .filter(Boolean)
-        .slice(0, 4)
-        .map((chunk) => `${chunk}</li>`)
-        .join('');
-    };
+      const logSouls = (text) => {
+        const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+        const lines = soulsLog.innerHTML ? soulsLog.innerHTML : '';
+        soulsLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + lines;
+        soulsLog.innerHTML = soulsLog.innerHTML
+          .split('</li>')
+          .filter(Boolean)
+          .slice(0, 4)
+          .map((chunk) => `${chunk}</li>`)
+          .join('');
+      };
+
+      const criticalElements = [
+        { id: 'motivation', el: motivation },
+        { id: 'rhythm', el: rhythm },
+        { id: 'feedback-grid', el: feedbackGrid },
+        { id: 'codex-grid', el: codexGrid },
+        { id: 'qa-log', el: qaLog },
+        { id: 'mastery-log', el: masteryLog },
+        { id: 'base-grid', el: baseGrid },
+        { id: 'base-map', el: baseMap },
+        { id: 'souls-log', el: soulsLog },
+      ];
+
+      const auditDomIntegrity = () => {
+        const missing = criticalElements.filter(({ el }) => !el).map(({ id }) => id);
+        if (missing.length) {
+          logQA(`Alerte DOM : éléments manquants (${missing.join(', ')}). Vérifie le markup.`);
+        } else {
+          logQA('Audit DOM : tous les panneaux critiques sont présents.');
+        }
+        return missing.length === 0;
+      };
+
+      const enforceRanges = (label, state, keys, max = 100) => {
+        const adjusted = [];
+        keys.forEach((key) => {
+          const raw = Number(state[key]);
+          const safe = Math.max(0, Math.min(max, Number.isFinite(raw) ? raw : 0));
+          if (!Number.isFinite(raw) || raw !== safe) {
+            state[key] = safe;
+            adjusted.push(`${label}.${key}`);
+          }
+        });
+        return adjusted;
+      };
+
+      const auditStateIntegrity = () => {
+        const corrections = [
+          ...enforceRanges('Base', baseState, ['energy', 'material', 'influence', 'guard', 'threat'], 130),
+          ...enforceRanges('Mother', motherState, ['charge', 'alignment', 'trust', 'vigilance'], 130),
+          ...enforceRanges('Foundry', foundryState, ['emergent', 'sentinel', 'shadow', 'autonomy', 'watchdog', 'trust'], 130),
+          ...enforceRanges('Overmind', overmindState, ['synthesis', 'recursion', 'oversight', 'firewall'], 130),
+          ...enforceRanges('Apex', apexState, ['cognition', 'foresight', 'redteam', 'ward', 'failsafe', 'clarity'], 130),
+          ...enforceRanges('Autocore', autocoreState, ['heal', 'rewrite', 'check', 'rollback', 'driftfix', 'clarity'], 130),
+          ...enforceRanges('Ledger', ledgerState, ['body', 'mind', 'coin', 'heart', 'muse'], 130),
+          ...enforceRanges('Ascension', ascension, ['shadow', 'script', 'reroll', 'obsession'], 130),
+        ];
+
+        if (corrections.length) {
+          logQA(`Corrections auto : ${corrections.length} jauges recadrées pour éviter les débordements.`);
+        } else {
+          logQA('Audit intégrité : jauges stables, aucune correction nécessaire.');
+        }
+      };
+
+      const auditProgressBars = () => {
+        progressBars.forEach((bar) => {
+          const target = Number(bar.dataset.fill || bar.style.width || 0);
+          setBarFill(bar, Number.isFinite(target) ? target : 0);
+        });
+      };
+
+      const runIntegrityAudit = () => {
+        auditProgressBars();
+        const domOk = auditDomIntegrity();
+        auditStateIntegrity();
+        return domOk;
+      };
 
     const renderBadges = (badges) => {
       aiBadges.innerHTML = badges.map((label) => `<span class="ai-badge">${label}</span>`).join('');
@@ -4348,11 +4416,15 @@
           : 'Snapshots prêts : rollback sans perte si une dérive passe.';
     };
 
-    const persistContinuumState = () => {
-      continuumState.lastSeen = Date.now();
-      if (typeof localStorage === 'undefined') return;
-      localStorage.setItem('lifequest-continuum', JSON.stringify(continuumState));
-    };
+      const persistContinuumState = () => {
+        continuumState.lastSeen = Date.now();
+        if (typeof localStorage === 'undefined') return;
+        try {
+          localStorage.setItem('lifequest-continuum', JSON.stringify(continuumState));
+        } catch (error) {
+          logQA('Snapshot local impossible : stockage indisponible ou saturé.');
+        }
+      };
 
     const renderContinuum = (delta = {}) => {
       const clamp = (val) => Math.max(0, Math.min(180, val));
@@ -5808,17 +5880,18 @@
       renderApex();
       renderAutocore();
       renderContinuum();
-      renderLedger();
-      hydratePentAIs();
-      recalcBase();
-      renderQuestBoard();
-      renderAdventureHUD();
-      renderMastery();
-      animateBars();
-      logBase('Base en ligne : ressources stabilisées, constructions prêtes.');
-      computeQuality();
-      logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
-      handleButtons();
+        renderLedger();
+        hydratePentAIs();
+        recalcBase();
+        renderQuestBoard();
+        renderAdventureHUD();
+        renderMastery();
+        runIntegrityAudit();
+        animateBars();
+        logBase('Base en ligne : ressources stabilisées, constructions prêtes.');
+        computeQuality();
+        logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
+        handleButtons();
 
       applyOfflineContinuumProgress();
 
