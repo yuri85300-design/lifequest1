@@ -6,6 +6,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - HUD néon avec stats joueur, itérations Léna, mentor IA et ascension/nexus.
 - Lapin Blanc & Cortana évolutifs : logs, audits, auto-patchs et synergie.
 - Codex omniscient, boucle dopamine, base stratégique et carte holographique.
+- StratOps • Quêtes dynamiques : cockpit holo (pacing/flow, carte tactique, actions instantanées) qui relie base, quêtes IRL et IA pour un ressenti encore plus addictif.
 - Directeur Left 4 FEAR + panel Soulsborne IRL : tension adaptative, chrono, atlas géant et quêtes sport/culture/finances façon Dark Souls.
 - NEXUS Mother 3.0 + cinq PentAIs (SPARK/SAGE/COIN/HEART/MUSE) reliées à un ledger IRL pour couvrir sport, culture, finances et relations en temps réel.
 - Nouvelle « Forge IA Autopoïétique » : drills émergents, shadow protocols, fusions Lapin↔Cortana et watchdogs anti-glitch.
