@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeQuest • Lanceur 1-clic</title>
+  <style>
+    :root {
+      --bg: radial-gradient(circle at 20% 20%, #1a1a2f 0%, #0b0b12 55%);
+      --accent: #7c5cff;
+      --accent-2: #4ef3c4;
+      --text: #e9eaf3;
+      --muted: #9aa0c2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 24px;
+    }
+    .card {
+      width: min(520px, 100%);
+      border-radius: 18px;
+      padding: 20px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(140deg, rgba(124, 92, 255, 0.2), rgba(78, 243, 196, 0.08)) border-box,
+        rgba(10, 11, 22, 0.8);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 26px 100px rgba(0, 0, 0, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -30% 10% auto -40%;
+      height: 240px;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 55%);
+      transform: rotate(-10deg);
+      opacity: 0.65;
+    }
+    h1 { margin: 6px 0 4px; font-size: 1.9rem; }
+    p { margin: 4px 0 10px; color: var(--muted); }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    button, a {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .primary {
+      background: linear-gradient(120deg, #7c5cff, #4ef3c4);
+      color: #0c0d1a;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    }
+    .ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-weight: 600;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p class="chip">Lanceur 1-clic</p>
+    <h1>Démarrage immédiat de LifeQuest</h1>
+    <p>Ce lanceur ouvre directement le tableau de bord principal. Gardez-le sur votre bureau ou ajoutez-le à l'écran d'accueil mobile pour un démarrage façon application.</p>
+    <div class="actions">
+      <button class="primary" id="launch-now">Ouvrir maintenant</button>
+      <a class="ghost" href="index.html" download>Enregistrer le lanceur</a>
+    </div>
+    <p id="status">Redirection automatique...</p>
+  </div>
+  <script>
+    const status = document.getElementById('status');
+    const launch = () => {
+      status.textContent = 'Lancement en cours...';
+      window.location.replace('index.html#status-panel');
+    };
+    document.getElementById('launch-now').addEventListener('click', launch);
+    setTimeout(launch, 400);
+  </script>
+</body>
+</html>
