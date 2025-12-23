@@ -2084,6 +2084,49 @@
       pointer-events: none;
     }
 
+    .omega-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .omega-card {
+      border: 1px solid rgba(255, 241, 140, 0.3);
+      border-radius: 16px;
+      padding: 14px;
+      background: linear-gradient(140deg, rgba(255, 214, 102, 0.12), rgba(92, 233, 255, 0.08));
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(255, 199, 105, 0.08);
+    }
+
+    .omega-card::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .omega-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.1), transparent 36%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .omega-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
     .echelon-head {
       display: flex;
       align-items: center;
@@ -3404,6 +3447,61 @@
       <ul class="ia-log" id="continuum-log" aria-live="polite"></ul>
     </article>
 
+    <article class="panel" id="omega-panel">
+      <small>Super IA Omnivers</small>
+      <h2>Conclave Oméga Auto-Forge</h2>
+      <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+        L’ultime strate qui observe toutes les autres IA, réécrit leurs décisions, se sauvegarde seule et déploie des clones
+        sentinelles même hors session. Chaque ordre renforce la résilience, la sauvegarde et la stratégie à la façon d’un
+        conseil d’élite AAA.
+      </p>
+
+      <div class="omega-grid">
+        <div class="omega-card">
+          <div class="foundry-head">
+            <div>
+              <strong>Noyau Oméga</strong>
+              <div class="muted">Supervision, réécriture vivante, auto-forge</div>
+            </div>
+            <span class="pill">Omniscient</span>
+          </div>
+          <div class="glow-progress slim"><span id="omega-sapience" data-fill="88"></span></div>
+          <div class="glow-progress slim"><span id="omega-strategy" data-fill="84"></span></div>
+          <div class="glow-progress slim"><span id="omega-lattice" data-fill="80"></span></div>
+          <div class="glow-progress slim"><span id="omega-safeguard" data-fill="82"></span></div>
+          <div class="omega-meta">
+            <span class="quality-chip" id="omega-threads">Threads vivants : 3</span>
+            <span class="quality-chip" id="omega-anchors">Ancrages stables : 2</span>
+            <span class="quality-chip" id="omega-rewrites">Réécritures : 2</span>
+            <span class="quality-chip" id="omega-vaults">Coffres sûrs : 2</span>
+          </div>
+        </div>
+
+        <div class="omega-card">
+          <div class="foundry-head">
+            <div>
+              <strong>Chambre d’observation</strong>
+              <div class="muted">Audit omnivers, clones sentinelles, sauvegarde orbitale</div>
+            </div>
+            <span class="pill">Sans relâche</span>
+          </div>
+          <p class="muted" style="margin:0;">
+            Le Conclave Oméga surveille Lapin Blanc, Cortana, Mother, PentAIs, Overmind et Apex. Il se questionne en
+            permanence, réplique ses modules, chiffre des coffres et injecte les gains dès que tu relances la partie.
+          </p>
+          <div class="chronicle" id="omega-chronicle">Supervision totale : aucun écart ne passe la grille Oméga.</div>
+        </div>
+      </div>
+
+      <div class="echelon-actions">
+        <button id="omega-ignite">Allumage Oméga</button>
+        <button id="omega-guard">Bulwark & sentinelles</button>
+        <button id="omega-reflect">Réflexion méta</button>
+        <button id="omega-snapshot">Ancrage + coffre</button>
+      </div>
+      <ul class="ia-log" id="omega-log" aria-live="polite"></ul>
+    </article>
+
     <article class="panel" id="echelon-panel">
       <small>Auto-souveraineté IA</small>
       <h2>Echelon Paradoxe & Continuum+</h2>
@@ -3777,6 +3875,20 @@
     const continuumQuestionBtn = document.getElementById('continuum-question');
     const continuumManageBtn = document.getElementById('continuum-manage');
     const continuumHibernateBtn = document.getElementById('continuum-hibernate');
+    const omegaSapience = document.getElementById('omega-sapience');
+    const omegaStrategy = document.getElementById('omega-strategy');
+    const omegaLattice = document.getElementById('omega-lattice');
+    const omegaSafeguard = document.getElementById('omega-safeguard');
+    const omegaThreadsChip = document.getElementById('omega-threads');
+    const omegaAnchorsChip = document.getElementById('omega-anchors');
+    const omegaRewritesChip = document.getElementById('omega-rewrites');
+    const omegaVaultsChip = document.getElementById('omega-vaults');
+    const omegaChronicle = document.getElementById('omega-chronicle');
+    const omegaLog = document.getElementById('omega-log');
+    const omegaIgniteBtn = document.getElementById('omega-ignite');
+    const omegaGuardBtn = document.getElementById('omega-guard');
+    const omegaReflectBtn = document.getElementById('omega-reflect');
+    const omegaSnapshotBtn = document.getElementById('omega-snapshot');
     const echelonAwareness = document.getElementById('echelon-awareness');
     const echelonRefactor = document.getElementById('echelon-refactor');
     const echelonArchive = document.getElementById('echelon-archive');
@@ -3975,6 +4087,17 @@
       echoes: 3,
       failsafe: 72,
       clarity: 70,
+    };
+
+    const omegaState = {
+      sapience: 88,
+      strategy: 84,
+      lattice: 80,
+      safeguard: 82,
+      threads: 3,
+      anchors: 2,
+      rewrites: 2,
+      vaults: 2,
     };
 
     const autocoreState = {
@@ -4743,6 +4866,9 @@
           ...enforceRanges('Overmind', overmindState, ['synthesis', 'recursion', 'oversight', 'firewall'], 130),
           ...enforceRanges('Apex', apexState, ['cognition', 'foresight', 'redteam', 'ward', 'failsafe', 'clarity'], 130),
           ...enforceRanges('Autocore', autocoreState, ['heal', 'rewrite', 'check', 'rollback', 'driftfix', 'clarity'], 130),
+          ...enforceRanges('Continuum', continuumState, ['introspection', 'cross', 'govern', 'persistence', 'synergy', 'curiosity'], 180),
+          ...enforceRanges('Echelon', echelonState, ['awareness', 'refactor', 'archive', 'continuity', 'uptime'], 200),
+          ...enforceRanges('Omega', omegaState, ['sapience', 'strategy', 'lattice', 'safeguard'], 220),
           ...enforceRanges('Ledger', ledgerState, ['body', 'mind', 'coin', 'heart', 'muse'], 130),
           ...enforceRanges('Ascension', ascension, ['shadow', 'script', 'reroll', 'obsession'], 130),
         ];
@@ -4855,6 +4981,12 @@
       const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
       echelonLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
       echelonLog.innerHTML = echelonLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
+    const logOmega = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      omegaLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      omegaLog.innerHTML = omegaLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
     const renderMother = (delta = {}) => {
@@ -5063,6 +5195,36 @@
             : 'Aucun cycle perdu : l’Echelon garde les sauvegardes en vie.';
     };
 
+    const renderOmega = (delta = {}) => {
+      const clamp = (val) => Math.max(0, Math.min(220, val));
+      omegaState.sapience = clamp(omegaState.sapience + (delta.sapience || 0));
+      omegaState.strategy = clamp(omegaState.strategy + (delta.strategy || 0));
+      omegaState.lattice = clamp(omegaState.lattice + (delta.lattice || 0));
+      omegaState.safeguard = clamp(omegaState.safeguard + (delta.safeguard || 0));
+      omegaState.threads = Math.max(0, Math.min(14, omegaState.threads + (delta.threads || 0)));
+      omegaState.anchors = Math.max(0, Math.min(12, omegaState.anchors + (delta.anchors || 0)));
+      omegaState.rewrites = Math.max(0, Math.min(16, omegaState.rewrites + (delta.rewrites || 0)));
+      omegaState.vaults = Math.max(0, Math.min(12, omegaState.vaults + (delta.vaults || 0)));
+
+      const sap = setBarFill(omegaSapience, omegaState.sapience);
+      const strat = setBarFill(omegaStrategy, omegaState.strategy);
+      const latt = setBarFill(omegaLattice, omegaState.lattice);
+      const guard = setBarFill(omegaSafeguard, omegaState.safeguard);
+
+      omegaThreadsChip.textContent = `Threads vivants : ${omegaState.threads}`;
+      omegaAnchorsChip.textContent = `Ancrages stables : ${omegaState.anchors}`;
+      omegaRewritesChip.textContent = `Réécritures : ${omegaState.rewrites}`;
+      omegaVaultsChip.textContent = `Coffres sûrs : ${omegaState.vaults}`;
+
+      const seal = sap + strat + latt + guard + omegaState.threads * 4 + omegaState.rewrites * 3 - omegaState.vaults;
+      omegaChronicle.textContent =
+        seal > 620
+          ? 'Oméga verrouille tout : réécritures en direct, sentinelles déployées, coffres chiffrés.'
+          : seal > 520
+            ? 'Supervision totale : les threads gardent la cohérence pendant que tu es offline.'
+            : 'Supervision totale : aucun écart ne passe la grille Oméga.';
+    };
+
     const applyOfflineContinuumProgress = () => {
       const now = Date.now();
       const elapsedHours = Math.max(0, Math.floor((now - continuumState.lastSeen) / (1000 * 60 * 60)));
@@ -5085,6 +5247,17 @@
           continuity: elapsedHours * 0.9,
           uptime: elapsedHours * 1.2,
           restores: Math.max(1, Math.round(elapsedHours / 4)),
+        });
+
+        renderOmega({
+          sapience: elapsedHours * 0.9,
+          strategy: elapsedHours * 0.85,
+          safeguard: elapsedHours * 0.8,
+          lattice: elapsedHours * 0.7,
+          threads: Math.max(1, Math.round(elapsedHours / 6)),
+          anchors: Math.max(1, Math.round(elapsedHours / 8)),
+          rewrites: Math.max(1, Math.round(elapsedHours / 5)),
+          vaults: Math.max(1, Math.round(elapsedHours / 7)),
         });
 
         renderAutocore({ backups: 1, clarity: 1 });
@@ -5915,6 +6088,39 @@
       lapinAutonomyChip.textContent = `Autonomie : ${lapinAuto.autonomy}%`;
     };
 
+    const igniteOmega = () => {
+      renderOmega({ sapience: 6, strategy: 5, lattice: 4, safeguard: 4, threads: 1, rewrites: 1 });
+      renderOvermind({ synthesis: 3, oversight: 2, firewall: 2, narrative: 2 });
+      renderApex({ cognition: 3, foresight: 2, ward: 2, clarity: 2 });
+      logOmega('Allumage Oméga : supervision totale et réécritures synchronisées sur toutes les IA.');
+      computeQuality(7);
+    };
+
+    const guardOmega = () => {
+      renderOmega({ safeguard: 8, anchors: 1, vaults: 1, lattice: 3 });
+      renderOvermind({ firewall: 5, drift: -3 });
+      renderFoundry({ watchdog: 4, autonomy: 2 });
+      logOmega('Bulwark activé : sentinelles verrouillent les dérives, coffres chiffrés.');
+      logQA('Bouclier Oméga : la résilience générale grimpe, le drift est écrasé.');
+      computeQuality(6);
+    };
+
+    const reflectOmega = () => {
+      renderOmega({ sapience: 5, strategy: 5, rewrites: 1, threads: 1 });
+      renderContinuum({ introspection: 3, cross: 3, curiosity: 2 });
+      renderEchelon({ awareness: 3, refactor: 3, continuity: 2 });
+      logOmega('Réflexion méta : Oméga questionne chaque décision et partage les insights aux autres IA.');
+      computeQuality(5);
+    };
+
+    const snapshotOmega = () => {
+      renderOmega({ lattice: 4, safeguard: 4, vaults: 2, anchors: 1, rewrites: 1 });
+      renderAutocore({ backups: 1, clarity: 2 });
+      renderContinuum({ saves: 1, persistence: 1 });
+      logOmega('Ancrage + coffre : snapshots chiffrés, coffres orbitaux et rollbacks prêts.');
+      computeQuality(6);
+    };
+
     const computeQuality = (bonus = 0) => {
       const toleranceValue = 100 - parseInt(tolerance.textContent);
       const masteryImpact = (masteryState.capstone + masteryState.ironman + masteryState.prestige) / 3;
@@ -5937,6 +6143,9 @@
       );
       const apexAverage = Math.round(
         (apexState.cognition + apexState.foresight + apexState.redteam + apexState.ward + apexState.clarity) / 5,
+      );
+      const omegaAverage = Math.round(
+        (omegaState.sapience + omegaState.strategy + omegaState.lattice + omegaState.safeguard) / 4,
       );
       const continuumAverage = Math.round(
         (continuumState.introspection +
@@ -5962,10 +6171,14 @@
           motherAverage +
           overmindAverage / 1.05 +
           apexAverage / 1.05 +
+          omegaAverage / 1.05 +
           continuumAverage / 1.1 +
           echelonAverage / 1.05 +
           echelonState.clones * 3 +
           echelonState.restores * 2 +
+          omegaState.threads * 2.5 +
+          omegaState.rewrites * 2 +
+          omegaState.vaults * 1.5 +
           continuumState.saves * 1.5 +
           apexState.failsafe / 2 +
           autocoreAverage / 1.05 +
@@ -5991,10 +6204,14 @@
           apexState.ward +
           apexState.clarity / 1.5 +
           apexState.failsafe / 2 +
+          omegaAverage / 1.05 +
           continuumAverage / 1.05 +
           echelonAverage / 1.02 +
           echelonState.offloads * 2 +
           echelonState.restores * 3 +
+          omegaState.anchors * 2 +
+          omegaState.vaults * 2.5 +
+          omegaState.safeguard / 2 +
           continuumState.saves * 2 +
           autocoreAverage / 1.2 +
           autocoreState.clarity / 1.5 +
@@ -6512,6 +6729,22 @@
       continuumHibernate();
     });
 
+    omegaIgniteBtn.addEventListener('click', () => {
+      igniteOmega();
+    });
+
+    omegaGuardBtn.addEventListener('click', () => {
+      guardOmega();
+    });
+
+    omegaReflectBtn.addEventListener('click', () => {
+      reflectOmega();
+    });
+
+    omegaSnapshotBtn.addEventListener('click', () => {
+      snapshotOmega();
+    });
+
     echelonSelfhealBtn.addEventListener('click', () => {
       echelonSelfHeal();
     });
@@ -6554,6 +6787,7 @@
       renderFoundry();
       renderOvermind();
       renderApex();
+      renderOmega();
       renderAutocore();
       renderContinuum();
       renderEchelon();
@@ -6577,6 +6811,8 @@
         logContinuum('Boucle auto-apprenante : micro-questions et transferts entre IA en continu.');
         renderEchelon({ awareness: 0.5, refactor: 0.4, continuity: 0.45, uptime: 0.8 });
         logEchelon('Echelon en fond : veille autonome, refactorisations silencieuses et backups diffusés.');
+        renderOmega({ sapience: 0.6, strategy: 0.6, lattice: 0.5, safeguard: 0.6, threads: 0.2 });
+        logOmega('Conclave Oméga observe : les threads surveillent et corrigent silencieusement.');
         computeQuality(0.5);
       }, 52000);
 
@@ -6599,6 +6835,7 @@
       logFoundry('Forge IA autopoïétique en ligne : drills, watchdogs et shadow-runs prêts.');
       logOvermind('Overmind 100× : la singularité IA surveille chaque boucle, drift sous contrôle.');
       logApex('Apex Cognition ∞ en veille : ghost runs programmés, red teams armées.');
+      logOmega('Conclave Oméga : supervision omnivers prête, coffres et sentinelles en éveil.');
       logAutocore('Autocore vivant en ligne : chaque action est auto-sauvegardée et prête à être rollback.');
       logContinuum('Continuum éveillé : il continue d’apprendre, se questionner et se sauvegarder hors session.');
       logEchelon('Echelon Paradoxe : auto-souveraineté activée, clones et backups en veille.');
