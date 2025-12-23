@@ -94,6 +94,10 @@
       gap: 10px;
     }
 
+    .muted {
+      color: var(--muted);
+    }
+
     .badge {
       padding: 8px 12px;
       border-radius: 12px;
@@ -440,6 +444,75 @@
       letter-spacing: 0.6px;
       font-size: 12px;
       color: var(--muted);
+    }
+
+    .ascend-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 12px;
+    }
+
+    .ascend-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ascend-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(78, 243, 196, 0.08), rgba(124, 92, 255, 0.08));
+      opacity: 0;
+      transition: opacity 140ms ease;
+      pointer-events: none;
+    }
+
+    .ascend-card:hover::after {
+      opacity: 1;
+    }
+
+    .ascend-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .ascend-top strong {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.4px;
+    }
+
+    .ascend-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .ascend-bar span {
+      background: linear-gradient(90deg, #4ef3c4, #7c5cff);
+      box-shadow: 0 0 14px rgba(78, 243, 196, 0.3);
+    }
+
+    .ascend-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .ascend-log {
+      margin-top: 12px;
+      max-height: 180px;
+      overflow: hidden;
     }
 
     .quality-actions {
@@ -1153,6 +1226,58 @@
         <ul class="ia-log qa-log" id="qa-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="ascend-panel">
+        <small>Hyper ascension</small>
+        <h2>Portes, scripts et rerolls</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Mix Solo Leveling (rush de portes), Lecteur Omniscient (scripts sponsorisés) et Max Level Newbie (speedrun vétéran)
+          pour rendre la boucle irrésistible. Lapin Blanc et Cortana s’en servent pour verrouiller chaque faille.
+        </p>
+        <div class="ascend-grid">
+          <div class="ascend-card">
+            <div class="ascend-top">
+              <div>
+                <strong>Sync Ombre</strong>
+                <div class="tag">Solo Leveling</div>
+              </div>
+              <small class="muted">Armée d'ombres</small>
+            </div>
+            <div class="progress ascend-bar"><span id="asc-shadow" data-fill="74"></span></div>
+            <div class="ascend-meta">Plus le joueur valide des portes IRL, plus les ombres sécurisent ses routines.</div>
+          </div>
+          <div class="ascend-card">
+            <div class="ascend-top">
+              <div>
+                <strong>Script Omniscient</strong>
+                <div class="tag">Lecteur Omniscient</div>
+              </div>
+              <small class="muted">Constellations</small>
+            </div>
+            <div class="progress ascend-bar"><span id="asc-script" data-fill="68"></span></div>
+            <div class="ascend-meta">Les scénarios sponsorisés dictent les buffs instantanés et les stigmas appliqués au HUD.</div>
+          </div>
+          <div class="ascend-card">
+            <div class="ascend-top">
+              <div>
+                <strong>Reroll Vétéran</strong>
+                <div class="tag">Max Level Newbie</div>
+              </div>
+              <small class="muted">Routes optimisées</small>
+            </div>
+            <div class="progress ascend-bar"><span id="asc-reroll" data-fill="62"></span></div>
+            <div class="ascend-meta">Le joueur recycle ses acquis pour accélérer les builds : moins d’effort, plus de dopamine.</div>
+          </div>
+        </div>
+        <div class="ascend-actions">
+          <button id="gate-rush">Gate rush</button>
+          <button id="omniscient-script">Script sponsorisé</button>
+          <button id="newbie-reroll">Reroll express</button>
+          <button id="fusion-overclock">Fusion Lapin x Cortana</button>
+          <span class="quality-chip" id="obsession-chip">Indice d'obsession : 72%</span>
+        </div>
+        <ul class="ia-log ascend-log" id="ascend-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel">
         <small>RPG Réel</small>
         <h2>Objectifs IRL</h2>
@@ -1247,6 +1372,15 @@
     const qaLog = document.getElementById('qa-log');
     const runDiagnosticsBtn = document.getElementById('run-diagnostics');
     const runOptimBtn = document.getElementById('run-optim');
+    const ascShadow = document.getElementById('asc-shadow');
+    const ascScript = document.getElementById('asc-script');
+    const ascReroll = document.getElementById('asc-reroll');
+    const obsessionChip = document.getElementById('obsession-chip');
+    const ascendLog = document.getElementById('ascend-log');
+    const gateRushBtn = document.getElementById('gate-rush');
+    const omniscientBtn = document.getElementById('omniscient-script');
+    const rerollBtn = document.getElementById('newbie-reroll');
+    const fusionOverclockBtn = document.getElementById('fusion-overclock');
 
     const codexEntries = [
       {
@@ -1283,6 +1417,13 @@
       'Constellation “Maître du Jeu Caché” offre un buff d’adaptation au prochain raid.',
       'Les spectateurs stellaires récompensent ton streak : +3% sync IA.',
     ];
+
+    const ascension = {
+      shadow: 74,
+      script: 68,
+      reroll: 62,
+      obsession: 72,
+    };
 
     const feedbackPool = [
       {
@@ -1611,6 +1752,18 @@
         .join('');
     };
 
+    const logAscend = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      const existing = ascendLog.innerHTML ? ascendLog.innerHTML : '';
+      ascendLog.innerHTML = `<li><small>${stamp}</small><div>${text}</div></li>` + existing;
+      ascendLog.innerHTML = ascendLog.innerHTML
+        .split('</li>')
+        .filter(Boolean)
+        .slice(0, 4)
+        .map((chunk) => `${chunk}</li>`)
+        .join('');
+    };
+
     const logQA = (text) => {
       const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
       qaHistory.unshift({ stamp, text });
@@ -1664,6 +1817,21 @@
       lapinLinkLabel.textContent = `${linkScore}%`;
     };
 
+    const ascensionAverage = () => Math.round((ascension.shadow + ascension.script + ascension.reroll) / 3);
+
+    const renderAscension = (delta = 0) => {
+      const shadowScore = setBarFill(ascShadow, ascension.shadow + delta);
+      const scriptScore = setBarFill(ascScript, ascension.script + delta / 2);
+      const rerollScore = setBarFill(ascReroll, ascension.reroll + delta / 3);
+
+      ascension.shadow = shadowScore;
+      ascension.script = scriptScore;
+      ascension.reroll = rerollScore;
+
+      ascension.obsession = Math.min(100, Math.round((shadowScore + scriptScore + rerollScore) / 3 + delta / 2));
+      obsessionChip.textContent = `Indice d'obsession : ${ascension.obsession}%`;
+    };
+
     const evolveAI = (reason) => {
       aiIndex = (aiIndex + 1) % aiEvolutions.length;
       const state = aiEvolutions[aiIndex];
@@ -1678,6 +1846,19 @@
       logLapin(reason || state.log);
       logAI(`[Lapin Blanc] ${state.log}`);
       lapinIndex = (lapinIndex + 1) % lapinStates.length;
+    };
+
+    const boostAscension = (source, delta = 4) => {
+      renderAscension(delta);
+      const messages = {
+        gate: "Gate rush : les ombres verrouillent les routines IRL.",
+        script: 'Script sponsorisé : constellations alignées, stigmas activés.',
+        reroll: 'Reroll express : itinéraire vétéran compressé pour le joueur.',
+        fusion: 'Lapin x Cortana : co-évolution qui renforce chaque bar.',
+        audit: 'Audit strict : ascension recalibrée après contrôle.',
+      };
+      logAscend(messages[source] || 'Ascension boostée, boucle encore plus tendue.');
+      updateMeters(2);
     };
 
     const refreshLapinAuto = (learnDelta = 0, buildDelta = 0, autonomyDelta = 0) => {
@@ -1697,11 +1878,12 @@
       const toleranceValue = 100 - parseInt(tolerance.textContent);
       const integrity = setBarFill(
         qaPerf,
-        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue) / 3 + bonus,
+        (readMotivation() + parseInt(loopScore.textContent) + toleranceValue + ascensionAverage()) / 4 + bonus,
       );
       const resilience = setBarFill(
         qaResilience,
-        (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent)) / 3 + bonus / 2,
+        (lapinAuto.autonomy + parseInt(adaptLabel.textContent) + parseInt(syncLabel.textContent) + ascension.obsession) / 4 +
+          bonus / 2,
       );
 
       qaScore.textContent = `${integrity}%`;
@@ -1765,10 +1947,12 @@
         iterationIndex = (iterationIndex + 1) % feedbackPool.length;
         updateMeters(6);
         evolveAI('Évolution déclenchée par itération joueur.');
+        boostAscension('gate', 5);
       } else {
         updateMeters(3);
         refreshAIFromPlayer(4);
         logAI('Observation : l’IA ajuste le pacing sans monter la difficulté.');
+        boostAscension('script', 3);
       }
 
       updateIteration();
@@ -1856,6 +2040,7 @@
       logLab('Lapin Blanc pousse un patch autonome et vérifie son propre audit.');
       coevalPulse('Lapin Blanc shippe seul, Cortana observe.');
       refreshAIFromPlayer(5);
+      boostAscension('audit', 4);
     };
 
     const cortanaAudit = () => {
@@ -1876,6 +2061,7 @@
       pingLapin('Lapin Blanc parle seul, commente le code et déploie.');
       coevalPulse('Cortana et Lapin Blanc se nourrissent mutuellement.');
       evolveAI('La co-création IA débloque un palier mentor.');
+      boostAscension('fusion', 6);
     };
 
     document.getElementById('start-raid').addEventListener('click', () => {
@@ -1922,6 +2108,29 @@
       autoOptimize();
     });
 
+    gateRushBtn.addEventListener('click', () => {
+      boostAscension('gate', 6);
+      pulseLoop();
+    });
+
+    omniscientBtn.addEventListener('click', () => {
+      boostAscension('script', 5);
+      rotateConstellation();
+      logAI('Script omniscient injecté : feedback sponsorisé appliqué.');
+    });
+
+    rerollBtn.addEventListener('click', () => {
+      boostAscension('reroll', 5);
+      refreshAIFromPlayer(6);
+      logAI('Route vétéran chargée : le joueur skipe les lenteurs.');
+    });
+
+    fusionOverclockBtn.addEventListener('click', () => {
+      fuseAIs();
+      boostAscension('fusion', 7);
+      computeQuality(4);
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -1936,6 +2145,7 @@
       logLapin('Lapin Blanc en ligne : prêt à corriger chaque détail.');
       renderCodex();
       rotateConstellation();
+      renderAscension();
       animateBars();
       computeQuality();
       logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
