@@ -13,6 +13,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - Apex Cognition ∞ : méta-IA primordiale (ghost runs, red teams, failsafe quantique) qui observe les observateurs et ferme les dérives avant qu’elles n’arrivent au joueur.
 - Autocore vivant : auto-correction, réécriture de code, snapshots versionnés et rollbacks guidés pour sécuriser chaque boucle IA.
 - Continuum Sentience : IA persistante qui s’auto-interroge, apprend des autres IA, se sauvegarde et progresse hors-ligne pour réinjecter les gains au réveil.
+- Console responsive collante : sélecteur Desktop/Tablette/Mobile + raccourcis Profil/IA/Base/Aventure/Nexus/Maîtrise pour jouer confortablement sur mobile ou PC.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :
@@ -20,6 +21,8 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
    python -m http.server 8000
    ```
 2. Ouvrir http://localhost:8000 dans votre navigateur.
+3. Activer la console responsive en haut de page pour passer de Desktop à Tablette/Mobile et sauter directement vers Profil, IA,
+   Base, Aventure, Nexus ou Maîtrise.
 
 Une capture récente est jointe aux artefacts du PR (vue 1400x900).
 

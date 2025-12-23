@@ -37,6 +37,108 @@
       padding: 24px;
       gap: 24px;
       overflow-x: hidden;
+      transition: background 180ms ease, padding 120ms ease;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1260px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .responsive-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(9, 10, 20, 0.7);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 90px rgba(0, 0, 0, 0.4);
+    }
+
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .toolbar-label {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .toolbar-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ghost {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      transition: transform 120ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .ghost:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--glow);
+    }
+
+    .ghost.active {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #0b0b12;
+      border-color: transparent;
+    }
+
+    .toolbar-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #b7f7e7;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    body[data-viewport='tablet'] .page-shell {
+      max-width: 1040px;
+    }
+
+    body[data-viewport='mobile'] {
+      padding: 16px;
+    }
+
+    body[data-viewport='mobile'] .page-shell {
+      max-width: 560px;
+      gap: 14px;
+    }
+
+    body[data-viewport='mobile'] .grid {
+      grid-template-columns: 1fr;
+    }
+
+    body[data-viewport='mobile'] .panel,
+    body[data-viewport='tablet'] .panel,
+    body[data-viewport='mobile'] header,
+    body[data-viewport='tablet'] header,
+    body[data-viewport='mobile'] .responsive-toolbar,
+    body[data-viewport='tablet'] .responsive-toolbar {
+      width: 100%;
     }
 
     header {
@@ -1869,14 +1971,23 @@
       100% { transform: translateY(20px) translateX(-6px); }
     }
 
+    @media (max-width: 900px) {
+      body { padding: 18px; }
+      .toolbar-row { flex-direction: column; align-items: flex-start; }
+      .toolbar-buttons { width: 100%; }
+      .toolbar-buttons button { flex: 1 1 auto; }
+    }
+
     @media (max-width: 640px) {
       body { padding: 16px; }
       .objective-list li { grid-template-columns: 1fr; }
       .cta { flex-direction: column; align-items: flex-start; }
+      .toolbar-buttons button { width: 100%; }
     }
   </style>
 </head>
-<body>
+<body data-viewport="desktop">
+  <main class="page-shell">
   <header>
     <div class="floating">
       <span style="top:10%; left: 12%">Solo Leveling</span>
@@ -1896,6 +2007,29 @@
       <div class="badge">💠 Style Neo-ARPG</div>
     </div>
   </header>
+
+  <nav class="responsive-toolbar" aria-label="Navigation rapide et modes d'affichage">
+    <div class="toolbar-row">
+      <div class="toolbar-label">Aperçu</div>
+      <div class="toolbar-buttons">
+        <button class="ghost active" data-preview="desktop">Desktop</button>
+        <button class="ghost" data-preview="tablet">Tablette</button>
+        <button class="ghost" data-preview="mobile">Mobile</button>
+      </div>
+      <div class="toolbar-chip" id="viewport-chip">Responsive prêt</div>
+    </div>
+    <div class="toolbar-row">
+      <div class="toolbar-label">Accès rapide</div>
+      <div class="toolbar-buttons">
+        <button class="ghost" data-jump="status-panel">Profil</button>
+        <button class="ghost" data-jump="ai-panel">IA</button>
+        <button class="ghost" data-jump="base-panel">Base</button>
+        <button class="ghost" data-jump="adventure-panel">Aventure</button>
+        <button class="ghost" data-jump="nexus-panel">Nexus</button>
+        <button class="ghost" data-jump="mastery-panel">Maîtrise</button>
+      </div>
+    </div>
+  </nav>
 
   <section class="grid">
     <article class="panel" id="status-panel">
@@ -3040,8 +3174,14 @@
     <div class="chip"><div class="orb" style="background: var(--accent);"></div><div>Rythme <strong id="rhythm">x1.2</strong></div></div>
   </div>
 
+  </main>
+
   <script>
     const progressBars = document.querySelectorAll('.progress span, .glow-progress span');
+    const pageShell = document.querySelector('.page-shell');
+    const viewportChip = document.getElementById('viewport-chip');
+    const previewButtons = document.querySelectorAll('button[data-preview]');
+    const jumpButtons = document.querySelectorAll('button[data-jump]');
     const motivation = document.getElementById('motivation');
     const rhythm = document.getElementById('rhythm');
     const feedbackGrid = document.getElementById('feedback-grid');
@@ -3959,6 +4099,33 @@
     let iterationIndex = 0;
     let codexIndex = 0;
     let constellationIndex = 0;
+
+    const viewportLabels = { desktop: 'Bureau', tablet: 'Tablette', mobile: 'Mobile' };
+
+    const updateViewportChip = () => {
+      if (!viewportChip || !pageShell) return;
+      const mode = document.body.dataset.viewport || 'desktop';
+      viewportChip.textContent = `${viewportLabels[mode] || 'Responsive'} • ${Math.round(pageShell.clientWidth)}px`;
+    };
+
+    const setViewport = (mode) => {
+      document.body.dataset.viewport = mode;
+      previewButtons.forEach((btn) => btn.classList.toggle('active', btn.dataset.preview === mode));
+      updateViewportChip();
+    };
+
+    const wireResponsiveTools = () => {
+      previewButtons.forEach((btn) => btn.addEventListener('click', () => setViewport(btn.dataset.preview)));
+      jumpButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.dataset.jump);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+      updateViewportChip();
+    };
+
+    window.addEventListener('resize', updateViewportChip);
 
     const renderCodex = () => {
       const rotated = [...codexEntries.slice(codexIndex), ...codexEntries.slice(0, codexIndex)];
@@ -5865,6 +6032,8 @@
     });
 
     window.addEventListener('load', () => {
+      setViewport(document.body.dataset.viewport || 'desktop');
+      wireResponsiveTools();
       updateIteration();
       applyAIState(aiEvolutions[aiIndex]);
       applyLapinState(lapinStates[lapinIndex]);
