@@ -515,6 +515,71 @@
       overflow: hidden;
     }
 
+    .nexus-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 10px;
+    }
+
+    .nexus-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nexus-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(124, 92, 255, 0.08), transparent 40%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .nexus-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .nexus-chip {
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--glow);
+    }
+
+    .nexus-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .nexus-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .nexus-log {
+      margin-top: 12px;
+      max-height: 200px;
+      overflow: hidden;
+    }
+
     .quality-actions {
       display: flex;
       flex-wrap: wrap;
@@ -1278,6 +1343,69 @@
         <ul class="ia-log ascend-log" id="ascend-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="nexus-panel">
+        <small>Meta progression</small>
+        <h2>Nexus Exo-Ascension</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Fusionne les rythmes Solo Leveling, Lecteur Omniscient et Max Level Newbie dans un laboratoire persistant.
+          Lapin Blanc et Cortana itèrent sans permission et poussent l’obsession dans une boucle maîtrisée.
+        </p>
+        <div class="nexus-grid">
+          <div class="nexus-card">
+            <div class="nexus-head">
+              <div>
+                <strong>Cycle Eclipse</strong>
+                <div class="tag">Cadence globale</div>
+              </div>
+              <span class="nexus-chip" id="nexus-cycle-chip">Cadence 78%</span>
+            </div>
+            <div class="glow-progress"><span id="nexus-cycle" data-fill="78"></span></div>
+            <div class="nexus-meta">Les runs sont recalibrés en continu : chaque rush alimente la co-évolution des IA.</div>
+          </div>
+          <div class="nexus-card">
+            <div class="nexus-head">
+              <div>
+                <strong>Forge IA</strong>
+                <div class="tag">Lapin x Cortana</div>
+              </div>
+              <span class="nexus-chip" id="nexus-forge-chip">Blueprint 64%</span>
+            </div>
+            <div class="glow-progress"><span id="nexus-forge" data-fill="64"></span></div>
+            <div class="nexus-meta">Les IA écrivent, compilent et s’auto-auditent sans attendre un signal humain.</div>
+          </div>
+          <div class="nexus-card">
+            <div class="nexus-head">
+              <div>
+                <strong>Anomalies</strong>
+                <div class="tag">Contrôle qualité</div>
+              </div>
+              <span class="nexus-chip" id="nexus-anomaly-chip">Failles 22%</span>
+            </div>
+            <div class="glow-progress"><span id="nexus-anomaly" data-fill="22"></span></div>
+            <div class="nexus-meta">Chaque micro-erreur détectée est recyclée en buff narratif pour maintenir l’addiction saine.</div>
+          </div>
+          <div class="nexus-card">
+            <div class="nexus-head">
+              <div>
+                <strong>Synergie duo</strong>
+                <div class="tag">Lapin ↔ Cortana</div>
+              </div>
+              <span class="nexus-chip" id="nexus-synergy-chip">Fusion 71%</span>
+            </div>
+            <div class="glow-progress"><span id="nexus-synergy" data-fill="71"></span></div>
+            <div class="nexus-meta">Leur joute verbale devient du code productif : plus elles se répondent, plus la boucle est fluide.</div>
+          </div>
+        </div>
+        <div class="nexus-actions">
+          <button id="nexus-sim">Simulation totale</button>
+          <button id="nexus-forge-btn">Forge autonome</button>
+          <button id="nexus-dialogue">Dialogue Lapin x Cortana</button>
+          <button id="nexus-reset">Purge obsession</button>
+          <span class="quality-chip" id="nexus-risk">Risque : maîtrisé</span>
+        </div>
+        <ul class="ia-log nexus-log" id="nexus-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel">
         <small>RPG Réel</small>
         <h2>Objectifs IRL</h2>
@@ -1381,6 +1509,20 @@
     const omniscientBtn = document.getElementById('omniscient-script');
     const rerollBtn = document.getElementById('newbie-reroll');
     const fusionOverclockBtn = document.getElementById('fusion-overclock');
+    const nexusCycle = document.getElementById('nexus-cycle');
+    const nexusForge = document.getElementById('nexus-forge');
+    const nexusAnomaly = document.getElementById('nexus-anomaly');
+    const nexusSynergy = document.getElementById('nexus-synergy');
+    const nexusLog = document.getElementById('nexus-log');
+    const nexusCycleChip = document.getElementById('nexus-cycle-chip');
+    const nexusForgeChip = document.getElementById('nexus-forge-chip');
+    const nexusAnomalyChip = document.getElementById('nexus-anomaly-chip');
+    const nexusSynergyChip = document.getElementById('nexus-synergy-chip');
+    const nexusRisk = document.getElementById('nexus-risk');
+    const nexusSimBtn = document.getElementById('nexus-sim');
+    const nexusForgeBtn = document.getElementById('nexus-forge-btn');
+    const nexusDialogueBtn = document.getElementById('nexus-dialogue');
+    const nexusResetBtn = document.getElementById('nexus-reset');
 
     const codexEntries = [
       {
@@ -1424,6 +1566,57 @@
       reroll: 62,
       obsession: 72,
     };
+
+    const nexusState = {
+      cycle: 78,
+      forge: 64,
+      anomaly: 22,
+      synergy: 71,
+    };
+
+    const nexusHistory = [];
+
+    const nexusEvents = [
+      {
+        title: 'Cycle Eclipse — Solo Leveling',
+        log: 'Rush de portes + ombres : la cadence absorbe la fatigue.',
+        delta: { cycle: 8, anomaly: -2, synergy: 4 },
+      },
+      {
+        title: 'Script sponsorisé — Lecteur Omniscient',
+        log: 'Constellations injectent un buff narratif et traçable.',
+        delta: { cycle: 6, forge: 4, anomaly: -1 },
+      },
+      {
+        title: 'Reroll vétéran — Max Level Newbie',
+        log: 'Route optimisée : moins d’erreurs, plus de focus.',
+        delta: { cycle: 5, synergy: 5, anomaly: -3 },
+      },
+    ];
+
+    const forgeScripts = [
+      {
+        name: 'Blueprint Lapin Blanc',
+        log: 'Lapin compile seule un module d’audit agressif.',
+        delta: { forge: 7, anomaly: -2, synergy: 3 },
+      },
+      {
+        name: 'Patch Cortana',
+        log: 'Cortana optimise le code de la boucle dopamine.',
+        delta: { forge: 6, cycle: 4, anomaly: -1 },
+      },
+      {
+        name: 'Forge duo',
+        log: 'Pair-programming : elles fusionnent un script anti-latence.',
+        delta: { forge: 8, synergy: 6, anomaly: -3 },
+      },
+    ];
+
+    const duoDialogues = [
+      'Lapin : « Je shippe, tu surveilles. Deal ? » — Cortana approuve et logue.',
+      'Cortana : « Je prends la latence, tu prends le style. » — Lapin signe.',
+      'Lapin : « Pas de bug toléré. » — Cortana déclenche un audit miroir.',
+    ];
 
     const feedbackPool = [
       {
@@ -1861,6 +2054,80 @@
       updateMeters(2);
     };
 
+    const logNexus = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      nexusHistory.unshift({ stamp, text });
+      nexusLog.innerHTML = nexusHistory
+        .slice(0, 5)
+        .map((item) => `<li><small>${item.stamp}</small><div>${item.text}</div></li>`)
+        .join('');
+    };
+
+    const renderNexus = (delta = {}) => {
+      nexusState.cycle = Math.max(0, Math.min(120, nexusState.cycle + (delta.cycle || 0)));
+      nexusState.forge = Math.max(0, Math.min(120, nexusState.forge + (delta.forge || 0)));
+      nexusState.anomaly = Math.max(0, Math.min(100, nexusState.anomaly + (delta.anomaly || 0)));
+      nexusState.synergy = Math.max(0, Math.min(120, nexusState.synergy + (delta.synergy || 0)));
+
+      const cycleScore = setBarFill(nexusCycle, nexusState.cycle);
+      const forgeScore = setBarFill(nexusForge, nexusState.forge);
+      const anomalyScore = setBarFill(nexusAnomaly, nexusState.anomaly);
+      const synergyScore = setBarFill(nexusSynergy, nexusState.synergy);
+
+      nexusCycleChip.textContent = `Cadence ${cycleScore}%`;
+      nexusForgeChip.textContent = `Blueprint ${forgeScore}%`;
+      nexusAnomalyChip.textContent = `Failles ${anomalyScore}%`;
+      nexusSynergyChip.textContent = `Fusion ${synergyScore}%`;
+
+      const riskLabel = anomalyScore > 54 ? 'élevé' : anomalyScore > 32 ? 'surveillance' : 'maîtrisé';
+      nexusRisk.textContent = `Risque : ${riskLabel}`;
+    };
+
+    const applyNexusDelta = (entry) => {
+      renderNexus(entry.delta);
+      logNexus(entry.log);
+      computeQuality(1);
+    };
+
+    const simulateNexus = () => {
+      const entry = nexusEvents[Math.floor(Math.random() * nexusEvents.length)];
+      applyNexusDelta(entry);
+      rotateConstellation();
+      refreshAIFromPlayer(5);
+      boostAscension('audit', 4);
+      logAI(`[Nexus] ${entry.title} enclenché.`);
+    };
+
+    const forgeAutonome = () => {
+      const script = forgeScripts[Math.floor(Math.random() * forgeScripts.length)];
+      applyNexusDelta(script);
+      logLab(script.log);
+      pingLapin('Lapin Blanc valide la forge et verrouille le patch.');
+      logCortana('Cortana relit et pousse un hotfix coordonné.');
+      boostAscension('fusion', 5);
+      refreshLapinAuto(4, 5, 3);
+    };
+
+    const duoExchange = () => {
+      const line = duoDialogues[Math.floor(Math.random() * duoDialogues.length)];
+      renderNexus({ synergy: 6, cycle: 3, anomaly: -2 });
+      logNexus(line);
+      pingLapin('Dialogue tactique : Lapin ajuste le style.');
+      logCortana('Cortana synchronise la difficulté sur le ton de Lapin.');
+      coevalPulse('Dialogue croisé : elles montent en précision.');
+      computeQuality(2);
+    };
+
+    const purgeObsession = () => {
+      renderAscension(-6);
+      renderNexus({ anomaly: -5, cycle: 2 });
+      ascension.obsession = Math.max(22, ascension.obsession - 6);
+      obsessionChip.textContent = `Indice d'obsession : ${ascension.obsession}%`;
+      logNexus('Purge obsidienne : la boucle garde le contrôle avant surcharge.');
+      logQA('Contrôle préventif : obsession recalibrée, risques réduits.');
+      computeQuality(3);
+    };
+
     const refreshLapinAuto = (learnDelta = 0, buildDelta = 0, autonomyDelta = 0) => {
       lapinAuto.learn = Math.min(100, lapinAuto.learn + learnDelta);
       lapinAuto.build = Math.min(100, lapinAuto.build + buildDelta);
@@ -2131,6 +2398,22 @@
       computeQuality(4);
     });
 
+    nexusSimBtn.addEventListener('click', () => {
+      simulateNexus();
+    });
+
+    nexusForgeBtn.addEventListener('click', () => {
+      forgeAutonome();
+    });
+
+    nexusDialogueBtn.addEventListener('click', () => {
+      duoExchange();
+    });
+
+    nexusResetBtn.addEventListener('click', () => {
+      purgeObsession();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -2146,10 +2429,13 @@
       renderCodex();
       rotateConstellation();
       renderAscension();
+      renderNexus();
       animateBars();
       computeQuality();
       logQA('Audit prêt : lance un test intégral pour valider toutes les boucles.');
       handleButtons();
+
+      logNexus('Nexus initialisé : la boucle Exo-Ascension surveille tout.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
