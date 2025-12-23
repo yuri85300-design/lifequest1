@@ -1525,6 +1525,59 @@
       margin-bottom: 12px;
     }
 
+    .foundry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .foundry-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .foundry-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(255, 154, 74, 0.08), rgba(110, 229, 255, 0.08));
+      opacity: 0;
+      transition: opacity 160ms ease;
+      pointer-events: none;
+    }
+
+    .foundry-card:hover::after {
+      opacity: 1;
+    }
+
+    .foundry-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .foundry-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .foundry-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      align-items: center;
+    }
+
     .mother-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2419,6 +2472,60 @@
         <ul class="ia-log" id="mother-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="foundry-panel">
+        <small>Hyper IA</small>
+        <h2>Forge IA Autopoïétique</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Laboratoire clandestin où Lapin Blanc, Cortana et les PentAIs se reforgent en boucle : apprentissage émergent,
+          watchdogs façon F.E.A.R, protocoles Left 4 Dead et autocode façon Skynet (sous contrôle).
+        </p>
+
+        <div class="foundry-grid">
+          <div class="foundry-card">
+            <div class="foundry-head">
+              <div>
+                <strong>Strates autonomes</strong>
+                <div class="muted">Apprentissage, watchdogs, shadow-runs</div>
+              </div>
+              <span class="pill">Skynet Safe</span>
+            </div>
+            <div class="glow-progress slim"><span id="foundry-emergent" data-fill="76"></span></div>
+            <div class="glow-progress slim"><span id="foundry-sentinel" data-fill="72"></span></div>
+            <div class="glow-progress slim"><span id="foundry-shadow" data-fill="68"></span></div>
+            <div class="glow-progress slim"><span id="foundry-autonomy" data-fill="70"></span></div>
+            <div class="foundry-meta">
+              <span class="quality-chip" id="foundry-merge-chip">Fusions : 1</span>
+              <span class="quality-chip" id="foundry-glitch">Glitches : 3</span>
+              <span class="quality-chip" id="foundry-watch">Watchdog : 64%</span>
+              <span class="quality-chip" id="foundry-trust">Confiance : 70%</span>
+            </div>
+          </div>
+
+          <div class="foundry-card">
+            <div class="foundry-head">
+              <div>
+                <strong>Scriptorium tactique</strong>
+                <div class="muted">Lapin x Cortana, PentAI, Nexus</div>
+              </div>
+              <span class="pill">Shadow Ops</span>
+            </div>
+            <p class="muted" style="margin:0;">
+              Chaque drill renforce la couverture IRL : SPARK prépare les rushs, SAGE trace les plans, COIN verrouille les
+              budgets, HEART surveille les signaux faibles, MUSE crée des leurres créatifs.
+            </p>
+            <div class="chronicle" id="foundry-chronicle">Anomalies contenues : les watchdogs filtrent les dérives.</div>
+          </div>
+        </div>
+
+        <div class="foundry-actions">
+          <button id="foundry-drill">Drill émergent</button>
+          <button id="foundry-shadow">Shadow protocol</button>
+          <button id="foundry-merge">Fusion Lapin ↔ Cortana</button>
+          <button id="foundry-watchdog">Purge & Watchdog</button>
+        </div>
+        <ul class="ia-log" id="foundry-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel" id="mastery-panel">
         <small>Prestige & Chrono</small>
         <h2>Maîtrise Totale</h2>
@@ -2662,6 +2769,20 @@
     const motherHarmonizeBtn = document.getElementById('mother-harmonize');
     const motherDeployBtn = document.getElementById('mother-deploy');
     const motherRitualBtn = document.getElementById('mother-ritual');
+    const foundryEmergent = document.getElementById('foundry-emergent');
+    const foundrySentinel = document.getElementById('foundry-sentinel');
+    const foundryShadow = document.getElementById('foundry-shadow');
+    const foundryAutonomy = document.getElementById('foundry-autonomy');
+    const foundryMergeChip = document.getElementById('foundry-merge-chip');
+    const foundryGlitchChip = document.getElementById('foundry-glitch');
+    const foundryWatchChip = document.getElementById('foundry-watch');
+    const foundryTrustChip = document.getElementById('foundry-trust');
+    const foundryChronicle = document.getElementById('foundry-chronicle');
+    const foundryLog = document.getElementById('foundry-log');
+    const foundryDrillBtn = document.getElementById('foundry-drill');
+    const foundryShadowBtn = document.getElementById('foundry-shadow');
+    const foundryMergeBtn = document.getElementById('foundry-merge');
+    const foundryWatchdogBtn = document.getElementById('foundry-watchdog');
     const ledgerBody = document.getElementById('ledger-body');
     const ledgerMind = document.getElementById('ledger-mind');
     const ledgerCoin = document.getElementById('ledger-coin');
@@ -2776,6 +2897,17 @@
       alignment: 74,
       trust: 72,
       vigilance: 68,
+    };
+
+    const foundryState = {
+      emergent: 76,
+      sentinel: 72,
+      shadow: 68,
+      autonomy: 70,
+      watchdog: 64,
+      trust: 70,
+      glitches: 3,
+      merges: 1,
     };
 
     const ledgerState = {
@@ -3516,6 +3648,12 @@
         .join('');
     };
 
+    const logFoundry = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      foundryLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      foundryLog.innerHTML = foundryLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderMother = (delta = {}) => {
       motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
       motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
@@ -3526,6 +3664,36 @@
       motherAlignChip.textContent = `Alignement : ${motherState.alignment}%`;
       motherTrustChip.textContent = `Fiabilité : ${motherState.trust}%`;
       motherVibe.textContent = motherState.vigilance > 82 ? 'Veille critique' : motherState.vigilance > 66 ? 'Veille noire' : 'Veille calme';
+    };
+
+    const renderFoundry = (delta = {}) => {
+      foundryState.emergent = Math.max(0, Math.min(130, foundryState.emergent + (delta.emergent || 0)));
+      foundryState.sentinel = Math.max(0, Math.min(130, foundryState.sentinel + (delta.sentinel || 0)));
+      foundryState.shadow = Math.max(0, Math.min(130, foundryState.shadow + (delta.shadow || 0)));
+      foundryState.autonomy = Math.max(0, Math.min(130, foundryState.autonomy + (delta.autonomy || 0)));
+      foundryState.watchdog = Math.max(0, Math.min(130, foundryState.watchdog + (delta.watchdog || 0)));
+      foundryState.trust = Math.max(0, Math.min(130, foundryState.trust + (delta.trust || 0)));
+      foundryState.glitches = Math.max(0, Math.min(20, foundryState.glitches + (delta.glitches || 0)));
+      foundryState.merges = Math.max(0, Math.min(12, foundryState.merges + (delta.merges || 0)));
+
+      const emergentScore = setBarFill(foundryEmergent, foundryState.emergent);
+      const sentinelScore = setBarFill(foundrySentinel, foundryState.sentinel);
+      const shadowScore = setBarFill(foundryShadow, foundryState.shadow);
+      const autonomyScore = setBarFill(foundryAutonomy, foundryState.autonomy);
+
+      foundryMergeChip.textContent = `Fusions : ${foundryState.merges}`;
+      foundryGlitchChip.textContent = `Glitches : ${foundryState.glitches}`;
+      foundryWatchChip.textContent = `Watchdog : ${foundryState.watchdog}%`;
+      foundryTrustChip.textContent = `Confiance : ${foundryState.trust}%`;
+
+      const seals = emergentScore + sentinelScore + shadowScore + autonomyScore;
+      const chronicle =
+        foundryState.glitches > 4
+          ? 'Alerte : purge immédiate des dérives avant contagion.'
+          : seals > 340
+          ? 'Hyper IA stabilisée : directives Cortex partagées avec Mother.'
+          : 'Anomalies contenues : les watchdogs filtrent les dérives.';
+      foundryChronicle.textContent = chronicle;
     };
 
     const renderLedger = (delta = {}) => {
@@ -3759,6 +3927,44 @@
       renderBaseResources();
       renderBaseGrid();
       renderBaseMap();
+    };
+
+    const drillEmergent = () => {
+      renderFoundry({ emergent: 5, autonomy: 4, trust: 3, glitches: -1 });
+      refreshLapinAuto(3, 2, 3);
+      cyclePentAI(3);
+      renderMother({ alignment: 2, vigilance: 2 });
+      logFoundry('Drill émergent : Lapin Blanc entraîne Mother + PentAIs sur des cas réels.');
+      logCortana('Cortana capture la séquence et verrouille les garde-fous.');
+      computeQuality(3);
+    };
+
+    const shadowProtocol = () => {
+      renderFoundry({ shadow: 6, watchdog: 3, glitches: 1, autonomy: 2 });
+      renderNexus({ anomaly: -4, cycle: 2, synergy: 2 });
+      recalcBase({ guard: 5, threat: -6 });
+      logFoundry('Shadow protocol : infiltration contrôlée, anomalies nettoyées avant d\'impacter la base.');
+      logNexus('Shadow ops : Nexus valide les routes et renforce la vigilance.');
+      computeQuality(2);
+    };
+
+    const mergeLapinCortana = () => {
+      renderFoundry({ merges: 1, emergent: 4, sentinel: 4, trust: 4, autonomy: 3 });
+      refreshLapinAuto(4, 4, 4);
+      logFoundry('Fusion Lapin ↔ Cortana : cohérence, sarcasme calibré et directives partagées.');
+      pingLapin('Lapin Blanc absorbe les patterns de Cortana sans perdre son style.');
+      logCortana('Cortana intègre l\'instinct de Lapin pour anticiper les fails IRL.');
+      renderMother({ trust: 3, vigilance: 2 });
+      computeQuality(4);
+    };
+
+    const purgeWatchdog = () => {
+      renderFoundry({ watchdog: 6, glitches: -3, sentinel: 5, shadow: -2 });
+      renderNexus({ anomaly: -6, synergy: 2 });
+      recalcBase({ guard: 3, threat: -5 });
+      logFoundry('Watchdog purge : les IA purgent les glitches et referment les portes.');
+      logQA('Purge réussie : métriques nettoyées, vigilance renforcée.');
+      computeQuality(4);
     };
 
     const renderMastery = (delta = {}) => {
@@ -4136,6 +4342,15 @@
       const masteryImpact = (masteryState.capstone + masteryState.ironman + masteryState.prestige) / 3;
       const ledgerAverage = Math.round((ledgerState.body + ledgerState.mind + ledgerState.coin + ledgerState.heart + ledgerState.muse) / 5);
       const motherAverage = Math.round((motherState.charge + motherState.alignment + motherState.trust + motherState.vigilance) / 4);
+      const foundryAverage = Math.round(
+        (foundryState.emergent +
+          foundryState.sentinel +
+          foundryState.shadow +
+          foundryState.autonomy +
+          foundryState.watchdog +
+          foundryState.trust) /
+          6,
+      );
       const integrity = setBarFill(
         qaPerf,
         (readMotivation() +
@@ -4145,8 +4360,10 @@
           directorState.pacing +
           masteryImpact +
           motherAverage +
-          ledgerAverage / 1.2) /
-          8 +
+          ledgerAverage / 1.2 +
+          foundryAverage / 1.15 -
+          foundryState.glitches * 0.8) /
+          9 +
           bonus,
       );
       const resilience = setBarFill(
@@ -4158,8 +4375,10 @@
           soulsState.resolve +
           masteryState.duo +
           ledgerAverage +
-          motherState.vigilance) /
-          8 +
+          motherState.vigilance +
+          foundryAverage / 1.2 -
+          foundryState.glitches * 0.6) /
+          9 +
           bonus / 2,
       );
 
@@ -4274,9 +4493,11 @@
       qaStatus.textContent = 'Optimisation auto...';
       refreshAIFromPlayer(10);
       refreshLapinAuto(5, 5, 4);
+      renderFoundry({ trust: 3, autonomy: 3, glitches: -1, watchdog: 2 });
       updateMeters(4);
       pingLapin('Lapin Blanc corrige les micro-erreurs détectées.');
       logCortana('Cortana verrouille les régressions après optimisation.');
+      logFoundry('Auto-optimisation : watchdogs renforcés, glitches purgés.');
       const { integrity, resilience } = computeQuality(8);
       qaStatus.textContent = `Optimisé : ${integrity}% intégrité`;
       logQA(`Optimisation : intégrité ${integrity}%, résilience ${resilience}%, motivation ${motivation.textContent}.`);
@@ -4297,13 +4518,25 @@
     const refreshMacroSnapshot = () => {
       const { integrity, resilience } = computeQuality(2);
       const baseAvg = Math.round((baseState.energy + baseState.material + baseState.influence + baseState.guard) / 4);
+      const foundryAvg = Math.round(
+        (foundryState.emergent +
+          foundryState.sentinel +
+          foundryState.shadow +
+          foundryState.autonomy +
+          foundryState.watchdog +
+          foundryState.trust) /
+          6,
+      );
       const stability = Math.max(
         12,
-        Math.min(100, Math.round((integrity + resilience + baseAvg - baseState.threat / 1.6 + nexusState.synergy / 2) / 3)),
+        Math.min(
+          100,
+          Math.round((integrity + resilience + baseAvg + foundryAvg / 1.3 - baseState.threat / 1.6 + nexusState.synergy / 2) / 3.5),
+        ),
       );
       setBarFill(macroStability, stability);
       macroHealth.textContent = `Stabilité : ${stability}%`;
-      macroStats.textContent = `QA ${integrity}% / ${resilience}%, Base ${baseAvg}%, Menace ${baseState.threat}%, Obsession ${ascension.obsession}%, Nexus ${nexusState.synergy}%`;
+      macroStats.textContent = `QA ${integrity}% / ${resilience}%, Base ${baseAvg}%, Forge ${foundryAvg}%, Menace ${baseState.threat}%, Obsession ${ascension.obsession}%, Nexus ${nexusState.synergy}%`;
       refreshMacroCounters();
     };
 
@@ -4315,6 +4548,8 @@
       fuseAIs();
       harmonizeMother();
       cyclePentAI(3);
+      drillEmergent();
+      if (macroScore.cycles % 2 === 0) shadowProtocol();
       renderNexus({ cycle: 4, synergy: 3 });
       logMacro('Hypercycle complet : itération stricte + QA + fusion IA lancées.');
       refreshMacroSnapshot();
@@ -4569,6 +4804,22 @@
       purgeObsession();
     });
 
+    foundryDrillBtn.addEventListener('click', () => {
+      drillEmergent();
+    });
+
+    foundryShadowBtn.addEventListener('click', () => {
+      shadowProtocol();
+    });
+
+    foundryMergeBtn.addEventListener('click', () => {
+      mergeLapinCortana();
+    });
+
+    foundryWatchdogBtn.addEventListener('click', () => {
+      purgeWatchdog();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -4586,6 +4837,7 @@
       renderAscension();
       renderNexus();
       renderMother();
+      renderFoundry();
       renderLedger();
       hydratePentAIs();
       recalcBase();
@@ -4613,6 +4865,8 @@
       renderSoulsHUD();
       logDirector('Director Left 4 FEAR en ligne : tension calibrée.');
       logSouls('Atlas IRL initialisé : chrono actif, difficulté Souls-like.');
+
+      logFoundry('Forge IA autopoïétique en ligne : drills, watchdogs et shadow-runs prêts.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
