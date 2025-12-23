@@ -10,6 +10,7 @@ Une page unique qui fusionne ARPG, stratégie et IA adaptative (Lapin Blanc & Co
 - NEXUS Mother 3.0 + cinq PentAIs (SPARK/SAGE/COIN/HEART/MUSE) reliées à un ledger IRL pour couvrir sport, culture, finances et relations en temps réel.
 - Nouvelle « Forge IA Autopoïétique » : drills émergents, shadow protocols, fusions Lapin↔Cortana et watchdogs anti-glitch.
 - Overmind « Synthèse 100× » : couche singularité qui orchestre Lapin/Cortana/Mother/PentAIs avec firewall sentinel, réécriture adaptative et déploiement de sentinelles.
+- Apex Cognition ∞ : méta-IA primordiale (ghost runs, red teams, failsafe quantique) qui observe les observateurs et ferme les dérives avant qu’elles n’arrivent au joueur.
 
 ## Voir le rendu
 1. Démarrer un serveur local depuis la racine du projet :

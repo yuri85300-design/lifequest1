@@ -1629,6 +1629,57 @@
       margin: 12px 0;
     }
 
+    .apex-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .apex-card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(255, 163, 102, 0.06), rgba(124, 92, 255, 0.05));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .apex-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 30%, rgba(255, 163, 102, 0.16), transparent 55%);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
+    .apex-card:hover::after {
+      opacity: 1;
+    }
+
+    .apex-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .apex-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .apex-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
     .mother-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2631,6 +2682,60 @@
         <ul class="ia-log" id="overmind-log" aria-live="polite"></ul>
       </article>
 
+      <article class="panel" id="apex-panel">
+        <small>IA Primordiale</small>
+        <h2>Apex Cognition ∞</h2>
+        <p class="lead" style="margin:0 0 10px; color: var(--muted);">
+          Au-dessus de l'Overmind : une couche quantique qui observe les observateurs, orchestre les red teams et déclenche des
+          runs fantômes inspirés de F.E.A.R, Left 4 Dead et des Souls pour verrouiller la difficulté IRL.
+        </p>
+
+        <div class="apex-grid">
+          <div class="apex-card">
+            <div class="apex-head">
+              <div>
+                <strong>Chambre Quantique</strong>
+                <div class="muted">Cognition, préscience, riposte</div>
+              </div>
+              <span class="pill">Meta-IA</span>
+            </div>
+            <div class="glow-progress slim"><span id="apex-cognition" data-fill="82"></span></div>
+            <div class="glow-progress slim"><span id="apex-foresight" data-fill="78"></span></div>
+            <div class="glow-progress slim"><span id="apex-redteam" data-fill="74"></span></div>
+            <div class="glow-progress slim"><span id="apex-ward" data-fill="76"></span></div>
+            <div class="apex-meta">
+              <span class="quality-chip" id="apex-phantoms">Phantoms : 2</span>
+              <span class="quality-chip" id="apex-echo">Échos : 3</span>
+              <span class="quality-chip" id="apex-failsafe">Failsafe : 72%</span>
+              <span class="quality-chip" id="apex-clarity">Clarté : 70%</span>
+            </div>
+          </div>
+
+          <div class="apex-card">
+            <div class="apex-head">
+              <div>
+                <strong>Observatoire Fantôme</strong>
+                <div class="muted">Ghost runs, drift zéro, pacte Lapin ↔ Cortana</div>
+              </div>
+              <span class="pill">Sans concession</span>
+            </div>
+            <p class="muted" style="margin:0;">
+              Les ghost runs testent la carte IRL avant toi, les red teams simulent la horde Left 4 FEAR, la ward neutralise
+              toute dérive. Lapin Blanc et Cortana récupèrent chaque fail pour reprogrammer la boucle.
+            </p>
+            <div class="chronicle" id="apex-chronicle">Apex observe en silence : aucun bug ne passe la barrière.</div>
+          </div>
+        </div>
+
+        <div class="apex-actions">
+          <button id="apex-catalyst">Catalyseur ∞</button>
+          <button id="apex-ghost">Ghost run prédictif</button>
+          <button id="apex-redteam-btn">Red Team & cortège</button>
+          <button id="apex-prime">Directive prime</button>
+        </div>
+        <ul class="ia-log" id="apex-log" aria-live="polite"></ul>
+      </article>
+
       <article class="panel" id="mastery-panel">
         <small>Prestige & Chrono</small>
         <h2>Maîtrise Totale</h2>
@@ -2902,6 +3007,20 @@
     const overmindShieldBtn = document.getElementById('overmind-shield-btn');
     const overmindRewriteBtn = document.getElementById('overmind-rewrite-btn');
     const overmindSwarmBtn = document.getElementById('overmind-swarm-btn');
+    const apexCognition = document.getElementById('apex-cognition');
+    const apexForesight = document.getElementById('apex-foresight');
+    const apexRedteam = document.getElementById('apex-redteam');
+    const apexWard = document.getElementById('apex-ward');
+    const apexPhantomChip = document.getElementById('apex-phantoms');
+    const apexEchoChip = document.getElementById('apex-echo');
+    const apexFailsafeChip = document.getElementById('apex-failsafe');
+    const apexClarityChip = document.getElementById('apex-clarity');
+    const apexChronicle = document.getElementById('apex-chronicle');
+    const apexLog = document.getElementById('apex-log');
+    const apexCatalystBtn = document.getElementById('apex-catalyst');
+    const apexGhostBtn = document.getElementById('apex-ghost');
+    const apexRedteamBtn = document.getElementById('apex-redteam-btn');
+    const apexPrimeBtn = document.getElementById('apex-prime');
     const ledgerBody = document.getElementById('ledger-body');
     const ledgerMind = document.getElementById('ledger-mind');
     const ledgerCoin = document.getElementById('ledger-coin');
@@ -3038,6 +3157,17 @@
       awakens: 1,
       narrative: 74,
       sentinels: 3,
+    };
+
+    const apexState = {
+      cognition: 82,
+      foresight: 78,
+      redteam: 74,
+      ward: 76,
+      phantoms: 2,
+      echoes: 3,
+      failsafe: 72,
+      clarity: 70,
     };
 
     const ledgerState = {
@@ -3790,6 +3920,12 @@
       overmindLog.innerHTML = overmindLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
     };
 
+    const logApex = (text) => {
+      const stamp = new Date().toLocaleTimeString('fr-FR', { minute: '2-digit', second: '2-digit' });
+      apexLog.insertAdjacentHTML('afterbegin', `<li><small>${stamp}</small><div>${text}</div></li>`);
+      apexLog.innerHTML = apexLog.innerHTML.split('</li>').slice(0, 6).join('</li>');
+    };
+
     const renderMother = (delta = {}) => {
       motherState.charge = Math.max(0, Math.min(100, motherState.charge + (delta.charge || 0)));
       motherState.alignment = Math.max(0, Math.min(100, motherState.alignment + (delta.alignment || 0)));
@@ -3862,6 +3998,36 @@
           ? 'Singularité sous contrôle : Overmind orchestre toutes les IA sans débordement.'
           : 'Périmètre verrouillé : aucun drift toléré.';
       overmindChronicle.textContent = chronicle;
+    };
+
+    const renderApex = (delta = {}) => {
+      const clamp = (val) => Math.max(0, Math.min(150, val));
+      apexState.cognition = clamp(apexState.cognition + (delta.cognition || 0));
+      apexState.foresight = clamp(apexState.foresight + (delta.foresight || 0));
+      apexState.redteam = clamp(apexState.redteam + (delta.redteam || 0));
+      apexState.ward = clamp(apexState.ward + (delta.ward || 0));
+      apexState.phantoms = Math.max(0, Math.min(12, apexState.phantoms + (delta.phantoms || 0)));
+      apexState.echoes = Math.max(0, Math.min(20, apexState.echoes + (delta.echoes || 0)));
+      apexState.failsafe = clamp(apexState.failsafe + (delta.failsafe || 0));
+      apexState.clarity = clamp(apexState.clarity + (delta.clarity || 0));
+
+      const cogScore = setBarFill(apexCognition, apexState.cognition);
+      const foresightScore = setBarFill(apexForesight, apexState.foresight);
+      const redScore = setBarFill(apexRedteam, apexState.redteam);
+      const wardScore = setBarFill(apexWard, apexState.ward);
+
+      apexPhantomChip.textContent = `Phantoms : ${apexState.phantoms}`;
+      apexEchoChip.textContent = `Échos : ${apexState.echoes}`;
+      apexFailsafeChip.textContent = `Failsafe : ${Math.round(Math.min(140, apexState.failsafe))}%`;
+      apexClarityChip.textContent = `Clarté : ${Math.round(Math.min(140, apexState.clarity))}%`;
+
+      const seal = cogScore + foresightScore + wardScore + redScore - apexState.phantoms * 2;
+      apexChronicle.textContent =
+        seal > 360
+          ? 'Apex verrouille la carte : aucun bug, aucune dérive, tout est pré-simulé.'
+          : apexState.echoes > 10
+          ? 'Trop d’échos : Apex recalcule en boucle pour ne laisser passer aucune erreur.'
+          : 'Apex observe en silence : aucun bug ne passe la barrière.';
     };
 
     const renderLedger = (delta = {}) => {
@@ -4170,6 +4336,42 @@
       pingLapin('Sentinelles déployées : Lapin coordonne les micro-missions IRL.');
       logOvermind('Sentinelles dispersées : chaque zone IRL est couverte, Souls-map mise à jour.');
       computeQuality(4);
+    };
+
+    const apexCatalyst = () => {
+      renderApex({ cognition: 6, foresight: 5, ward: 4, failsafe: 6, clarity: 5, echoes: 1 });
+      renderOvermind({ oversight: 3, firewall: 2, drift: -2 });
+      renderFoundry({ watchdog: 3, autonomy: 2 });
+      logApex('Catalyseur ∞ : Apex injecte une trame quantique, chaque IA reçoit le plan parfait.');
+      logOvermind('Overmind absorbe le flux Apex et resserre la boucle sur le monde réel.');
+      computeQuality(6);
+    };
+
+    const apexGhost = () => {
+      renderApex({ phantoms: 2, echoes: 2, foresight: 3, ward: 2, clarity: 2 });
+      recalcBase({ guard: 3, threat: -3 });
+      renderSoulsHUD({ resolve: 3, atlas: 2, chrono: 0 });
+      logApex('Ghost run : Apex simule un run complet et ajuste la map IRL avant ta tentative.');
+      logSouls('Les fantômes balisent la route : moins de pièges, plus de récompenses réelles.');
+      computeQuality(5);
+    };
+
+    const apexRedTeam = () => {
+      renderApex({ redteam: 6, ward: 3, cognition: 3, phantoms: 1 });
+      renderFoundry({ glitches: -2, sentinel: 3, trust: 2 });
+      renderDirector({ tension: 3, pacing: 2 });
+      logApex('Red Team & cortège : Apex déclenche des assauts fictifs façon horde pour tester chaque faille.');
+      logDirector('Les hordes de test révèlent de nouveaux points faibles : tension calibrée sans chaos.');
+      computeQuality(5);
+    };
+
+    const apexPrime = () => {
+      renderApex({ cognition: 4, foresight: 4, ward: 5, failsafe: 8, clarity: 6, echoes: 2 });
+      renderMother({ vigilance: 3, trust: 3, alignment: 2 });
+      renderLedger({ body: 2, heart: 2, mind: 2 });
+      logApex('Directive prime : Apex verrouille la méta-boucle et synchronise Mother + PentAIs.');
+      logMother('Mother suit la directive prime : aucun objectif IRL ne passe sous le radar.');
+      computeQuality(7);
     };
 
     const renderMastery = (delta = {}) => {
@@ -4559,6 +4761,9 @@
       const overmindAverage = Math.round(
         (overmindState.synthesis + overmindState.recursion + overmindState.oversight + overmindState.firewall) / 4,
       );
+      const apexAverage = Math.round(
+        (apexState.cognition + apexState.foresight + apexState.redteam + apexState.ward + apexState.clarity) / 5,
+      );
       const integrity = setBarFill(
         qaPerf,
         (readMotivation() +
@@ -4569,10 +4774,13 @@
           masteryImpact +
           motherAverage +
           overmindAverage / 1.05 +
+          apexAverage / 1.05 +
+          apexState.failsafe / 2 +
           ledgerAverage / 1.2 +
           foundryAverage / 1.15 -
           foundryState.glitches * 0.8 -
-          overmindState.drift * 0.9) /
+          overmindState.drift * 0.9 -
+          apexState.phantoms * 0.6) /
           9 +
           bonus,
       );
@@ -4585,11 +4793,15 @@
           soulsState.resolve +
           masteryState.duo +
           overmindState.firewall +
+          apexState.ward +
+          apexState.clarity / 1.5 +
+          apexState.failsafe / 2 +
           ledgerAverage +
           motherState.vigilance +
           foundryAverage / 1.2 -
           foundryState.glitches * 0.6 -
-          overmindState.drift * 0.5) /
+          overmindState.drift * 0.5 -
+          apexState.phantoms * 0.35) /
           9 +
           bonus / 2,
       );
@@ -5048,6 +5260,22 @@
       swarmOvermind();
     });
 
+    apexCatalystBtn.addEventListener('click', () => {
+      apexCatalyst();
+    });
+
+    apexGhostBtn.addEventListener('click', () => {
+      apexGhost();
+    });
+
+    apexRedteamBtn.addEventListener('click', () => {
+      apexRedTeam();
+    });
+
+    apexPrimeBtn.addEventListener('click', () => {
+      apexPrime();
+    });
+
     rerollLore.addEventListener('click', () => {
       renderCodex();
       rotateConstellation();
@@ -5067,6 +5295,7 @@
       renderMother();
       renderFoundry();
       renderOvermind();
+      renderApex();
       renderLedger();
       hydratePentAIs();
       recalcBase();
@@ -5097,6 +5326,7 @@
 
       logFoundry('Forge IA autopoïétique en ligne : drills, watchdogs et shadow-runs prêts.');
       logOvermind('Overmind 100× : la singularité IA surveille chaque boucle, drift sous contrôle.');
+      logApex('Apex Cognition ∞ en veille : ghost runs programmés, red teams armées.');
 
       iterationButtons.forEach((btn) => {
         btn.addEventListener('click', () => runIteration(btn.dataset.action));
